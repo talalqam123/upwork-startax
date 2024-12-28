@@ -3,6 +3,7 @@ import BasicDetailsForm from "./BasicDetails";
 import AddressForm from "./Address";
 import BankDetails from "./Banks";
 import AdditionalDetails from "./Additional_Details";
+import SalaryPage from "./Salary/Salary";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -83,6 +84,77 @@ const ClientDetails = () => {
         msme_registration_no: 'MSME123456',
         enterpris_type: 'small',
     };
+
+    // const clientYear = 2023;
+  const clientId = '12345';
+  const clientSalaryDetails = [
+    {
+      EmployerName: 'Employer 1',
+      EmployerCategory: 'CGOV',
+      EmployerAddress: {
+        TanNumber: 'ABCDE1234F',
+        TDSDeducted: '5000',
+        Address: '123 Street, City',
+        PinCode: '123456',
+        StateCode: 'UP',
+        City: 'Lucknow',
+      },
+      Salary: {
+        total: '1000000',
+        NatureOfSalaryDtlsType: [],
+      },
+      Perquisites: {
+        total: '20000',
+        NatureOfPerquisitesType: [],
+      },
+      Profit: {
+        total: '15000',
+        NatureOfProfitInLieuOfSalaryType: [],
+      },
+      AllwncExemptUs10: {
+        TotalAllwncExemptUs10: '5000',
+        AllwncExemptUs10Dtls: [],
+      },
+      DeductionUs16: '50000',
+    },
+  ];
+//   const states = [
+//     { code: 'UP', name: 'Uttar Pradesh' },
+//     { code: 'DL', name: 'Delhi' },
+//     { code: 'MH', name: 'Maharashtra' },
+//   ];
+  const previousClientSalaryDetails = [
+    {
+      EmployerName: 'Previous Employer 1',
+      EmployerCategory: 'SGOV',
+      EmployerAddress: {
+        TanNumber: 'XYZDE5678F',
+        TDSDeducted: '3000',
+        Address: '456 Lane, City',
+        PinCode: '654321',
+        StateCode: 'DL',
+        City: 'New Delhi',
+      },
+      Salary: {
+        total: '800000',
+        NatureOfSalaryDtlsType: [],
+      },
+      Perquisites: {
+        total: '10000',
+        NatureOfPerquisitesType: [],
+      },
+      Profit: {
+        total: '5000',
+        NatureOfProfitInLieuOfSalaryType: [],
+      },
+      AllwncExemptUs10: {
+        TotalAllwncExemptUs10: '3000',
+        AllwncExemptUs10Dtls: [],
+      },
+      DeductionUs16: '30000',
+    },
+  ];
+
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -90,6 +162,8 @@ const ClientDetails = () => {
     const handleYearChange = (e) => {
         setSelectedYear(e.target.value);
     };
+
+
 
     return (
         <div className="content-wrapper">
@@ -299,7 +373,8 @@ const ClientDetails = () => {
                                                             </ul>
                                                         </div>
                                                         <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeIncomeTab === "Salary" && <div>Salary Content</div>}
+                                                            {activeIncomeTab === "Salary" && (<SalaryPage
+         />)}
                                                             {activeIncomeTab === "Business" && <div>Business Content</div>}
                                                             {activeIncomeTab === "House Property" && <div>House Property Content</div>}
                                                             {activeIncomeTab === "Capital Gains" && <div>Capital Gains Content</div>}
