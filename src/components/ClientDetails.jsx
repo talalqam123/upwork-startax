@@ -4,6 +4,7 @@ import AddressForm from "./Address";
 import BankDetails from "./Banks";
 import AdditionalDetails from "./Additional_Details";
 import SalaryPage from "./Salary/Salary";
+import IncomeUnder44AD from "./Business/incmeunder44ad";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -154,6 +155,20 @@ const ClientDetails = () => {
       DeductionUs16: '30000',
     },
   ];
+  const dummyIncome44AD = {
+    nature_of_business: [
+      { CodeAD_label: 'Business 1', NameOfBusinessAD: 'Shop', DescriptionAD: 'Retail Store' },
+    ],
+    GrsTotalTrnOverInCash: 10000,
+    GrsTrnOverAnyOthMode: 5000,
+    GrsTrnOverBank: 20000,
+    GrsPrftInCash: 3000,
+    GrsPrftOverAnyOthMode: 1000,
+    GrsPrftOverBank: 7000,
+    isAnyIncomeFilled: true,
+  };
+  
+  
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -375,7 +390,11 @@ const ClientDetails = () => {
                                                         <div className="mt-3 inerr-tab-cntnt active">
                                                             {activeIncomeTab === "Salary" && (<SalaryPage
          />)}
-                                                            {activeIncomeTab === "Business" && <div>Business Content</div>}
+                                                            {activeIncomeTab === "Business" && <IncomeUnder44AD clientFullName="John Doe"
+                                                            clientRelId="12345"
+                                                            income44AD={dummyIncome44AD}
+                                                            year="2023-24"
+                                                            />}
                                                             {activeIncomeTab === "House Property" && <div>House Property Content</div>}
                                                             {activeIncomeTab === "Capital Gains" && <div>Capital Gains Content</div>}
                                                             {activeIncomeTab === "Exempt Income" && <div>Exempt Income Content</div>}
