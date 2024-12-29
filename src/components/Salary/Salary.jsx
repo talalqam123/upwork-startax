@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GrossSalary from "./SalaryDetailsForm";
+import OverallExemptionDeduction from "./OverallExemption";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -11,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
+
 
 
 function TabPanel(props) {
@@ -61,6 +63,7 @@ const EmployerWiseSalary = () => {
     },
   ]);
   const [value, setValue] = useState(0);
+ 
 
   const states = {
     KA: "Karnataka",
@@ -118,6 +121,17 @@ const EmployerWiseSalary = () => {
     updatedTabs[index].EmployerAddress.showAddress = !updatedTabs[index].EmployerAddress.showAddress;
     setTabs(updatedTabs);
   };
+ 
+    const sampleData = {
+      AllwncExemptUs10: {
+        TotalAllwncExemptUs10: 60000,
+      },
+      DeductionUs16: 25000,
+      DeductionUs16ia: 55000,
+      EntertainmntalwncUs16ii: 3500,
+      ProfessionalTaxUs16iii: 3000,
+    };
+  
 
   return (
     <Box
@@ -324,6 +338,7 @@ const EmployerWiseSalary = () => {
 
             </div>
             <GrossSalary/>
+            <OverallExemptionDeduction previousClientSalaryDetails={sampleData} />
           </Box>
         </TabPanel>
       ))}
