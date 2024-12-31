@@ -5,6 +5,8 @@ import BankDetails from "./Banks";
 import AdditionalDetails from "./Additional_Details";
 import SalaryPage from "./Salary/Salary";
 import IncomeUnder44AD from "./Business/incmeunder44ad";
+import HousePropertyForm from "./Business/House Property/houseproperty";
+
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -14,6 +16,19 @@ const ClientDetails = () => {
     const [activeIncomeTab, setActiveIncomeTab] = useState("Salary");
     const clientYear = 2024;
     const clientRelId = 'client123';
+    const dummyHouseData = [
+        {
+          PropertyType: "D",
+          ifLetOut: "D",
+          PropertyOwner: "SE",
+        },
+        {
+          PropertyType: "S",
+          ifLetOut: "S",
+          PropertyOwner: "MI",
+        },
+      ];
+    
     const address = {
         residence_type: 'foreign',
         residence_no: '123',
@@ -395,7 +410,7 @@ const ClientDetails = () => {
                                                             income44AD={dummyIncome44AD}
                                                             year="2023-24"
                                                             />}
-                                                            {activeIncomeTab === "House Property" && <div>House Property Content</div>}
+                                                            {activeIncomeTab === "House Property" &&  <HousePropertyForm clientId="12345" year="2024" />}
                                                             {activeIncomeTab === "Capital Gains" && <div>Capital Gains Content</div>}
                                                             {activeIncomeTab === "Exempt Income" && <div>Exempt Income Content</div>}
                                                             {activeIncomeTab === "Other Income" && <div>Other Income Content</div>}

@@ -1,8 +1,37 @@
 import React, { useState } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import BuisinessBase from './business_base';
 
 function ControlledTabsExample({ clientFullName, clientRelId, income44AD, year }) {
+    const dummyData = {
+        proprtrCapital: 50000,
+        resrveSurplus: 20000,
+        revalReserve: 15000,
+        capitlReserve: 10000,
+        statutoryReserve: 5000,
+        otherReserve: 3000,
+        totalReserve: 33000,
+        totalProprtrFund: 83000,
+        securedLoans: 40000,
+        foreignLoans: 20000,
+        rupeeLoans: 20000,
+        rupeeFromBanks: 12000,
+        rupeeFromOthers: 8000,
+        totalRupeeLoans: 20000,
+        totalSecuredLoans: 60000,
+        unsecuredLoans: 15000,
+        unsecFromBanks: 7000,
+        unsecFromOthers: 8000,
+        totalUnsecLoans: 15000,
+        totalLoanFunds: 75000,
+        deferredTax: 10000,
+        advances40A: 5000,
+        advancesOthers: 15000,
+        totalAdvances: 20000,
+        totalSourcesOfFunds: 168000,
+      };
+      
     const [key, setKey] = useState('income44ad');
 
     // Placeholder content for other tabs
@@ -60,6 +89,8 @@ function ControlledTabsExample({ clientFullName, clientRelId, income44AD, year }
         };
 
         return (
+            
+           <div className='container'>
             <form onSubmit={handleSubmit}>
                 <div className="card card-primary">
                     <div className="card-header">
@@ -179,6 +210,9 @@ function ControlledTabsExample({ clientFullName, clientRelId, income44AD, year }
                     </div>
                 </div>
             </form>
+            <BuisinessBase />
+
+            </div>
         );
     };
 
