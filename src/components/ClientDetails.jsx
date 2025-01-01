@@ -6,7 +6,9 @@ import AdditionalDetails from "./Additional_Details";
 import SalaryPage from "./Salary/Salary";
 import IncomeUnder44AD from "./Business/incmeunder44ad";
 import HousePropertyForm from "./Business/House Property/houseproperty";
-
+import CapitalGains from "./Business/Capital Gains/capitalgains_index";
+import ExemptIncomeForm from "./Business/Exempt Income/exempt_income";
+import OtherIncomeForm from "./Business/Other Income/otherincome";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -411,9 +413,9 @@ const ClientDetails = () => {
                                                             year="2023-24"
                                                             />}
                                                             {activeIncomeTab === "House Property" &&  <HousePropertyForm clientId="12345" year="2024" />}
-                                                            {activeIncomeTab === "Capital Gains" && <div>Capital Gains Content</div>}
-                                                            {activeIncomeTab === "Exempt Income" && <div>Exempt Income Content</div>}
-                                                            {activeIncomeTab === "Other Income" && <div>Other Income Content</div>}
+                                                            {activeIncomeTab === "Capital Gains" && <CapitalGains clientRelId={1234}/>}
+                                                            {activeIncomeTab === "Exempt Income" && <ExemptIncomeForm/>}
+                                                            {activeIncomeTab === "Other Income" && <OtherIncomeForm/>}
                                                         </div>
                                                     </div>
                                                 </div>
