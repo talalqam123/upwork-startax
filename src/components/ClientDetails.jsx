@@ -9,6 +9,9 @@ import HousePropertyForm from "./Business/House Property/houseproperty";
 import CapitalGains from "./Business/Capital Gains/capitalgains_index";
 import ExemptIncomeForm from "./Business/Exempt Income/exempt_income";
 import OtherIncomeForm from "./Business/Other Income/otherincome";
+import DeductionForm from "./Deductions/80c_to_80g";
+import MoreDeductions from "./Deductions/more_deductions";
+import OtherDeductions from "./Deductions/other_deductions";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -16,21 +19,22 @@ const ClientDetails = () => {
     const [activeTab, setActiveTab] = useState("Permanent Details");
     const [activePermanentTab, setActivePermanentTab] = useState("Basic Details");
     const [activeIncomeTab, setActiveIncomeTab] = useState("Salary");
+    const [activeDeductionsTab, setActiveDeductionsTab] = useState("80C to 80G");
     const clientYear = 2024;
     const clientRelId = 'client123';
     const dummyHouseData = [
         {
-          PropertyType: "D",
-          ifLetOut: "D",
-          PropertyOwner: "SE",
+            PropertyType: "D",
+            ifLetOut: "D",
+            PropertyOwner: "SE",
         },
         {
-          PropertyType: "S",
-          ifLetOut: "S",
-          PropertyOwner: "MI",
+            PropertyType: "S",
+            ifLetOut: "S",
+            PropertyOwner: "MI",
         },
-      ];
-    
+    ];
+
     const address = {
         residence_type: 'foreign',
         residence_no: '123',
@@ -104,88 +108,88 @@ const ClientDetails = () => {
     };
 
     // const clientYear = 2023;
-  const clientId = '12345';
-  const clientSalaryDetails = [
-    {
-      EmployerName: 'Employer 1',
-      EmployerCategory: 'CGOV',
-      EmployerAddress: {
-        TanNumber: 'ABCDE1234F',
-        TDSDeducted: '5000',
-        Address: '123 Street, City',
-        PinCode: '123456',
-        StateCode: 'UP',
-        City: 'Lucknow',
-      },
-      Salary: {
-        total: '1000000',
-        NatureOfSalaryDtlsType: [],
-      },
-      Perquisites: {
-        total: '20000',
-        NatureOfPerquisitesType: [],
-      },
-      Profit: {
-        total: '15000',
-        NatureOfProfitInLieuOfSalaryType: [],
-      },
-      AllwncExemptUs10: {
-        TotalAllwncExemptUs10: '5000',
-        AllwncExemptUs10Dtls: [],
-      },
-      DeductionUs16: '50000',
-    },
-  ];
-//   const states = [
-//     { code: 'UP', name: 'Uttar Pradesh' },
-//     { code: 'DL', name: 'Delhi' },
-//     { code: 'MH', name: 'Maharashtra' },
-//   ];
-  const previousClientSalaryDetails = [
-    {
-      EmployerName: 'Previous Employer 1',
-      EmployerCategory: 'SGOV',
-      EmployerAddress: {
-        TanNumber: 'XYZDE5678F',
-        TDSDeducted: '3000',
-        Address: '456 Lane, City',
-        PinCode: '654321',
-        StateCode: 'DL',
-        City: 'New Delhi',
-      },
-      Salary: {
-        total: '800000',
-        NatureOfSalaryDtlsType: [],
-      },
-      Perquisites: {
-        total: '10000',
-        NatureOfPerquisitesType: [],
-      },
-      Profit: {
-        total: '5000',
-        NatureOfProfitInLieuOfSalaryType: [],
-      },
-      AllwncExemptUs10: {
-        TotalAllwncExemptUs10: '3000',
-        AllwncExemptUs10Dtls: [],
-      },
-      DeductionUs16: '30000',
-    },
-  ];
-  const dummyIncome44AD = {
-    nature_of_business: [
-      { CodeAD_label: 'Business 1', NameOfBusinessAD: 'Shop', DescriptionAD: 'Retail Store' },
-    ],
-    GrsTotalTrnOverInCash: 10000,
-    GrsTrnOverAnyOthMode: 5000,
-    GrsTrnOverBank: 20000,
-    GrsPrftInCash: 3000,
-    GrsPrftOverAnyOthMode: 1000,
-    GrsPrftOverBank: 7000,
-    isAnyIncomeFilled: true,
-  };
-  
-  
+    const clientId = '12345';
+    const clientSalaryDetails = [
+        {
+            EmployerName: 'Employer 1',
+            EmployerCategory: 'CGOV',
+            EmployerAddress: {
+                TanNumber: 'ABCDE1234F',
+                TDSDeducted: '5000',
+                Address: '123 Street, City',
+                PinCode: '123456',
+                StateCode: 'UP',
+                City: 'Lucknow',
+            },
+            Salary: {
+                total: '1000000',
+                NatureOfSalaryDtlsType: [],
+            },
+            Perquisites: {
+                total: '20000',
+                NatureOfPerquisitesType: [],
+            },
+            Profit: {
+                total: '15000',
+                NatureOfProfitInLieuOfSalaryType: [],
+            },
+            AllwncExemptUs10: {
+                TotalAllwncExemptUs10: '5000',
+                AllwncExemptUs10Dtls: [],
+            },
+            DeductionUs16: '50000',
+        },
+    ];
+    //   const states = [
+    //     { code: 'UP', name: 'Uttar Pradesh' },
+    //     { code: 'DL', name: 'Delhi' },
+    //     { code: 'MH', name: 'Maharashtra' },
+    //   ];
+    const previousClientSalaryDetails = [
+        {
+            EmployerName: 'Previous Employer 1',
+            EmployerCategory: 'SGOV',
+            EmployerAddress: {
+                TanNumber: 'XYZDE5678F',
+                TDSDeducted: '3000',
+                Address: '456 Lane, City',
+                PinCode: '654321',
+                StateCode: 'DL',
+                City: 'New Delhi',
+            },
+            Salary: {
+                total: '800000',
+                NatureOfSalaryDtlsType: [],
+            },
+            Perquisites: {
+                total: '10000',
+                NatureOfPerquisitesType: [],
+            },
+            Profit: {
+                total: '5000',
+                NatureOfProfitInLieuOfSalaryType: [],
+            },
+            AllwncExemptUs10: {
+                TotalAllwncExemptUs10: '3000',
+                AllwncExemptUs10Dtls: [],
+            },
+            DeductionUs16: '30000',
+        },
+    ];
+    const dummyIncome44AD = {
+        nature_of_business: [
+            { CodeAD_label: 'Business 1', NameOfBusinessAD: 'Shop', DescriptionAD: 'Retail Store' },
+        ],
+        GrsTotalTrnOverInCash: 10000,
+        GrsTrnOverAnyOthMode: 5000,
+        GrsTrnOverBank: 20000,
+        GrsPrftInCash: 3000,
+        GrsPrftOverAnyOthMode: 1000,
+        GrsPrftOverBank: 7000,
+        isAnyIncomeFilled: true,
+    };
+
+
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -406,21 +410,46 @@ const ClientDetails = () => {
                                                         </div>
                                                         <div className="mt-3 inerr-tab-cntnt active">
                                                             {activeIncomeTab === "Salary" && (<SalaryPage
-         />)}
+                                                            />)}
                                                             {activeIncomeTab === "Business" && <IncomeUnder44AD clientFullName="John Doe"
-                                                            clientRelId="12345"
-                                                            income44AD={dummyIncome44AD}
-                                                            year="2023-24"
+                                                                clientRelId="12345"
+                                                                income44AD={dummyIncome44AD}
+                                                                year="2023-24"
                                                             />}
-                                                            {activeIncomeTab === "House Property" &&  <HousePropertyForm clientId="12345" year="2024" />}
-                                                            {activeIncomeTab === "Capital Gains" && <CapitalGains clientRelId={1234}/>}
-                                                            {activeIncomeTab === "Exempt Income" && <ExemptIncomeForm/>}
-                                                            {activeIncomeTab === "Other Income" && <OtherIncomeForm/>}
+                                                            {activeIncomeTab === "House Property" && <HousePropertyForm clientId="12345" year="2024" />}
+                                                            {activeIncomeTab === "Capital Gains" && <CapitalGains clientRelId={1234} />}
+                                                            {activeIncomeTab === "Exempt Income" && <ExemptIncomeForm />}
+                                                            {activeIncomeTab === "Other Income" && <OtherIncomeForm />}
                                                         </div>
                                                     </div>
                                                 </div>
                                             )}
-
+                                            {activeTab === "Deduction" && (
+                                                <div className="p-tab-cntnt inner_tabs_collec active">
+                                                    <div className="p-tab-c1">
+                                                        <span>03 Deduction</span>
+                                                        <div className="inerr_taabs-tab-btns mb-4">
+                                                            <ul>
+                                                                {["80C to 80G", "More Deductions", "Other Deductions"].map((option) => (
+                                                                    <li
+                                                                        key={option}
+                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeDeductionsTab ? "active" : ""}`}
+                                                                        onClick={() => setActiveDeductionsTab(option)}
+                                                                    >
+                                                                        <span>{option}</span>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="mt-3 inerr-tab-cntnt active">
+                                                            {activeDeductionsTab === "80C to 80G" && <DeductionForm/>}
+                                                            {activeDeductionsTab === "More Deductions" && <MoreDeductions/>}
+                                                            {activeDeductionsTab === "Other Deductions" && <OtherDeductions/>}
+                                                         
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                             {/* Other Tabs like Income, Deduction, etc */}
                                             {/* Similar structure for the other tabs... */}
 

@@ -1,59 +1,141 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const OtherIncomeForm = ({ client, year }) => {
-  // State to manage showing/hiding the PF card and other interest card
-  const [showPfCard, setShowPfCard] = useState(pfInterestKey !== "");
-  const [showOtherInterestCard, setShowOtherInterestCard] = useState(clientOtherIncome?.OTH_INTEREST?.length > 0);
-  const [otherInterestIncomes, setOtherInterestIncomes] = useState(clientOtherIncome?.OTH_INTEREST || [{}]);
-  const [otherSourceIncomes, setOtherSourceIncomes] = useState(clientOtherIncome?.Other_Income || []);
+const OtherIncomeForm = () => {
+  const [pfVisible, setPfVisible] = useState(false);
+  const [otherInterestVisible, setOtherInterestVisible] = useState(false);
+  const [otherInterestIncomes, setOtherInterestIncomes] = useState([{
+    narration: "",
+    amount: "",
+  }]);
+  const [otherSources, setOtherSources] = useState([{
+    source: "",
+    narration: "",
+    amount: "",
+  }]);
 
-  // Mock data for demonstration
-  const clientOtherIncome = {
-    SAV: '1000',
-    IFD: '2000',
-    TAX: '500',
-    OTH_INTEREST: [{ narration: 'Other Interest 1', amount: '300' }],
-    Other_Income: [{ source: 'Source 1', narration: 'Other Source 1', amount: '400' }],
+  // useEffect(() => {
+  //   const formatAmountFields = () => {
+  //     const amountFields = document.querySelectorAll("input.inr_field");
+
+  //     amountFields.forEach((field) => {
+  //       // Format on input
+  //       const handleInput = (e) => {
+  //         let value = e.target.value.replace(/,/g, "");
+  //         e.target.value = Number(value).toLocaleString("en-IN");
+  //       };
+
+  //       field.addEventListener("input", handleInput);
+
+  //       // Cleanup formatting on form submission
+  //       const form = field.closest("form");
+  //       if (form) {
+  //         const handleSubmit = () => {
+  //           amountFields.forEach((field) => {
+  //             field.value = field.value.replace(/,/g, "");
+  //           });
+  //         };
+  //         form.addEventListener("submit", handleSubmit);
+
+  //         return () => {
+  //           form.removeEventListener("submit", handleSubmit);
+  //         };
+  //       }
+  //     });
+  //   };
+
+  //   formatAmountFields();
+
+  //   return () => {
+  //     // Clean up all event listeners
+  //     const amountFields = document.querySelectorAll("input.inr_field");
+  //     amountFields.forEach((field) => {
+  //       const clonedField = field.cloneNode(true);
+  //       field.parentNode.replaceChild(clonedField, field);
+  //     });
+  //   };
+  // }, []);
+  const formatIndianNumber = (value) => {
+    value = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    let integer = value;
+    let lastThreeDigits = integer.slice(-3);
+    let otherDigits = integer.slice(0, -3);
+
+    if (otherDigits !== "") {
+      lastThreeDigits = "," + lastThreeDigits;
+    }
+    integer = otherDigits.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThreeDigits;
+
+    return integer;
   };
-  
-  const pfInterestKey = "10(11)(iP)";
-  const pfInterestAmt = "1500";
-
-  // Toggles
-  const togglePfCard = () => setShowPfCard(!showPfCard);
-  const toggleOtherInterestCard = () => setShowOtherInterestCard(!showOtherInterestCard);
-
-  // Add and delete handlers
-  const addOtherInterestIncome = () => {
+  const handleAddOtherInterestIncome = () => {
     setOtherInterestIncomes([...otherInterestIncomes, { narration: "", amount: "" }]);
   };
 
-  const addOtherSourceIncome = () => {
-    setOtherSourceIncomes([...otherSourceIncomes, { source: "", narration: "", amount: "" }]);
+  const handleAddOtherSourceIncome = () => {
+    setOtherSources([...otherSources, { source: "", narration: "", amount: "" }]);
   };
 
-  const deleteOtherSourceIncome = (index) => {
-    setOtherSourceIncomes(otherSourceIncomes.filter((_, i) => i !== index));
+  const handleDeleteOtherSourceIncome = (index) => {
+    setOtherSources(otherSources.filter((_, i) => i !== index));
+  };
+  const [gifts, setGifts] = useState([
+    {
+      giftKey: "Aggrtvaluewithoutcons562x",
+      narration: "",
+      amount: "",
+    },
+  ]);
+
+  const handleAddGift = () => {
+    setGifts([
+      ...gifts,
+      { giftKey: "Aggrtvaluewithoutcons562x", narration: "", amount: "" },
+    ]);
   };
 
-  // Handle changes
-  const handleOtherInterestChange = (index, field, value) => {
-    const updated = [...otherInterestIncomes];
-    updated[index][field] = value;
-    setOtherInterestIncomes(updated);
+  const handleRemoveGift = (index) => {
+    const updatedGifts = gifts.filter((_, i) => i !== index);
+    setGifts(updatedGifts);
   };
 
-  const handleOtherSourceChange = (index, field, value) => {
-    const updated = [...otherSourceIncomes];
-    updated[index][field] = value;
-    setOtherSourceIncomes(updated);
+  const handleInput = (event, setState, index, field) => {
+    const value = event.target.value;
+    const formattedValue = formatIndianNumber(value);
+
+    setState((prevState) => {
+      const updatedState = [...prevState];
+      updatedState[index][field] = formattedValue;
+      return updatedState;
+    });
+  };
+  const [rows, setRows] = useState([]);
+
+  const addRow = () => {
+    setRows([
+      ...rows,
+      {
+        source: "",
+        amount: "",
+      },
+    ]);
+  };
+
+  const removeRow = (index) => {
+    const updatedRows = rows.filter((_, i) => i !== index);
+    setRows(updatedRows);
+  };
+
+  const updateField = (index, field, value) => {
+    const updatedRows = [...rows];
+    updatedRows[index][field] = value;
+    setRows(updatedRows);
   };
 
   return (
-    <form id="otherIncomeForm" method="POST" action="/basic_details/store_other_income">
-      {/* <input type="hidden" name="client_id" value={client.id} />
-      <input type="hidden" name="year" value={year} />
-      <input type="hidden" name="tab" value="basic_details" /> */}
+    <form id="otherIncomeForm" method="POST" action="/store_other_income/">
+      <input type="hidden" name="client_id" value="1" />
+      <input type="hidden" name="year" value="2024" />
+      <input type="hidden" name="tab" value="basic_details" />
 
       <div className="card card-primary">
         <div className="card-header">
@@ -64,33 +146,33 @@ const OtherIncomeForm = ({ client, year }) => {
             <div className="col-md-4">
               <div className="form-group">
                 <label>Interest Income from Saving Bank</label>
-                <input type="text" className="form-control rounded-0" name="SAV" defaultValue={clientOtherIncome.SAV} />
+                <input type="text" className="form-control rounded-0" name="SAV" />
               </div>
             </div>
-
             <div className="col-md-4">
               <div className="form-group">
                 <label>Interest Income from Deposits</label>
-                <input type="text" className="form-control rounded-0" name="IFD" defaultValue={clientOtherIncome.IFD} />
+                <input type="text" className="form-control rounded-0" name="IFD" />
               </div>
             </div>
-
             <div className="col-md-4">
               <div className="form-group">
                 <label>Interest from Income Tax Refund</label>
-                <input type="text" className="form-control rounded-0" name="TAX" defaultValue={clientOtherIncome.TAX} />
+                <input type="text" className="form-control rounded-0" name="TAX" />
               </div>
             </div>
           </div>
 
-          <button type="button" className="btn btn-primary" onClick={togglePfCard}>Add Interest on PF</button>
+          <button type="button" className="btn btn-primary" onClick={() => setPfVisible(!pfVisible)}>
+            Add Interest on PF
+          </button>
 
-          {showPfCard && (
-            <div className="row mt-3 callout callout-info" id="pf_card">
+          {pfVisible && (
+            <div className="row mt-3 callout callout-info">
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Interest on PF</label>
-                  <select name="pf_interest" className="form-control rounded-0" defaultValue={pfInterestKey}>
+                  <select name="pf_interest" className="form-control rounded-0">
                     <option value="">Select Type</option>
                     <option value="10(11)(iP)">Interest on PF 1st Provison 10(11), 10(11)(iiP)</option>
                     <option value="10(11)(iiP)">Interest on PF 2nd Provison 10(11), 10(12)(iP)</option>
@@ -99,28 +181,25 @@ const OtherIncomeForm = ({ client, year }) => {
                   </select>
                 </div>
               </div>
-
               <div className="col-md-6">
                 <div className="form-group">
                   <label>Amount</label>
                   <input
-                    name="pf_interest_amt"
-                    type="text"
-                    className="form-control rounded-0"
-                    defaultValue={pfInterestAmt}
-                  />
-                </div>
+                  type="text"
+                  className="form-control inr_field"
+                  onInput={(e) => e.target.value = formatIndianNumber(e.target.value)}
+                />                </div>
               </div>
             </div>
           )}
-
           <br />
+          <button type="button" className="btn btn-primary mt-1" onClick={() => setOtherInterestVisible(!otherInterestVisible)}>
+            Add any Other Interest Income
+          </button>
 
-          <button type="button" className="btn btn-primary mt-1" onClick={toggleOtherInterestCard}>Add any Other Interest Income</button>
-
-          {showOtherInterestCard && (
-            <div className="mt-3 callout callout-info" id="other_income_int_card">
-              {otherInterestIncomes.map((item, index) => (
+          {otherInterestVisible && (
+            <div className="mt-3 callout callout-info">
+              {otherInterestIncomes.map((income, index) => (
                 <div className="row" key={index}>
                   <div className="col-md-6">
                     <div className="form-group">
@@ -129,35 +208,361 @@ const OtherIncomeForm = ({ client, year }) => {
                         type="text"
                         name="other_inc_int_narration[]"
                         className="form-control rounded-0"
-                        value={item.narration}
-                        onChange={(e) => handleOtherInterestChange(index, "narration", e.target.value)}
+                        value={income.narration}
+                        onChange={(e) => {
+                          const newIncomes = [...otherInterestIncomes];
+                          newIncomes[index].narration = e.target.value;
+                          setOtherInterestIncomes(newIncomes);
+                        }}
                       />
                     </div>
                   </div>
-
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>Amount</label>
                       <input
-                        type="text"
-                        name="other_inc_int_amount[]"
-                        className="form-control rounded-0"
-                        value={item.amount}
-                        onChange={(e) => handleOtherInterestChange(index, "amount", e.target.value)}
-                      />
+                      type="text"
+                      className="form-control inr_field"
+                      value={income.amount}
+                      onChange={(e) => handleInput(e, setOtherInterestIncomes, index, "amount")}
+                    />
                     </div>
                   </div>
                 </div>
               ))}
-              <button className="btn btn-info" type="button" onClick={addOtherInterestIncome}>Add more</button>
+              <button type="button" className="btn btn-info" onClick={handleAddOtherInterestIncome}>
+                Add more
+              </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Repeat similar structure for other sections */}
+      <div className="card card-primary">
+        <div className="card-header">
+          <h3 className="card-title"><strong>Other Source Income</strong></h3>
+        </div>
+        <div className="card-body">
+          {otherSources.map((source, index) => (
+            <div className="row field-row" key={index}>
+              <div className="col-md-3">
+                <div className="form-group">
+                  <label>Source</label>
+                  <select
+                    className="form-control dynamic-select"
+                    name="other_inc_source[]"
+                    value={source.source}
+                    onChange={(e) => {
+                      const newSources = [...otherSources];
+                      newSources[index].source = e.target.value;
+                      setOtherSources(newSources);
+                    }}
+                  >
+                    <option value="">Please select</option>
+                    <option value="FamilyPension">Family pension</option>
+                    <option value="NOT89A">Income from Retirement Benefit account maintained in a notified country u/s 89A</option>
+                    <option value="OTHNOT89A">Income from Retirement Benefit account maintained in a country other than a country notified u/s 89A</option>
+                    <option value="LtryPzzlChrgblUs115BB">Income from lotteries, puzzles, races, card games etc u/s 115BB</option>
+                    <option value="IncChrgblUs115BBJ">Income from online gaming u/s 115BBJ</option>
+                    <option value="5ACA1a">Income from GDR purchased in foreign currency -resident u/s 115ACA(1)(a)</option>
+                    <option value="5BBF">Tax on income from patent 115BBF</option>
+                    <option value="562iii">Rental income from machinery, plants, buildings</option>
+                    <option value="CashCreditsUs68">Cash credits u/s 68</option>
+                    <option value="UnExplndInvstmntsUs69">Unexplained investments u/s 69</option>
+                    <option value="UnExplndMoneyUs69A">Unexplained investments u/s 69A</option>
+                    <option value="UnDsclsdInvstmntsUs69B">Undisclosed investments etc. u/s 69</option>
+                    <option value="UnExplndExpndtrUs69C">Unexplained expenditure etc u/s 69C</option>
+                    <option value="AmtBrwdRepaidOnHundiUs69D">Amount borrowed or repaid on hundi u/s 69D</option>
+                    <option value="AnyOtherIncome">Others</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="form-group">
+                  <label>Narration</label>
+                  <input
+                    type="text"
+                    name="other_inc_narration[]"
+                    className="form-control rounded-0"
+                    value={source.narration}
+                    onChange={(e) =>
+                      handleOtherIncomeChange(index, "narration", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="form-group">
+                  <label>Amount</label>
+                  <input
+                  type="text"
+                  className="form-control inr_field"
+                  value={source.amount}
+                  onChange={(e) => handleInput(e, setOtherSources, index, "amount")}
+                />
+                </div>
+              </div>
+              <div className="col-md-3 d-flex form-group align-items-end">
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={() => handleDeleteOtherSourceIncome(index)}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))}
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={handleAddOtherSourceIncome}
+          >
+            Add more Other Income
+          </button>
+        </div>
+      </div>
+      <div className="card card-primary">
+        <div className="card-header">
+          <h3 className="card-title">
+            <strong>
+              Income From Gift Received u/s 56(2)(x),56(2)(xii),56(2)(xiii)
+            </strong>
+          </h3>
+        </div>
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-12">
+              <span>
+                Enter details of income to be reported u/s 56(2)(x) Following gifts
+                are non-taxable and need not be reported in the tax return.
+              </span>
+              <ul>
+                <li>
+                  Gift received from Relative, on occasion of marriage, will,
+                  inheritance, Trust are not taxable
+                </li>
+                <li>
+                  Gift received other than listed assets below are not taxable
+                </li>
+                <li>Gift received up to Rs 50,000 is non-taxable</li>
+              </ul>
+            </div>
+
+            <div className="col-md-12">
+              <table className="table table-responsive gift_table">
+                <tbody>
+                  {gifts.map((gift, index) => (
+                    <tr key={index}>
+                      <td>
+                        <div className="form-group">
+                          <label>Nature of Gift Asset</label>
+                          <select
+                            name="562x[]"
+                            className="form-control rounded-0"
+                            value={gift.giftKey}
+                            onChange={(e) =>
+                              handleInputChange(index, "giftKey", e.target.value)
+                            }
+                          >
+                            <option value="Aggrtvaluewithoutcons562x">
+                              Money/Cash Received without Consideration
+                            </option>
+                            <option value="Immovpropwithoutcons562x">
+                              Immovable Property is received without
+                              Consideration
+                            </option>
+                            <option value="Immovpropinadeqcons562x">
+                              Immovable Property is received for inadequate
+                              Consideration
+                            </option>
+                            <option value="Anyotherpropwithoutcons562x">
+                              Any other property received without consideration
+                            </option>
+                            <option value="Anyotherpropinadeqcons562x">
+                              Any other Property is received for inadequate
+                              Consideration
+                            </option>
+                          </select>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="form-group">
+                          <label>Description</label>
+                          <input
+                            type="text"
+                            name="562x_narration[]"
+                            className="form-control rounded-0"
+                            value={gift.narration}
+                            onChange={(e) =>
+                              handleInputChange(index, "narration", e.target.value)
+                            }
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <div className="form-group">
+                          <label>Taxable Amount</label>
+                          <input
+                  type="text"
+                  className="form-control inr_field"
+                  value={gift.amount}
+                  onChange={(e) => handleInput(e, setGifts, index, "amount")}
+                />
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          className="form-group d-flex"
+                          style={{ flexDirection: "column" }}
+                        >
+                          <label>Cancel</label>
+                          <div
+                            className="btn btn-danger gift_remove rounded-0"
+                            onClick={() => handleRemoveGift(index)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button
+                className="btn btn-info add_gift_btn"
+                type="button"
+                onClick={handleAddGift}
+              >
+                {gifts.length === 0 ? "Add Gift Income" : "Add More"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="card card-primary">
+      <div className="card-header">
+        <h3 className="card-title">
+          <strong>Special Tax Rate Income</strong>
+        </h3>
+      </div>
+      <div className="card-body">
+        <div className="row">
+          <div className="col-md-12">
+            <table className="table table-responsive special_inc_table">
+              <tbody>
+                {rows.length > 0 ? (
+                  rows.map((row, index) => (
+                    <tr key={index}>
+                      <td>
+                        <div className="form-group">
+                          <label>Source</label>
+                          <select
+                            name="special_inc_source[]"
+                            className="form-control rounded-0"
+                            value={row.source}
+                            onChange={(e) =>
+                              updateField(index, "source", e.target.value)
+                            }
+                          >
+                            <option value="5A1aii">
+                              Interest received from government/Indian concerns
+                              received in foreign currency 115A(1)(a)(ii)
+                            </option>
+                            <option value="5A1aiia">
+                              Interest from Infrastructure Debt Fund
+                              -:115A(1)(a)(iia)
+                            </option>
+                            <option value="5A1aiiaa">
+                              Interest as per Sec. 194LC(1) -:115A(1)(a)(iiaa)
+                            </option>
+                            <option value="5A1aiiaaP">
+                              Income received by non-resident as referred in
+                              proviso to section 194LC(1) - 5A1aiiaaP
+                              :115A(1)(a)(iiaa)
+                            </option>
+                            <option value="5A1aiiab">
+                              Interest as per Sec. 194LD -:115A(1)(a)(iiab)
+                            </option>
+                            <option value="5A1aiiac">
+                              Interest as per Sec. 194LBA -:115A(1)(a)(iiac)
+                            </option>
+                            <option value="5BBA">
+                              Tax on non-residents sportsmen or sports
+                              associations - 5BBA:115BBA
+                            </option>
+                            {/* Add other options as needed */}
+                          </select>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="form-group">
+                          <label>Taxable Amount</label>
+                          <input
+                            type="text"
+                            name="special_inc_amount[]"
+                            className="form-control rounded-0 inr_field"
+                            value={row.amount}
+                  onChange={(e) => handleInput(e, setRows, index, "amount")}
+                          />
+                          {/* <input
+                  type="text"
+                  className="form-control inr_field"
+                  name="special_inc_amount[]"
+                  value={row.amount}
+                  onChange={(e) => handleInput(e, setRows, index, "amount")}
+                /> */}
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          className="form-group d-flex"
+                          style={{ flexDirection: "column" }}
+                        >
+                          <label>Cancel</label>
+                          <div
+                            className="btn btn-danger special_inc_remove rounded-0"
+                            onClick={() => removeRow(index)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="text-center">
+                      No Special Tax Income Added.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            <button
+              className="btn btn-info add_special_inc_btn rounded-0"
+              type="button"
+              onClick={addRow}
+            >
+              {rows.length === 0 ? "Add Special Income" : "Add More"}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-4">
+        <div className="col-md-12 d-flex">
+          <input
+            type="submit"
+            style={{ width: "fit-content" }}
+            className="btn btn-block btn-primary"
+            value="Submit"
+            id="other_income_submit"
+          />
+        </div>
+      </div>
+    </div>
     </form>
-  );
+  )
 };
 
-export default OtherIncomeForm;
+export default OtherIncomeForm
