@@ -7,12 +7,11 @@ function App() {
 return(
 
 <Routes>
-
+{/* 
 <Route path="/" element={<Dashboard/>} ></Route>
-<Route path="/client" element={<ClientDetails/>} ></Route>
+<Route path="/client" element={<ClientDetails/>} ></Route> */}
 {/* Define route for Remuneration Form */}
-<Route path="/business_remuneration/:clientRelId" element={<RemunerationForm />} />
-<Route path="/catalog_2024/capital_gains_share_debentures/:clientRelId" element={<ShareDebenturesForm />} />
+
 </Routes>
 
 )

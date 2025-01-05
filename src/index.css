@@ -144,3 +144,11 @@ button:focus-visible {
   border-radius: 5px;
   transition: all 0.3s ease-in-out; /* Smooth transition */
   /* transform: translateY(0); /* Default position */
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+
+  

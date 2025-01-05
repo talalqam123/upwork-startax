@@ -1,79 +1,134 @@
-import React, { useState, useEffect } from 'react';
-
-const AddressForm = ({ clientYear, clientRelId, address, states, countries, allClients }) => {
-  const [formData, setFormData] = useState({
-    residence_type: address?.residence_type || 'indian',
-    residence_no: address?.residence_no || '',
-    road_street: address?.road_street || '',
-    pin_code: address?.pincode || '',
-    zip_code: address?.zip_code || '',
-    mobile_number: address?.phone_number || '',
-    state_code: address?.state_code || '',
-    district: address?.district || '',
-    email: address?.email || '',
-    country_code_mobile: address?.country_mobile_code || '',
-    locality_or_area: address?.address || '',
-    country_code: address?.country || ''
+import React, { useState, useEffect } from "react";
+import countrycode from '../../public/countrycode.json'
+import Papa from "papaparse";
+const AddressForm = () => {
+  const [formState, setFormState] = useState({
+    residence_type: "indian",
+    residence_no: "",
+    residence_name: "",
+    road_street: "",
+    pin_code: "",
+    zip_code: "",
+    mobile_number: "",
+    state_code: "",
+    district: "",
+    email: "",
+    country_code_mobile: "",
+    locality_or_area: "",
+    country_code: "",
+    country_name: "",
   });
 
-  const [filteredClients, setFilteredClients] = useState(allClients);
-  const [searchInput, setSearchInput] = useState('');
+  const [clients, setClients] = useState([]);
+  const [pincodeData, setPincodeData] = useState([]);
 
   useEffect(() => {
-    setFilteredClients(
-      allClients.filter(client =>
-        client.full_name.toLowerCase().includes(searchInput.toLowerCase())
-      )
-    );
-  }, [searchInput, allClients]);
-
+    // Fetch or set client data if needed
+    const fetchedClients = []; // Replace with actual data fetching logic
+    setClients(fetchedClients);
+  }, []);
+  useEffect(() => {
+    // Load the CSV data
+    const fetchPincodeData = async () => {
+      const response = await fetch("/pin_codes.csv"); // Adjust the path
+      const text = await response.text();
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          setPincodeData(results.data);
+        },
+      });
+    };
+    fetchPincodeData();
+  }, []);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+    setFormState({ ...formState, [name]: value });
 
+    if (name === "pin_code") {
+      const matchedData = pincodeData.find(
+        (entry) => entry.pincode === value
+      );
+      if (matchedData) {
+        setFormState((prevState) => ({
+          ...prevState,
+          district: matchedData.district,
+          state_code: matchedData.state,
+        }));
+      }
+    }
+    if (name === "country_code") {
+      // Match country code and auto-fill the country name
+      const matchedCountry = Object.keys(countrycode).find(
+        (key) => countrycode[key] === parseInt(value)
+      );
+      setFormState((prevState) => ({
+        ...prevState,
+        country_name: matchedCountry || "",
+      }));
+    }
+  };
   const handleResidenceTypeChange = (type) => {
-    setFormData({ ...formData, residence_type: type });
+    setFormState({ ...formState, residence_type: type });
   };
 
-  const handleClientSelection = (client) => {
-    const selectedAddress = client.address;
-    setFormData({
-      residence_type: selectedAddress.residence_type || 'indian',
-      residence_no: selectedAddress.residence_no || '',
-      residence_name: selectedAddress.residence_name || '',
-      road_street: selectedAddress.road_street || '',
-      pin_code: selectedAddress.pincode || '',
-      zip_code: selectedAddress.zip_code || '',
-      mobile_number: selectedAddress.phone_number || '',
-      state_code: selectedAddress.state_code || '',
-      district: selectedAddress.district || '',
-      email: selectedAddress.email || '',
-      country_code_mobile: selectedAddress.country_mobile_code || '',
-      locality_or_area: selectedAddress.address || '',
-      country_code: selectedAddress.country || ''
+  const handleClientSelect = (client) => {
+    setFormState({
+      residence_type: client.residence_type,
+      residence_no: client.residence_no,
+      residence_name: client.residence_name,
+      road_street: client.road_street,
+      pin_code: client.pincode,
+      zip_code: client.zip_code,
+      mobile_number: client.phone_number,
+      state_code: client.state_code,
+      district: client.district,
+      email: client.email,
+      country_code_mobile: client.country_mobile_code,
+      locality_or_area: client.locality_or_area,
+      country_code: client.country_code,
     });
   };
 
-  const isIndian = formData.residence_type === 'indian';
+  const toggleVisibility = (type) => {
+    const isIndian = type === "indian";
+    return {
+      pinCodeVisible: isIndian,
+      stateCodeVisible: isIndian,
+      countryCodeVisible: !isIndian,
+      zipCodeVisible: !isIndian,
+      countryMobileCodeVisible: !isIndian,
+      districCodenotVisible: !isIndian,
+      districCodeVisible: isIndian
+
+    };
+  };
+
+  const {
+    pinCodeVisible,
+    stateCodeVisible,
+    countryCodeVisible,
+    zipCodeVisible,
+    countryMobileCodeVisible,
+    districCodeVisible,
+    districCodenotVisible
+  } = toggleVisibility(formState.residence_type);
 
   return (
-    <form id="editClientaddressForm" method="POST" action={`basic_details/permanent_address/${clientYear}/${clientRelId}`}>
-      <input type="hidden" name="year" value={clientYear} />
+    <form id="editClientaddressForm" method="POST">
+      <input type="hidden" name="year" value="" />
       <input type="hidden" name="tab" value="bank" />
       <div className="card card-body">
         <div className="d-flex justify-content-between align-items-center">
           <div>
-            <strong> Address</strong>
+            <strong>Address</strong>
           </div>
           <button
             className="btn btn-info"
             type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#CopyAddressModal"
+            data-toggle="modal"
+            data-target="#CopyAddressModal"
           >
             Copy Address From Other Client
           </button>
@@ -84,173 +139,282 @@ const AddressForm = ({ clientYear, clientRelId, address, states, countries, allC
             <div className="form-group w-100">
               <label className="m-1">Residence Type</label>
               <div className="clearfix col-md-6 d-flex form-group justify-content-between">
-                <div className="form-check">
+                <div className="icheck-primary d-inline">
                   <input
                     type="radio"
                     id="indian"
-                    className="form-check-input"
-                    checked={isIndian}
-                    onChange={() => handleResidenceTypeChange('indian')}
+                    name="residence_type"
+                    checked={formState.residence_type === "indian"}
+                    onChange={() => handleResidenceTypeChange("indian")}
                   />
-                  <label htmlFor="indian" className="form-check-label">
-                    Indian
-                  </label>
+                  <label htmlFor="indian">Indian</label>
                 </div>
-                <div className="form-check">
+                <div className="icheck-primary d-inline">
                   <input
                     type="radio"
                     id="foreign"
-                    className="form-check-input"
-                    checked={!isIndian}
-                    onChange={() => handleResidenceTypeChange('foreign')}
+                    name="residence_type"
+                    checked={formState.residence_type === "foreign"}
+                    onChange={() => handleResidenceTypeChange("foreign")}
                   />
-                  <label htmlFor="foreign" className="form-check-label">
-                    Foreign
-                  </label>
+                  <label htmlFor="foreign">Foreign</label>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Input fields */}
+          {/* Residence Number */}
           <div className="col-md-6">
             <div className="form-group">
-              <label className="m-1">Residence No <span className="text-danger">*</span></label>
+              <label className="m-1">
+                Residence No <span className="text-danger">*</span>
+              </label>
               <input
                 type="text"
                 name="residence_no"
-                className="form-control"
-                value={formData.residence_no}
-                onChange={handleInputChange}
+                className="form-control rounded-0"
                 required
+                value={formState.residence_no}
+                onChange={handleInputChange}
               />
             </div>
 
+            {/* Road or Street */}
             <div className="form-group">
               <label className="m-1">Road or Street (optional)</label>
               <input
                 type="text"
                 name="road_street"
-                className="form-control"
-                value={formData.road_street}
+                className="form-control rounded-0"
+                value={formState.road_street}
                 onChange={handleInputChange}
               />
             </div>
 
-            {isIndian ? (
-              <div className="form-group">
-                <label className="m-1">Pincode <span className="text-danger">*</span></label>
+            {/* Pin Code */}
+            {pinCodeVisible && (
+              <div className="form-group pin_code_div">
+                <label className="m-1">
+                  Pincode <span className="text-danger">*</span>
+                </label>
                 <input
                   type="number"
                   name="pin_code"
-                  className="form-control"
-                  value={formData.pin_code}
-                  onChange={handleInputChange}
+                  className="form-control rounded-0"
                   required
+                  value={formState.pin_code}
+                  onChange={handleInputChange}
                 />
               </div>
-            ) : (
-              <div className="form-group">
-                <label className="m-1">Zip Code</label>
+            )}
+            {/* Pin Code */}
+            {zipCodeVisible && (
+              <div className="form-group pin_code_div">
+                <label className="m-1">
+                  ZipCode <span className="text-danger">*</span>
+                </label>
                 <input
                   type="number"
                   name="zip_code"
-                  className="form-control"
-                  value={formData.zip_code}
+                  className="form-control rounded-0"
+                  maxLength={8}
+                  required
+                  value={formState.zip_code}
                   onChange={handleInputChange}
                 />
               </div>
             )}
 
             <div className="form-group">
-              <label className="m-1">Mobile Number <span className="text-danger">*</span></label>
+              <label>Mobile Number</label>
               <input
-                type="number"
-                name="mobile_number"
+                type="text"
+                name=""
                 className="form-control"
-                value={formData.mobile_number}
+                value={formState.mobile_number}
                 onChange={handleInputChange}
+              />
+            </div>
+            {stateCodeVisible && (
+              <div className="form-group">
+                <label>State</label>
+                <input
+                  type="text"
+                  name="state_code"
+                  className="form-control"
+                  value={formState.state_code}
+                  readOnly
+                />
+              </div>
+            )}
+             {countryMobileCodeVisible && (
+              <div className="form-group">
+                <label>Country Code</label>
+                <input
+                  type="number"
+                  name="country_code"
+                  className="form-control"
+                  value={formState.country_code}
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
+            {/* More fields go here */}
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label className="m-1">
+                Residence Name
+              </label>
+              <input
+                type="text"
+                name="residence_name"
+                className="form-control rounded-0"
                 required
+                value={formState.residence_name}
+                onChange={handleInputChange}
               />
             </div>
 
-            {isIndian && (
+            {/* Road or Street */}
+            <div className="form-group">
+              <label className="m-1">Locality or Area</label>
+              <input
+                type="text"
+                name="locality_or_area"
+                className="form-control rounded-0"
+                value={formState.locality_or_area}
+                onChange={handleInputChange}
+              />
+            </div>
+            {/* Road or Street */}
+            {districCodeVisible && (
               <div className="form-group">
-                <label className="m-1">State <span className="text-danger">*</span></label>
-                <select
-                  name="state_code"
-                  className="form-control"
-                  value={formData.state_code}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option hidden>Select State</option>
-                  {states.map(([code, name]) => (
-                    <option key={code} value={code}>{name}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-
-          <div className="col-md-6">
-            {/* Additional input fields */}
-          </div>
-        </div>
-
-        <div className="modal fade" id="CopyAddressModal" tabIndex="-1">
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h4 className="modal-title">Copy Address From Other Client</h4>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                >
-                  <span>&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
+                <label>City / Town / District</label>
                 <input
                   type="text"
-                  className="form-control mb-2"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="Search"
+                  name="district"
+                  className="form-control"
+                  value={formState.district}
+                  readOnly
                 />
-
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>PAN</th>
-                      <th>Father Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredClients.map(client => (
-                      <tr
-                        key={client.relative_id}
-                        onClick={() => handleClientSelection(client)}
-                      >
-                        <td>{client.full_name}</td>
-                        <td>{client.pan_number}</td>
-                        <td>{client.fathers_name}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
+            )}
+            {districCodenotVisible && (
+              <div className="form-group">
+                <label>City / Town / District</label>
+                <input
+                  type="text"
+                  name="district"
+                  className="form-control"
+                  value={formState.district}
+                  onChange={handleInputChange}
+                />
+              </div>
+            )}
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                value={formState.email}
+                onChange={handleInputChange}
+              />
             </div>
+           
+            {/* Country Name */}
+            {countryCodeVisible && (
+              <div className="form-group">
+                <label>Country Name</label>
+                <input
+                  type="text"
+                  name="country_name"
+                  className="form-control"
+                  value={formState.country_name}
+                  readOnly
+                />
+              </div>
+            )}
+            {/* More fields go here */}
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col-md-12">
-            <button type="submit" className="btn btn-primary btn-block">
-              Submit
-            </button>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-md-12">
+          <button
+            type="submit"
+            id="Client_address_form"
+            className="btn btn-block rounded-0 btn-primary"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+
+      {/* Copy Address Modal */}
+      <div
+        className="modal fade"
+        id="CopyAddressModal"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header align-items-center">
+              <h4 className="modal-title">Copy Address From Other Client</h4>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <input
+                className="form-control mb-2"
+                id="searchInput"
+                type="text"
+                placeholder="Search"
+              />
+              <table
+                id="ClientList"
+                className="table table-bordered table-striped w-100"
+              >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>PAN</th>
+                    <th>Father Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clients.map((client) => (
+                    <tr
+                      key={client.relative_id}
+                      onClick={() => handleClientSelect(client)}
+                    >
+                      <td>{client.full_name}</td>
+                      <td>{client.pan_number}</td>
+                      <td>{client.fathers_name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

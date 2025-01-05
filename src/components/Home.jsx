@@ -1,45 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-
-
-
+import AddClientModal from './AddclientModal';
 const Home = ({ csrfToken }) => {
-const navigate = useNavigate()
+  const navigate = useNavigate();
+
+
+  const [showModal, setShowModal] = useState(false); 
+  // Define columns
   const columns = [
-    { field: 'id', headerName: 'SNO#', width: 100 },
-    { field: 'full_name', headerName: 'Name', width: 200 },
-    { field: 'pan_number', headerName: 'Pan Number', width: 200 },
-    { field: 'fathers_name', headerName: 'Father Name', width: 200 },
-    { field: 'client_type', headerName: 'Type', width: 150 },
+    // { field: 'id', headerName: 'SNO#', width: 100 },
+    // { field: 'first_name'  , headerName: 'Name', width: 200 },
+    // { field: 'pan_number', headerName: 'Pan Number', width: 200 },
+    // { field: 'fathers_name', headerName: 'Father Name', width: 200 },
+    // { field: 'client_type', headerName: 'Type', width: 150 },
+    { field: 'id', headerName: 'SNO#', flex: 0.5 }, // Smaller proportion for SNO
+  { field: 'first_name', headerName: 'Name', flex: 1 },
+  { field: 'pan_number', headerName: 'Pan Number', flex: 1 },
+  { field: 'fathers_name', headerName: 'Father Name', flex: 1 },
+  { field: 'client_type', headerName: 'Type', flex: 0.75 },
     {
       field: 'action',
       headerName: 'Action',
-      width: 200,
+      flex: 0.75, 
       renderCell: (params) => (
         <div className="d-flex align-items-center justify-content-center">
-          <button className="btn btn-info mr-2">
+          <button
+            className="btn btn-info mr-2"
+            onClick={(event) => {
+              event.stopPropagation(); // Prevent row click
+              handleEdit(params.row);
+            }}
+          >
             <i className="fa fa-edit" aria-hidden="true"></i>
           </button>
-          <button className="btn btn-danger" data-toggle="modal" data-target="#deleteClient">
+          <button
+            className="btn btn-danger"
+            data-toggle="modal"
+            data-target="#deleteClient"
+            onClick={(event) => {
+              event.stopPropagation(); // Prevent row click
+              handleDelete(params.row.id);
+            }}
+          >
             <i className="fa fa-trash" aria-hidden="true"></i>
           </button>
         </div>
       ),
-    },
+    }
   ];
 
-  // Dummy data for the table rows
-  const rows = [
-    { id: 1, full_name: 'John Doe', pan_number: 'ABC123456', fathers_name: 'Robert Doe', client_type: 'Individual' },
-    { id: 2, full_name: 'Jane Smith', pan_number: 'XYZ987654', fathers_name: 'Edward Smith', client_type: 'Business' },
-    { id: 3, full_name: 'Sam Wilson', pan_number: 'LMN456789', fathers_name: 'Peter Wilson', client_type: 'Individual' },
-    { id: 4, full_name: 'Nancy Drew', pan_number: 'PQR123789', fathers_name: 'Thomas Drew', client_type: 'Trust' },
-    { id: 5, full_name: 'Harry Potter', pan_number: 'GHI321654', fathers_name: 'James Potter', client_type: 'Individual' },
-  ];
+  // State to hold row data
+  const [rows, setRows] = useState([]);
+
+  // Fetch data from localStorage on component mount
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('clientData')) || [];
+    setRows(storedData);
+  }, []);
+
+  // Save data to localStorage whenever rows update
+  // useEffect(() => {
+  //   localStorage.setItem('clients', JSON.stringify(rows));
+  // }, [rows]);
+
+  // Add a new client
+  const handleAddClient = () => {
+    const newClient = {
+      id: rows.length + 1,
+      full_name: 'New Client',
+      pan_number: 'PAN123456',
+      fathers_name: 'Father Name',
+      client_type: 'Individual',
+    };
+    setRows([...rows, newClient]);
+  };
+
+  // Edit a client
+  const handleEdit = (row) => {
+    const updatedRows = rows.map((client) =>
+      client.id === row.id
+        ? { ...client, full_name: 'Updated Name' } // Example: Updating name
+        : client
+    );
+    setRows(updatedRows);
+  };
+
+  // Delete a client
+  const handleDelete = (id) => {
+    const filteredRows = rows.filter((client) => client.id !== id);
+    setRows(filteredRows);
+  };
 
   return (
-    <div className="content-wrapper">
+   <>
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -48,7 +102,9 @@ const navigate = useNavigate()
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
-                <li className="breadcrumb-item"><a href="#">Home</a></li>
+                <li className="breadcrumb-item">
+                  <a href="#">Home</a>
+                </li>
                 <li className="breadcrumb-item active">Dashboard</li>
               </ol>
             </div>
@@ -62,7 +118,12 @@ const navigate = useNavigate()
               <div className="card-header row m-0">
                 <div className="col-8 d-flex align-items-center">
                   <h3 className="card-title mb-0">All Clients</h3>
-                  <button className="mx-4 btn btn-primary" data-toggle="modal" data-target="#addClientModal">Add Client</button>
+                  <button
+                    className="mx-4 btn btn-primary"
+                    onClick={() => setShowModal(true)} 
+                  >
+                    Add Client
+                  </button>
                 </div>
               </div>
               <div className="card-body">
@@ -72,8 +133,20 @@ const navigate = useNavigate()
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5, 10, 15]}
-                    checkboxSelection
-                    onRowClick={() => navigate(`/client`)} // Navigate on row click
+                    onRowClick={(params) =>
+                      navigate("/client", { state: { client: params.row } })
+                    }
+                    sx={{
+                      "& .MuiDataGrid-cell:focus": {
+                        outline: "none", // Remove the blue border
+                        cursor: "pointer"
+                      },
+                      "& .MuiDataGrid-row:hover": {
+                        backgroundColor: "#f5f5f5", // Optional: Add a hover effect for rows
+                      },
+                       
+                    }}
+                    disableColumnResize
                   />
                 </div>
               </div>
@@ -81,29 +154,7 @@ const navigate = useNavigate()
           </div>
         </div>
       </section>
-      {/* Modals */}
-      <div className="modal fade" id="addClientModal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">Add new Client</h4>
-              <button type="button" className="close" data-dismiss="modal">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body text-center">
-              <div className="button-group mb-3">
-                <button className="btn btn-primary mx-2">Add Client</button>
-                <button className="btn btn-info mx-2">Add By Id Password</button>
-                <button className="btn btn-secondary mx-2">Add By JSON Upload</button>
-              </div>
-              <div className="modal-footer justify-content-center">
-                <button className="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Delete Client Modal */}
       <div className="modal fade" id="deleteClient">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
@@ -113,21 +164,29 @@ const navigate = useNavigate()
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form method="POST" action="/remove_client">
-              <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken} />
-              <div className="modal-body">
-                Do you want to delete client permanently?
-                <input type="hidden" id="delete-client-id" name="client_rel_id" />
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button className="btn btn-danger">Delete</button>
-              </div>
-            </form>
+            <div className="modal-body">
+              Do you want to delete this client permanently?
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete()} // Hook up delete logic here
+                data-dismiss="modal"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <AddClientModal showModal={showModal} onClose={() => setShowModal(false)} />
+      </>
   );
 };
 

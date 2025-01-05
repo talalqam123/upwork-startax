@@ -90,7 +90,7 @@ function ControlledTabsExample({ clientFullName, clientRelId, income44AD, year }
 
         return (
             
-           <div className='container'>
+        <>
             <form onSubmit={handleSubmit}>
                 <div className="card card-primary">
                     <div className="card-header">
@@ -212,7 +212,7 @@ function ControlledTabsExample({ clientFullName, clientRelId, income44AD, year }
             </form>
             <BuisinessBase />
 
-            </div>
+            </>
         );
     };
 

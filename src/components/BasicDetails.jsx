@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import { useNavigate,useLocation } from "react-router-dom";
+import { useEffect } from "react";
 const BasicDetailsForm = () => {
   const [formData, setFormData] = useState({
     year: "",
@@ -16,15 +17,51 @@ const BasicDetailsForm = () => {
     gender: "",
   });
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { client } = location.state || {};
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
+  useEffect(() => {
+    if (client) {
+      setFormData({
+        ...formData,
+        client_id: client.id || "",
+        first_name: client.full_name|| "",
+        middle_name: client.middle_name || "",
+        last_name: client.last_name || "",
+        father_name: client.fathers_name || "",
+        PAN_numbr: client.pan_number || "",
+        CIN_numbr: client.cin_number || "",
+        DOB: client.dob || "",
+        date_of_commencement: client.date_of_commencement || "",
+        gender: client.gender || "",
+      });
+    }
+  }, [client]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    
+    // Update the localStorage with the new client data
+    let clients = JSON.parse(localStorage.getItem("clientData")) || [];
+    const clientIndex = clients.findIndex(c => c.id === formData.client_id);
+
+    if (clientIndex !== -1) {
+      // Update the client in localStorage
+      clients[clientIndex] = {
+        ...clients[clientIndex],
+        ...formData,
+      };
+      localStorage.setItem("clientData", JSON.stringify(clients));
+      console.log("Client data updated in localStorage:", formData);
+    } else {
+      console.log("Client not found in localStorage");
+    }
+
     // Handle form submission (e.g., API call)
+    console.log("Form submitted:", formData);
   };
 
   return (
@@ -34,6 +71,7 @@ const BasicDetailsForm = () => {
       <div className="card card-body">
         <div className="pt-3 mb-1">
           <strong>Basic Details</strong>
+         
         </div>
         <div className="row text-content">
           <div className="col-md-6">

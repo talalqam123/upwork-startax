@@ -12,6 +12,8 @@ import OtherIncomeForm from "./Business/Other Income/otherincome";
 import DeductionForm from "./Deductions/80c_to_80g";
 import MoreDeductions from "./Deductions/more_deductions";
 import OtherDeductions from "./Deductions/other_deductions";
+import ExportSummary from "./Final/Filing/filling";
+import AdvancedInfo from "./Final/More Info/more_info";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -20,6 +22,7 @@ const ClientDetails = () => {
     const [activePermanentTab, setActivePermanentTab] = useState("Basic Details");
     const [activeIncomeTab, setActiveIncomeTab] = useState("Salary");
     const [activeDeductionsTab, setActiveDeductionsTab] = useState("80C to 80G");
+    const [activeFinalTab, setFinalTab] = useState("Filing");
     const clientYear = 2024;
     const clientRelId = 'client123';
     const dummyHouseData = [
@@ -202,7 +205,7 @@ const ClientDetails = () => {
 
 
     return (
-        <div className="content-wrapper">
+    <>
             {/* Main content */}
             <section className="content">
                 <div className="container-fluid pt-1 px-0 pr-2">
@@ -442,10 +445,36 @@ const ClientDetails = () => {
                                                             </ul>
                                                         </div>
                                                         <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeDeductionsTab === "80C to 80G" && <DeductionForm/>}
-                                                            {activeDeductionsTab === "More Deductions" && <MoreDeductions/>}
-                                                            {activeDeductionsTab === "Other Deductions" && <OtherDeductions/>}
-                                                         
+                                                            {activeDeductionsTab === "80C to 80G" && <DeductionForm />}
+                                                            {activeDeductionsTab === "More Deductions" && <MoreDeductions />}
+                                                            {activeDeductionsTab === "Other Deductions" && <OtherDeductions />}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                             {activeTab === "Final" && (
+                                                <div className="p-tab-cntnt inner_tabs_collec active">
+                                                    <div className="p-tab-c1">
+                                                        <span>03 Deduction</span>
+                                                        <div className="inerr_taabs-tab-btns mb-4">
+                                                            <ul>
+                                                                {["More Info", "Filing", "Utility"].map((option) => (
+                                                                    <li
+                                                                        key={option}
+                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeFinalTab ? "active" : ""}`}
+                                                                        onClick={() => setFinalTab(option)}
+                                                                    >
+                                                                        <span>{option}</span>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="mt-3 inerr-tab-cntnt active">
+                                                            {activeFinalTab === "More Info" && <AdvancedInfo />}
+                                                            {activeFinalTab === "Filing" && <ExportSummary />}
+                                                            {/* {activeDeductionsTab === "Utility" && <OtherDeductions />} */}
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -462,7 +491,7 @@ const ClientDetails = () => {
                     {/* EXAMPLE End */}
                 </div>
             </section>
-        </div>
+            </>
     );
 };
 
