@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import RemunerationForm from './AddBusiness/BSPL/remuneration';
 import BSPLIncomeForm from './AddBusiness/BSPL/bspl_income';
+
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-const BusinessSection = ({ title, items }) => (
+const BusinessSection = ({ title, items }) => {
+  const navigate = useNavigate();
+  return (
   <div className="row mt-5 inr_tabs_button">
     <div className="col-md-12">
       <strong>{title}</strong>
@@ -15,7 +19,7 @@ const BusinessSection = ({ title, items }) => (
               <strong>{item.number}</strong> {item.description}
             </div>
             <button
-              onClick={() => (window.location.href = item.link)}
+              onClick={() =>navigate(item.link)}
               className="buton_tabs_ac btn col-3 w-auto btn-block bg-gradient-info btn-flat text-sm"
             >
               {item.buttonText}
@@ -25,7 +29,7 @@ const BusinessSection = ({ title, items }) => (
       </div>
     ))}
   </div>
-);
+)};
 
 const BusinessIncome = ({ clientRelId }) => {
   const businessIncomeItems = [
@@ -33,7 +37,7 @@ const BusinessIncome = ({ clientRelId }) => {
       number: '01',
       description: 'Remuneration from Partnership Firms',
       buttonText: 'Add Remuneration',
-      link: `/business_remuneration/${clientRelId}`,
+      link: `/client/business_remuneration/${clientRelId}`,
     },
     {
       number: '02',

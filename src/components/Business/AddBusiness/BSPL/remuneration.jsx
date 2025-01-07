@@ -3,6 +3,7 @@ import React from "react";
 function RemunerationForm({  clientRelId }) {
     
   return (
+    <div className="col-12 mt-3">
     <div className="rows_data">
       <form method="POST">
         {/* Card: Nature of Business */}
@@ -113,6 +114,7 @@ function RemunerationForm({  clientRelId }) {
           </div>
         </div>
       </form>
+    </div>
     </div>
   );
 }

@@ -247,7 +247,7 @@ const AddressForm = () => {
                 />
               </div>
             )}
-             {countryMobileCodeVisible && (
+            {countryMobileCodeVisible && (
               <div className="form-group">
                 <label>Country Code</label>
                 <input
@@ -322,7 +322,7 @@ const AddressForm = () => {
                 onChange={handleInputChange}
               />
             </div>
-           
+
             {/* Country Name */}
             {countryCodeVisible && (
               <div className="form-group">

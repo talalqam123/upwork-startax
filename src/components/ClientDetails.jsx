@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BasicDetailsForm from "./BasicDetails";
 import AddressForm from "./Address";
 import BankDetails from "./Banks";
@@ -14,6 +15,9 @@ import MoreDeductions from "./Deductions/more_deductions";
 import OtherDeductions from "./Deductions/other_deductions";
 import ExportSummary from "./Final/Filing/filling";
 import AdvancedInfo from "./Final/More Info/more_info";
+import SelfAssessment from "./TDS/Self Assessment/self_assessment";
+import TdsTcsComponent from "./TDS/tds_tcs";
+import TdsOtherDetails from "./TDS/Other Details/other_details";
 const ClientDetails = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -23,8 +27,39 @@ const ClientDetails = () => {
     const [activeIncomeTab, setActiveIncomeTab] = useState("Salary");
     const [activeDeductionsTab, setActiveDeductionsTab] = useState("80C to 80G");
     const [activeFinalTab, setFinalTab] = useState("Filing");
+    const [activeTDSTab, setTDSTab] = useState("TDS/TCS");
     const clientYear = 2024;
     const clientRelId = 'client123';
+    const navigate = useNavigate();
+    // All Tabs
+    const allTabs = [
+        { category: "Permanent Details", tabName: "Basic Details" },
+        { category: "Permanent Details", tabName: "Address" },
+        { category: "Permanent Details", tabName: "Bank" },
+        { category: "Permanent Details", tabName: "Additional Details" },
+        { category: "Income", tabName: "Salary" },
+        { category: "Income", tabName: "Business" },
+        { category: "Income", tabName: "House Property" },
+        { category: "Income", tabName: "Capital Gain" },
+        { category: "Income", tabName: "Other Income" },
+        { category: "Deduction", tabName: "80C to 80G" },
+        { category: "Deduction", tabName: "More Deductions" },
+        { category: "Deduction", tabName: "Other Deductions" },
+        { category: "TDS/Taxes", tabName: "TDS/TCS" },
+        { category: "Final", tabName: "Filing" },
+    ];
+    // Filtered Tabs based on Search
+    const filteredTabs = allTabs.filter(
+        (tab) =>
+            tab.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            tab.tabName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const handleTabSelect = (tab) => {
+        setActiveTab(tab.category);
+        if (tab.category === "Permanent Details") setActivePermanentTab(tab.tabName);
+        setSearchQuery(""); // Clear the search input after selecting a tab
+    };
+
     const dummyHouseData = [
         {
             PropertyType: "D",
@@ -205,7 +240,7 @@ const ClientDetails = () => {
 
 
     return (
-    <>
+        <>
             {/* Main content */}
             <section className="content">
                 <div className="container-fluid pt-1 px-0 pr-2">
@@ -233,20 +268,33 @@ const ClientDetails = () => {
                                             aria-label="Search"
                                             placeholder="Type here or press '/' to search input fields"
                                             value={searchQuery}
-                                            onChange={handleSearchChange}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
                                         />
                                     </div>
-                                    <div className="w-100 bg-white search-element" id="search-list-div">
-                                        <table className="table m-0" id="searchlist"></table>
-                                    </div>
+                                    {/* Dropdown for Search Results */}
+                                    {searchQuery && (
+                                        <div className="dropdown-menu show w-100">
+                                            {filteredTabs.length > 0 ? (
+                                                filteredTabs.map((tab, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className="dropdown-item"
+                                                        onClick={() => handleTabSelect(tab)}
+                                                    >
+                                                        {tab.category} - {tab.tabName}
+                                                    </button>
+                                                ))
+                                            ) : (
+                                                <span className="dropdown-item text-muted">No matches found</span>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-12 col-sm-12">
                                 <button
                                     className="btn btn-primary rounded-0 w-100"
-                                    onClick={() => {
-                                        // handle redirect
-                                    }}
+                                    onClick={() => navigate('/basic_details/26AIS')}
                                 >
                                     26AS and AIS Import
                                 </button>
@@ -453,7 +501,33 @@ const ClientDetails = () => {
                                                     </div>
                                                 </div>
                                             )}
-                                             {activeTab === "Final" && (
+                                            {activeTab === "TDS/Taxes" && (
+                                                <div className="p-tab-cntnt inner_tabs_collec active">
+                                                    <div className="p-tab-c1">
+                                                        <span>04 TDS/Taxes</span>
+                                                        <div className="inerr_taabs-tab-btns mb-4">
+                                                            <ul>
+                                                                {["TDS/TCS", "Self Assessment", "Other Details", "AIS/TIS"].map((option) => (
+                                                                    <li
+                                                                        key={option}
+                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeTDSTab ? "active" : ""}`}
+                                                                        onClick={() => setTDSTab(option)}
+                                                                    >
+                                                                        <span>{option}</span>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="mt-3 inerr-tab-cntnt active">
+                                                            {activeTDSTab === "TDS/TCS" && <TdsTcsComponent />}
+                                                            {activeTDSTab === "Self Assessment" && <SelfAssessment />}
+                                                            {activeTDSTab === "Other Details" && <TdsOtherDetails />}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {activeTab === "Final" && (
                                                 <div className="p-tab-cntnt inner_tabs_collec active">
                                                     <div className="p-tab-c1">
                                                         <span>03 Deduction</span>
@@ -491,7 +565,7 @@ const ClientDetails = () => {
                     {/* EXAMPLE End */}
                 </div>
             </section>
-            </>
+        </>
     );
 };
 

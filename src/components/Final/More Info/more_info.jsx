@@ -1,5 +1,5 @@
 import React from "react";
-import ForeignBank from "./Advanced Info/Foreign Assets/foreignbank";
+import RepresentativeAssesseeForm from ".//Representative_assesse";
 const AdvancedInfo = () => {
   const handleNavigation = (url) => {
     window.location.href = url;
@@ -7,7 +7,7 @@ const AdvancedInfo = () => {
 
   return (
     <div>
-        <ForeignBank/>
+        <RepresentativeAssesseeForm/>
       <div className="pt-3">
         <strong>[Optional] Advanced Info, required only in a few cases</strong>
       </div>
