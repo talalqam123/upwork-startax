@@ -1,21 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const TdsTcsComponent = () => {
+  const navigate = useNavigate();
 
-  const handleRedirect = (url) => {
-    window.location.href = url;
+  const handleRedirect = (path) => {
+    navigate(path);
   };
 
   return (
     <div className="row tds-tsx-div">
       <div className="d-flex flex-row justify-content-between w-100 mx-4">
         <div className="pt-3">
-     
           <strong>Add a TDS entry (Tax Deducted at Source)</strong>
         </div>
         <button
           className="btn bg-gradient-info btn-flat"
-          onClick={() => handleRedirect(`/catalog_2024/tds_tcs_import`)}
+          onClick={() => handleRedirect('/client/tds/import')}
         >
           Import TDS/TCS
         </button>
@@ -30,7 +31,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect(`/catalog_2024/non_salary_tds`)}
+            onClick={() => handleRedirect('/client/tds/non-salary')}
           >
             Non Salary TDS
           </button>
@@ -46,7 +47,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect(`/catalog_2024/tds_on_property`)}
+            onClick={() => handleRedirect('/client/tds/property')}
           >
             Add TDS on Sale/Rent of Immovable Property
           </button>
@@ -62,7 +63,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect(`/catalog_2024/tcs`)}
+            onClick={() => handleRedirect('/client/tds/tcs')}
           >
             Taxes Collected at Source (TCS)
           </button>
@@ -78,7 +79,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect(`/catalog_2024/deferred_esops`)}
+            onClick={() => handleRedirect('/client/tds/esops')}
           >
             Tax Deferred on ESOPs (Section 80IAC)
           </button>
@@ -110,9 +111,5 @@ const TdsTcsComponent = () => {
     </div>
   );
 };
-
-
-
-
 
 export default TdsTcsComponent;

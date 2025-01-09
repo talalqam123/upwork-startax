@@ -1,13 +1,14 @@
 import React from "react";
-import RepresentativeAssesseeForm from ".//Representative_assesse";
+import { useNavigate } from "react-router-dom";
 const AdvancedInfo = () => {
-  const handleNavigation = (url) => {
-    window.location.href = url;
+  const navigate = useNavigate()
+  const handleNavigation = (link) => {
+    navigate(link);
   };
 
   return (
     <div>
-        <RepresentativeAssesseeForm/>
+       
       <div className="pt-3">
         <strong>[Optional] Advanced Info, required only in a few cases</strong>
       </div>
@@ -16,51 +17,51 @@ const AdvancedInfo = () => {
         {[
           {
             label: "Residential Status",
-            url: "/catalog_2024/residential_status/",
+            link: "/client/final/residential_status/",
           },
           {
             label: "Unlisted Shares",
-            url: "/catalog_2024/unlisted_shares/",
+            link: "/client/final/unlisted_shares/",
           },
           {
             label: "Directorship Details",
-            url: "/catalog_2024/directorship_details/",
+            link: "/client/final/directorship_details/",
           },
           {
             label: "Foreign Assets, Incomes & Taxes",
-            url: "/catalog_2024/foreign_assets_incomes_taxes/",
+            link: "/client/final/foreign_assets_incomes_taxes/",
           },
           {
             label: "Schedule Specified Person Income",
-            url: "/catalog_2024/schedule_spi/",
+            link: "/client/final/schedule_spi/",
           },
           {
             label: "Schedule AL: Assets & Liabilities",
-            url: "/catalog_2024/schedule_al/",
+            link: "/client/final/schedule_al/",
           },
           {
             label: "Current Account Deposits",
-            url: "/catalog_2024/current_account_deposits/",
+            link: "/client/final/current_account_deposits/",
           },
           {
             label: "Expenditure on Foreign Travel",
-            url: "/catalog_2024/expenditure_on_foreign_travel/",
+            link: "/client/final/expenditure_on_foreign_travel/",
           },
           {
             label: "Expenditure on Electricity Consumption",
-            url: "/catalog_2024/expenditure_on_electricity_consumption/",
+            link: "/client/final/expenditure_on_electricity_consumption/",
           },
           {
             label: "Clause(iv), seventh proviso to 139(1)",
-            url: "/catalog_2024/clause_iv_seventh/",
+            link: "/client/final/clause_iv_seventh/",
           },
           {
             label: "TRP (TAX RETURN PREPARER)",
-            url: "/catalog_2024/trp_info/",
+            link: "/client/final/trp_info/",
           },
           {
             label: "Representative Assessee",
-            url: "/catalog_2024/assessee_info/",
+            link: "/client/final/assessee_info/",
           },
         ].map((item, index) => (
           <div key={index} className="col-md-12 mt-4 card card-body">
@@ -72,7 +73,7 @@ const AdvancedInfo = () => {
               </div>
               <button
                 className="tds-tsx-button btn h-auto w-auto btn-block bg-gradient-info btn-flat col-md-3"
-                onClick={() => handleNavigation(item.url)}
+                onClick={() => handleNavigation(item.link)}
               >
                 Add {item.label} Details
               </button>

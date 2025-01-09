@@ -171,7 +171,7 @@ const IncomeUnder44AD = () => {
                                                         className="form-control rounded-0"
                                                         value={business.NameOfBusinessAD}
                                                         onChange={(e) =>
-                                                            handleBusinessChange(index, "NameOfBusinessAD", e.target.value,"44AD")
+                                                            handleBusinessChange(index, "NameOfBusinessAD", e.target.value, "44AD")
                                                         }
                                                     />
                                                 </div>
@@ -183,7 +183,7 @@ const IncomeUnder44AD = () => {
                                                         className="form-control rounded-0"
                                                         value={business.DescriptionAD}
                                                         onChange={(e) =>
-                                                            handleBusinessChange(index, "DescriptionAD", e.target.value,"44AD")
+                                                            handleBusinessChange(index, "DescriptionAD", e.target.value, "44AD")
                                                         }
                                                     />
                                                 </div>
@@ -231,7 +231,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTotalTrnOverInCash}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value,"44AD")
+                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -246,7 +246,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTrnOverAnyOthMode}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value,"44AD")
+                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -261,7 +261,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTrnOverBank}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverBank", e.target.value,"44AD")
+                                                        handleInputChange("GrsTrnOverBank", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -277,7 +277,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTotalTrnOverInCash}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value,"44AD")
+                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -292,7 +292,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTrnOverAnyOthMode}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value,"44AD")
+                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -307,7 +307,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44AD.GrsTrnOverBank}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverBank", e.target.value,"44AD")
+                                                        handleInputChange("GrsTrnOverBank", e.target.value, "44AD")
                                                     }
                                                 />
                                             </div>
@@ -339,7 +339,7 @@ const IncomeUnder44AD = () => {
                                                         className="form-control rounded-0 business_name"
                                                         value={business.CodeADA_label}
                                                         onChange={(e) =>
-                                                            handleBusinessChange(index, "CodeAD_label", e.target.value,"44ADA")
+                                                            handleBusinessChange(index, "CodeAD_label", e.target.value, "44ADA")
                                                         }
                                                     >
                                                         {options.map((option, index) => (
@@ -359,7 +359,7 @@ const IncomeUnder44AD = () => {
                                                         className="form-control rounded-0"
                                                         value={business.NameOfBusinessADA}
                                                         onChange={(e) =>
-                                                            handleBusinessChange(index, "NameOfBusinessAD", e.target.value,"44ADA")
+                                                            handleBusinessChange(index, "NameOfBusinessAD", e.target.value, "44ADA")
                                                         }
                                                     />
                                                 </div>
@@ -371,7 +371,7 @@ const IncomeUnder44AD = () => {
                                                         className="form-control rounded-0"
                                                         value={business.DescriptionADA}
                                                         onChange={(e) =>
-                                                            handleBusinessChange(index, "DescriptionAD", e.target.value,"44ADA")
+                                                            handleBusinessChange(index, "DescriptionAD", e.target.value, "44ADA")
                                                         }
                                                     />
                                                 </div>
@@ -419,7 +419,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTotalTrnOverInCash}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -434,7 +434,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTrnOverAnyOthMode}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -449,7 +449,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTrnOverBank}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverBank", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTrnOverBank", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -465,7 +465,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTotalTrnOverInCash}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTotalTrnOverInCash", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -480,7 +480,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTrnOverAnyOthMode}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTrnOverAnyOthMode", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -495,7 +495,7 @@ const IncomeUnder44AD = () => {
                                                     className="form-control rounded-0 revenue_input"
                                                     value={formValues44ADA.GrsTrnOverBank}
                                                     onChange={(e) =>
-                                                        handleInputChange("GrsTrnOverBank", e.target.value,"44ADA")
+                                                        handleInputChange("GrsTrnOverBank", e.target.value, "44ADA")
                                                     }
                                                 />
                                             </div>
@@ -514,7 +514,7 @@ const IncomeUnder44AD = () => {
                         </div>
                     </div>
                 </form>
-                <BuisinessBase />
+                <BuisinessBase  />
             </div>
         </div>
     );

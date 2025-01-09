@@ -7,13 +7,13 @@ const CapitalGains = ({ clientFullName, clientRelId }) => {
     const navigate = useNavigate();
     
     const sections = [
-        { id: "01", label: "Share/Debentures", url: `/catalog_2024/capital_gains_share_debentures/${clientRelId}` },
-        { id: "02", label: "VDA Income", url: `/catalog_2024/capital_gains_vda_income/${clientRelId}` },
-        { id: "03", label: "Mutual Funds", url: `/catalog_2024/capital_gains_mutual_funds/${clientRelId}` },
-        { id: "04", label: "Stock Options/ RSUs", url: `/catalog_2024/capital_gains_stock_rsu/${clientRelId}` },
-        { id: "05", label: "Land or Building (Property)", url: `/catalog_2024/capital_gains_land_property/${clientRelId}` },
-        { id: "06", label: "Any other asset", url: `/catalog_2024/capital_gains_any_other_asset/${clientRelId}` },
-        { id: "07", label: "Deemed Capital Gains", url: `/catalog_2024/capital_gains_deemed_capital_gain/${clientRelId}` },
+        { id: "01", label: "Share/Debentures", url: `/client/Capital/capital_gains_share_debentures` },
+        { id: "02", label: "VDA Income", url: `/client/Capital/capital_gains_vda_income` },
+        { id: "03", label: "Mutual Funds", url: `/client/Capital/capital_gains_mutual_funds` },
+        { id: "04", label: "Stock Options/ RSUs", url: `/client/Capital/capital_gains_stock_rsu` },
+        { id: "05", label: "Land or Building (Property)", url: `/client/Capital/capital_gains_land_property` },
+        { id: "06", label: "Any other asset", url: `/client/Capital/capital_gains_any_other_asset` },
+        { id: "07", label: "Deemed Capital Gains", url: `/client/Capital/capital_gains_deemed_capital_gain` },
     ];
 
     return (
@@ -21,7 +21,7 @@ const CapitalGains = ({ clientFullName, clientRelId }) => {
             <div className="row mt-5 inr_tabs_button">
                 <div className="col-md-12">
                     <div><strong>Add Capital Gains</strong></div>
-<OtherAssetForm clientRelId={1234} />
+
                 </div>
 
                 {sections.map((section) => (

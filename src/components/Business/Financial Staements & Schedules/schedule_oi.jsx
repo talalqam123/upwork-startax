@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const GSTDetailsForm = ({ clientFullName, clientRelId }) => {
+const ScheduleOI = ({ clientFullName, clientRelId }) => {
   const [gstDetails, setGstDetails] = useState([
     { gstin: "", grossReceipt: "", isValidGstin: true },
   ]);
@@ -101,4 +101,4 @@ const GSTDetailsForm = ({ clientFullName, clientRelId }) => {
   );
 };
 
-export default GSTDetailsForm;
+export default ScheduleOI;

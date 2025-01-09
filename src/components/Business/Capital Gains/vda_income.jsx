@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const CapitalGainsForm = ({ clientId, clientRelId }) => {
   const [assets, setAssets] = useState([{

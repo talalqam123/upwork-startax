@@ -6,6 +6,8 @@ const NoBooksOfAccountIncome = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="rows_data">
       <form action="#">
         <div className="card card-body">
@@ -95,6 +97,8 @@ const NoBooksOfAccountIncome = () => {
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

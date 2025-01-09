@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "./Home";
 import ClientDetails from "./ClientDetails";
 import AddClientInfo from "./add_clientdetails";
 import RemunerationForm from "./Business/AddBusiness/BSPL/remuneration";
 import AddClient from "./add_client_by_id";
+import AppRoutes from "../App";
 import ClientSummary from "./26AS_AIS";
 const Layout = ({ darkMode, toggleDarkMode }) => {
 
@@ -24,7 +25,7 @@ const Layout = ({ darkMode, toggleDarkMode }) => {
             </a>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <a href="/home/" className="nav-link">
+            <a href="/" className="nav-link">
               Home
             </a>
           </li>
@@ -126,17 +127,7 @@ const Dashboard = () => {
       <div className="wrapper">
         <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className="content-wrapper" style={{ margin: "0" }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/client" element={<ClientDetails />} >
-              <Route path="/client/business_remuneration/:clientRelId" element={<RemunerationForm />} />
-            </Route>
-            <Route path="/basic_details/add_client" element={<AddClientInfo />} />
-            <Route path="/basic_details/add_client_by_id_password" element={<AddClient />} />
-            <Route path="/basic_details/26AIS" element={<ClientSummary />} />
-
-            {/* Add more routes as needed */}
-          </Routes>
+          <Outlet />
         </div>
       </div>
     </div>
@@ -145,4 +136,4 @@ const Dashboard = () => {
 
 
 }
-export default Dashboard; 
+export default Dashboard;

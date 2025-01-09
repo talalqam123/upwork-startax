@@ -1,8 +1,9 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const ForeignAssetsIncomes = () => {
-  const navigateTo = (url) => {
-    window.location.href = url;
+  const navigate = useNavigate();  // Added missing parentheses here
+  const navigateTo = (link) => {
+    navigate(link);
   };
 
   return (
@@ -47,53 +48,57 @@ const ForeignAssetsIncomes = () => {
             <div className="col-md-12">
               <strong>Details of Foreign Assets</strong>
             </div>
-
+            
             {[
-              { id: 1, label: "Details Of Foreign Bank", url: "foreign_bank" },
+              { 
+                id: 1, 
+                label: "Details Of Foreign Bank", 
+                link: "/client/final/foreign_assets_incomes_taxes/foreign_bank" 
+              },
               {
                 id: 2,
                 label: "Details Of Foreign Custodial Account",
-                url: "foreign_custodial_account",
+                link: "/client/final/foreign_assets_incomes_taxes/foreign_custodial_account",
               },
               {
                 id: 3,
                 label: "Details Of Foreign Equity Debt Interest",
-                url: "foreign_equity_debt_interest",
+                link: "/client/final/foreign_assets_incomes_taxes/foreign_equity_debt_interest",
               },
               {
                 id: 4,
                 label: "Details Of Foreign Cash Value Insurance",
-                url: "foreign_cash_value_insurance",
+                link: "/client/final/foreign_assets_incomes_taxes/foreign_cash_value_insurance",
               },
               {
                 id: 5,
                 label: "Details Of Financial Interest",
-                url: "financial_interest",
+                link: "/client/final/foreign_assets_incomes_taxes/financial_interest",
               },
               {
                 id: 6,
                 label: "Details Of Immovable Property",
-                url: "immovable_property",
+                link: "/client/final/foreign_assets_incomes_taxes/immovable_property",
               },
               {
                 id: 7,
                 label: "Details Of Other Assets",
-                url: "other_assets",
+                link: "/client/final/foreign_assets_incomes_taxes/other_assets",
               },
               {
                 id: 8,
                 label: "Details Of Accounts Having Signing Authority",
-                url: "accounts_having_signing_authority",
+                link: "/client/final/foreign_assets_incomes_taxes/accounts_having_signing_authority",
               },
               {
                 id: 9,
                 label: "Details Of Trust Outside India Trustee",
-                url: "trust_outside_india_trustee",
+                link: "/client/final/foreign_assets_incomes_taxes/trust_outside_india_trustee",
               },
               {
                 id: 10,
                 label: "Details Of Other Sources Income Outside India",
-                url: "other_sources_income_outside_india",
+                link: "/client/final/foreign_assets_incomes_taxes/other_sources_income_outside_india",
               },
             ].map((item) => (
               <div className="col-md-8 mt-4" key={item.id}>
@@ -104,7 +109,7 @@ const ForeignAssetsIncomes = () => {
                       {item.label}
                     </div>
                     <button
-                      onClick={() => navigateTo(`/${item.url}`)}
+                      onClick={() => navigateTo(item.link)}
                       className="buton_tabs_ac btn col-3 w-auto btn-block bg-gradient-info btn-flat text-sm"
                     >
                       Add Details
