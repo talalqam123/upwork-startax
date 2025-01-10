@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const GSTDetailsForm = () => {
   const gstnPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
@@ -133,13 +134,7 @@ const GSTDetailsForm = () => {
             value="Submit"
             disabled={isSubmitDisabled}
           />
-          <button
-            type="button"
-            className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            onClick={() => window.history.back()}
-          >
-            Back
-          </button>
+          <BackButton link="/client" />
         </div>
       </div>
     </form>

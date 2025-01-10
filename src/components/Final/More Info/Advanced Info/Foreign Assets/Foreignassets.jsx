@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../../../Backbutton";
 const ForeignAssetsIncomes = () => {
   const navigate = useNavigate();  // Added missing parentheses here
   const navigateTo = (link) => {
@@ -7,6 +8,8 @@ const ForeignAssetsIncomes = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="card card-body">
         <div className="pt-3">
@@ -129,17 +132,13 @@ const ForeignAssetsIncomes = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={() => navigateTo("/more_info_final")}
-            >
-              Back
-            </button>
+            <BackButton link="/client" />
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 

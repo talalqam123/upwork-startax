@@ -1,7 +1,10 @@
 import React from "react";
+import BackButton from "../../../Backbutton";
 
 const ESRDetailsForm = () => {
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="bspl_rows_data w-100 px-2">
       <div className="form_heading mb-4">
         <h5 className="mt-3">
@@ -57,16 +60,12 @@ const ESRDetailsForm = () => {
             className="btn btn-block rounded-0 btn-primary"
             value="Submit"
           />
-          <button
-            type="button"
-            onClick={() => window.location.href = "{% url 'catalog_2024:business' client_rel_id=client_rel_id %}"}
-            className="bspl_Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-          >
-            Back
-          </button>
+          <BackButton link="/client/business/bspl" />
         </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 

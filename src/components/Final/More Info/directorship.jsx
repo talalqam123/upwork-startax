@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const DirectorshipDetails = () => {
   const [directorships, setDirectorships] = useState([
@@ -130,6 +131,8 @@ const DirectorshipDetails = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Directorship Details</strong>
@@ -261,10 +264,20 @@ const DirectorshipDetails = () => {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
+        <div className="row mt-4">
+          <div className="col-md-12 d-flex">
+            <input
+              type="submit"
+              style={{ width: "fit-content" }}
+              className="btn btn-block rounded-0 btn-primary"
+              value="Submit"
+            />
+            <BackButton link="/client" />
+          </div>
+        </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

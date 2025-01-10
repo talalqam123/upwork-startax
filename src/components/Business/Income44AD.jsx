@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import BusinessTabs from './BusinessTabs';
-import Income44ADA from './Income44ADA';
-import Income44AE from './Income44AE';
-import BuisinessBase from './business_base';
 
 const Income44AD = () => {
     const [isAnyIncomeFilled, setIsAnyIncomeFilled] = useState(false);
@@ -393,10 +390,19 @@ const Income44AD = () => {
         </div>
     );
 
-   // In Income44AD.jsx, replace the render44ADAContent function with:
-const render44ADAContent = () => <Income44ADA />;
+    const render44ADAContent = () => (
+        <div>
+            <h3>Income Under 44ADA Content</h3>
+            {/* Add 44ADA specific form content */}
+        </div>
+    );
 
-const render44AEContent = () => <Income44AE />;
+    const render44AEContent = () => (
+        <div>
+            <h3>Income Under 44AE Content</h3>
+            {/* Add 44AE specific form content */}
+        </div>
+    );
 
     // Render active tab content
     const renderActiveTabContent = () => {
@@ -413,7 +419,6 @@ const render44AEContent = () => <Income44AE />;
     };
 
     return (
-        <>
         <div className="col-12">
             <div className="card card-primary card-outline card-tabs">
                 {/* Tabs Header */}
@@ -459,12 +464,9 @@ const render44AEContent = () => <Income44AE />;
 
                     </div>
                 </form>
-                
+
             </div >
-           
         </div >
-        <BuisinessBase />
-        </>
     );
 };
 

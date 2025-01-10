@@ -26,6 +26,8 @@ const TrpInfoForm = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Additional information needed for TRP(Tax Return Preparer)</strong>
@@ -78,16 +80,12 @@ const TrpInfoForm = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={handleBackClick}
-            >
-              Back
-            </button>
+          <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

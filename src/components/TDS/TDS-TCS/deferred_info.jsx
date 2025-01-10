@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackButton from '../../Backbutton';
 
 
 const DeferredTaxESOPs = () => {
@@ -20,6 +21,8 @@ const DeferredTaxESOPs = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Add Deferred Tax on StartUp ESOPs</strong>
@@ -156,16 +159,12 @@ const DeferredTaxESOPs = () => {
         <div className="row mt-4 text-content">
           <div className="col-md-12 d-flex">
             <input type="submit" className="btn btn-block btn-primary" value="Submit" style={{width: "fit-content"}} />
-            <button
-              className="Back_button_tds btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              type="button"
-              onClick={() => window.location.href = "#"}
-            >
-              Back
-            </button>
+           <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

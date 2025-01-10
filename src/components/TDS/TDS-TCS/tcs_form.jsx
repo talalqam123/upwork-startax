@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackButton from '../../Backbutton';
 
 const TCSForm = () => {
   const [tcsEntries, setTcsEntries] = useState([
@@ -40,6 +41,8 @@ const TCSForm = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Add a TCS entry (Tax Collected at Source)</strong>
@@ -158,16 +161,12 @@ const TCSForm = () => {
               className="btn btn-block btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="Back_button_tds btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={() => (window.location.href = "/back-url")}
-            >
-              Back
-            </button>
+            <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

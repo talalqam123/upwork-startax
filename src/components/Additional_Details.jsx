@@ -242,6 +242,7 @@ const AdditionalDetails = ({
           <div className="col-md-12">
             <input
               type="submit"
+              style={{ width: 'fit-content' }}
               id="submit_client_details_form"
               className="btn btn-block btn-primary"
               value="Submit"

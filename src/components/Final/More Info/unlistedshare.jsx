@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import BackButton from "../../Backbutton";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "./unlistedShares.css";
@@ -374,13 +375,7 @@ const UnlistedShares = () => {
                                     className="btn btn-block rounded-0 btn-primary"
                                     value="Submit"
                                 />
-                                <button
-                                    type="button"
-                                    className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-                                    onClick={() => (window.location.href = "/back_url")}
-                                >
-                                    Back
-                                </button>
+                                <BackButton link="/client" />
                             </div>
                         </div>
                     </div>

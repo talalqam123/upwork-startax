@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../Backbutton";
 
 const ShareDebenturesForm = ({ clientRelId }) => {
     const navigate = useNavigate();
@@ -24,6 +25,8 @@ const ShareDebenturesForm = ({ clientRelId }) => {
     };
 
     return (
+        <div>
+    <div className="col-12 mt-3">
         <div className="rows_data">
             <form onSubmit={handleSubmit}>
                 <div className="card card-body">
@@ -80,17 +83,13 @@ const ShareDebenturesForm = ({ clientRelId }) => {
                             className="btn btn-block rounded-0 btn-primary"
                             value="Submit"
                         />
-                        <button
-                            type="button"
-                            className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-                            onClick={() => navigate(`/catalog_2024/capital_gains/${clientRelId}`)}
-                        >
-                            Back
-                        </button>
+                        <BackButton link="/client" />
                     </div>
                 </div>
             </form>
         </div>
+    </div>
+</div>
     );
 };
 

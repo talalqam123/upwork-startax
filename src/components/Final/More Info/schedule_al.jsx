@@ -544,6 +544,8 @@ const PropertyDetails = () => {
     };
 
     return (
+        <div>
+    <div className="col-12 mt-3">
         <div className="TDS-Taxes-form-active">
             <div className="pt-3">
                 <strong>Schedule AL: Assets and Liabilities at the end of the Financial Year</strong>
@@ -834,6 +836,8 @@ const PropertyDetails = () => {
 
                 </div>
             </form>
+        </div>
+        </div>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import { Block } from '@mui/icons-material';
 import React, { useState } from 'react';
+import BackButton from '../../Backbutton';
 
 const NonSalaryTDS = () => {
   const initialData = [
@@ -67,6 +68,8 @@ const NonSalaryTDS = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="d-flex flex-row justify-content-between">
         <div className="pt-3 d-inline">
@@ -244,16 +247,12 @@ const NonSalaryTDS = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              className="Back_button_tds btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              type="button"
-              onClick={() => (window.location.href = `/catalog_2024/tds_tcs/`)}
-            >
-              Back
-            </button>
+           <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

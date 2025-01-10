@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const AuditorDetailsForm = ({ clientFullName, clientRelId }) => {
   const [profitBeforeTax, setProfitBeforeTax] = useState("");
@@ -14,6 +15,8 @@ const AuditorDetailsForm = ({ clientFullName, clientRelId }) => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="rows_data">
       <form onSubmit={handleSubmit}>
         <div className="card card-body">
@@ -48,18 +51,12 @@ const AuditorDetailsForm = ({ clientFullName, clientRelId }) => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              onClick={() =>
-                (window.location.href = `/catalog_2024/business/${clientRelId}`)
-              }
-              className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            >
-              Back
-            </button>
+            <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

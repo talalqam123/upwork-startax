@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const ResidentialStatus = () => {
   const [resStatus, setResStatus] = useState("");
@@ -18,6 +19,8 @@ const ResidentialStatus = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Residential Status</strong>
@@ -168,16 +171,12 @@ const ResidentialStatus = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={handleBack}
-            >
-              Back
-            </button>
+           <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

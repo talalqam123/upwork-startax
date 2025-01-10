@@ -1,7 +1,10 @@
 import React from 'react';
+import BackButton from '../../Backbutton';  // Fixed: Proper component name casing
 
-const SpeculativeIncomeForm = ({  clientRelId }) => {
+const SpeculativeIncomeForm = ({ clientRelId }) => {
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="rows_data">
       <form action="#">
         <div className="card card-body">
@@ -49,16 +52,12 @@ const SpeculativeIncomeForm = ({  clientRelId }) => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              onClick={() => window.location.href = `/catalog_2024/business/${clientRelId}`}
-              className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            >
-              Back
-            </button>
+            <BackButton link="/client" />  {/* Fixed: Proper prop passing */}
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../../../Backbutton";
 
 
 const ForeignCustodialAccount = () => {
@@ -53,6 +54,8 @@ const ForeignCustodialAccount = () => {
   };
 
   return (
+    <div className="col-12 mt-3">
+    <div className="TDS-Taxes-form-active">
     <div className="TDS-Taxes-form-active">
       <div className="card card-primary">
         <div className="card-header">
@@ -209,16 +212,12 @@ const ForeignCustodialAccount = () => {
       </div>
       <div className="row mt-4">
         <div className="col-md-12 d-flex">
-          <button
-            type="button"
-            className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            onClick={() => (window.location.href = "/foreign_assets_incomes_taxes")}
-          >
-            Back
-          </button>
+         <BackButton link="/client/final/foreign_assets_incomes_taxes" />
         </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 

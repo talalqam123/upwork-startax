@@ -127,6 +127,7 @@ const Dashboard = () => {
       <div className="wrapper">
         <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <div className="content-wrapper" style={{ margin: "0" }}>
+         
           <Outlet />
         </div>
       </div>

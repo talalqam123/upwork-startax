@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackButton from '../../Backbutton';
 
 const TdsOnProperty = () => {
   const [tdsEntries, setTdsEntries] = useState([
@@ -51,6 +52,8 @@ const TdsOnProperty = () => {
   };
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Add a TDS entry (Tax Deducted at Source) for Sale/Rent of Immovable Property</strong>
@@ -175,16 +178,12 @@ const TdsOnProperty = () => {
             >
               Submit
             </button>
-            <button
-              className="Back_button_tds btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              type="button"
-              onClick={() => window.location.href = "#"} // Update URL as needed
-            >
-              Back
-            </button>
+           <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

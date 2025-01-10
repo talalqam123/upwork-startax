@@ -347,6 +347,7 @@ const AddressForm = () => {
           <button
             type="submit"
             id="Client_address_form"
+            style={{ width: 'fit-content' }}
             className="btn btn-block rounded-0 btn-primary"
           >
             Submit

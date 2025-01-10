@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const ExpenditureOnElectricityConsumption = () => {
   const [expenditureOnElectricity, setExpenditureOnElectricity] = useState("");
@@ -9,11 +10,11 @@ const ExpenditureOnElectricityConsumption = () => {
     console.log("Form submitted with:", { expenditureOnElectricity });
   };
 
-  const handleBackClick = () => {
-    window.location.href = "/catalog_2024/more_info_final";
-  };
+
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Expenditure on Electricity Consumption</strong>
@@ -48,16 +49,12 @@ const ExpenditureOnElectricityConsumption = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={handleBackClick}
-            >
-              Back
-            </button>
+           <BackButton link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

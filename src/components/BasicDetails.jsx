@@ -214,6 +214,7 @@ const BasicDetailsForm = () => {
           <button
             type="submit"
             id="submit_client_details_form"
+            style={{ width: 'fit-content' }}
             className="btn btn-block rounded-0 btn-primary"
           >
             Submit

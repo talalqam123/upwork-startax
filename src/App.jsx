@@ -48,6 +48,8 @@ import OtherAssets from "./components/Final/More Info/Advanced Info/Foreign Asse
 import AccountsHavingSigningAuthority from "./components/Final/More Info/Advanced Info/Foreign Assets/signing_authority";
 import TrustOutsideIndiaTrustee from "./components/Final/More Info/Advanced Info/Foreign Assets/trust_outside_india";
 import ForeignEquityDebtInterest from "./components/Final/More Info/Advanced Info/Foreign Assets/foreign_equity";
+import ClientSummary from "./components/26AS_AIS";
+import AddClient from "./components/add_client_by_id";
 // import TdsImportComponent from "./components/Tds/tds_import";
 // import NonSalaryTdsComponent from "./components/Tds/non_salary_tds";
 // import PropertyTdsComponent from "./components/Tds/property_tds";
@@ -61,6 +63,8 @@ const App = () => {
                 <Route index element={<Home />} />
                 <Route path="client" element={<ClientDetails />} />
                 <Route path="/basic_details/add_client" element={<AddClientInfo />} />
+                <Route path="/basic_details/26AIS" element={<ClientSummary />} />
+                <Route path="/basic_details/add_client_by_id_password" element={<AddClient />} />
 
                 {/* Business routes */}
                 <Route path="client/business">

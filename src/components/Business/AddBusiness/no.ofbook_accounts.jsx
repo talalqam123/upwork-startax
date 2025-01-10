@@ -1,10 +1,7 @@
 import React from "react";
-
+import BackButton from "../../Backbutton";
 const NoBooksOfAccountIncome = () => {
-  const handleBack = () => {
-    window.location.href = "{% url 'catalog_2024:business' client_rel_id=client_rel_id %}";
-  };
-
+  
   return (
     <div>
     <div className="col-12 mt-3">
@@ -87,13 +84,7 @@ const NoBooksOfAccountIncome = () => {
         <div className="row">
           <div className="col-md-12 d-flex">
             <input type="submit" className="btn btn-primary" value="Submit" />
-            <button
-              type="button"
-              onClick={handleBack}
-              className="Back_button btn bg-gradient-warning text-white ml-4"
-            >
-              Back
-            </button>
+            <BackButton link="/client" />
           </div>
         </div>
       </form>

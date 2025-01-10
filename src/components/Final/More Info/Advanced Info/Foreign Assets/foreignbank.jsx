@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BackButton from '../../../../Backbutton';
 
 const ForeignBank = () => {
   const [rows, setRows] = useState([
@@ -195,13 +196,7 @@ const handleInputChange = (index, field, value) => {
       </div>
       <div className="row mt-4">
         <div className="col-md-12 d-flex">
-          <button
-            type="button"
-            className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            onClick={() => (window.location.href = '/catalog_2024/foreign_assets_incomes_taxes')}
-          >
-            Back
-          </button>
+        <BackButton link="client/final/foreign_assets_incomes_taxes" />
         </div>
       </div>
     </div>

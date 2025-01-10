@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 
 const CapitalGainsForm = ({ clientId, clientRelId }) => {
@@ -197,13 +198,7 @@ const CapitalGainsForm = ({ clientId, clientRelId }) => {
           >
             Submit
           </button>
-          <button
-            type="button"
-            className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            onClick={() => window.location.href = `/catalog_2024/capital_gains/${clientRelId}`}
-          >
-            Back
-          </button>
+          <BackButton link="/client" />
         </div>
       </div>
     </form>

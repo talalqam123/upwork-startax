@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const ScheduleOI = ({ clientFullName, clientRelId }) => {
   const [gstDetails, setGstDetails] = useState([
@@ -85,15 +86,7 @@ const ScheduleOI = ({ clientFullName, clientRelId }) => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              onClick={() =>
-                (window.location.href = `/catalog_2024/business/${clientRelId}`)
-              }
-              className="Back_button btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-            >
-              Back
-            </button>
+            <BackButton link="/client" />
           </div>
         </div>
       </form>

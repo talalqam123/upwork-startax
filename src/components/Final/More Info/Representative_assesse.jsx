@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BackButton from "../../Backbutton";
 
 const RepresentativeAssesseeForm = () => {
   const [formData, setFormData] = useState({
@@ -29,11 +30,11 @@ const RepresentativeAssesseeForm = () => {
     console.log("Form submitted:", formData);
   };
 
-  const handleBackClick = () => {
-    window.location.href = "/catalog_2024/more_info_final";
-  };
+
 
   return (
+    <div>
+    <div className="col-12 mt-3">
     <div className="TDS-Taxes-form-active">
       <div className="pt-3">
         <strong>Representative Assessee</strong>
@@ -185,16 +186,12 @@ const RepresentativeAssesseeForm = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <button
-              type="button"
-              className="btn btn-block bg-gradient-warning btn-flat w-auto text-white mt-0 mb-0 ml-4 h-100"
-              onClick={handleBackClick}
-            >
-              Back
-            </button>
+           <BackButton  link="/client" />
           </div>
         </div>
       </form>
+    </div>
+    </div>
     </div>
   );
 };

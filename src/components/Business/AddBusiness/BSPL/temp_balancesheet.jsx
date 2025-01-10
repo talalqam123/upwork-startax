@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import BackButton from '../../../Backbutton';
 
-const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
+const BSPLBalanceSheet = ({ balancesheetProfitLoss = {} }) => {
     const [expandable, setExpandable] = useState(false);
 
     const toggleExpandable = () => {
@@ -149,16 +150,16 @@ const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
                                                             />
                                                         </td>
                                                     </tr>
-                                                   
-               
-                                               </tbody>
+
+
+                                                </tbody>
                                             </table>
                                         </div>
                                     </td>
                                 </tr>
-                             
+
                             )}
-<tr
+                            <tr
                                 data-widget="expandable-table"
                                 aria-expanded={expandable}
                                 className="header"
@@ -273,7 +274,7 @@ const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
                                     </td>
                                 </tr>
                             )}
-                             <tr
+                            <tr
                                 data-widget="expandable-table"
                                 aria-expanded={expandable}
                                 className="header"
@@ -596,7 +597,7 @@ const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
                                     </td>
                                 </tr>
                             )}
-                             <tr
+                            <tr
                                 data-widget="expandable-table"
                                 aria-expanded={expandable}
                                 className="header"
@@ -763,7 +764,7 @@ const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
                                                         </td>
                                                     </tr>
                                                     {/* Continue the rest of the fields similarly */}
-                                                    
+
                                                     <tr>
                                                         <td>
                                                             <span style={{ marginLeft: '50px' }}>4cix: Total (i + ii + iii + iv +v+ vi+vii+viii)</span>
@@ -799,6 +800,12 @@ const BSPLBalanceSheet = ({ balancesheetProfitLoss }) => {
                             )}
                         </tbody>
                     </table>
+                    <div className="row">
+                        <div className="col-md-12 d-flex">
+                           
+                            <BackButton link="/client/business/bspl" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
