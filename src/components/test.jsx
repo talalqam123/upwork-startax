@@ -1,255 +1,173 @@
-import React, { useState } from "react";
-
-const BankDetails = () => {
-    const [bankDetails, setBankDetails] = useState([
-        { ifscCode: "", bankName: "", accountNo: "", accountType: "SB", refund: false },
-    ]);
-
-    const bankData = {
-        ABPB: "ADITYA BIRLA PAYMENTS BANK",
-        AIRP: "AIRTEL PAYMENTS BANK LIMITED",
-        ALLA: "ALLAHABAD BANK",
-        // Add the remaining bank codes and names here
-    };
-
-    const handleAddRow = () => {
-        setBankDetails((prevDetails) => [
-            ...prevDetails,
-            { ifscCode: "", bankName: "", accountNo: "", accountType: "SB", refund: false },
-        ]);
-    };
-
-    const handleInputChange = (index, field, value) => {
-        setBankDetails((prevDetails) => {
-            const updatedDetails = [...prevDetails];
-            updatedDetails[index][field] = value;
-
-            // Automatically update the bank name if IFSC code changes
-            if (field === "ifscCode") {
-                const bankCode = value.slice(0, 4).toUpperCase();
-                updatedDetails[index].bankName = bankData[bankCode] || "";
-            }
-
-            return updatedDetails;
-        });
-    };
-
-    const handleDeleteRow = (index) => {
-        if (bankDetails.length > 1) {
-            setBankDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
-        } else {
-            setBankDetails([{ ifscCode: "", bankName: "", accountNo: "", accountType: "SB", refund: false }]);
-        }
-    };
-
-    const handleRefundChange = (index) => {
-        setBankDetails((prevDetails) =>
-            prevDetails.map((detail, i) => ({
-                ...detail,
-                refund: i === index, // Only set refund to true for the selected row
-            }))
-        );
-    };
-
-    const validateFields = (fields) => {
-        const validators = {
-            ifscCode: {
-                notEmpty: {
-                    message: "IFSC Code is required and cannot be empty",
-                },
-                regexp: {
-                    regexp: /^[A-Z]{4}[0][A-Z0-9]{6}$/,
-                    message: "The IFSC Code must be 11 characters long with the format: XXXX0YYYYYY",
-                },
-            },
-            bankName: {
-                notEmpty: {
-                    message: "Bank Name is required and cannot be empty",
-                },
-                stringLength: {
-                    max: 125,
-                    message: "Bank Name must be less than 125 characters long",
-                },
-            },
-            accountNo: {
-                notEmpty: {
-                    message: "Bank Account No is required and cannot be empty",
-                },
-                regexp: {
-                    regexp: /^[a-zA-Z0-9]{1,20}$/,
-                    message: "Bank Account No must be up to 20 characters long and can include letters and numbers",
-                },
-            },
-            accountType: {
-                notEmpty: {
-                    message: "Account Type is required and cannot be empty",
-                },
-                regexp: {
-                    regexp: /^(SB|CA|CC|OD|NRO|OTH)$/,
-                    message: "Bank Account Type must be one of SB, CA, CC, OD, NRO, OTH",
-                },
-            },
-        };
-
-        const errors = {};
-        for (const [field, value] of Object.entries(fields)) {
-            const rules = validators[field];
-            if (rules) {
-                if (rules.notEmpty && !value) {
-                    errors[field] = rules.notEmpty.message;
-                } else if (rules.regexp && !rules.regexp.regexp.test(value)) {
-                    errors[field] = rules.regexp.message;
-                } else if (
-                    rules.stringLength &&
-                    value.length > rules.stringLength.max
-                ) {
-                    errors[field] = rules.stringLength.message;
-                }
-            }
-        }
-        return errors;
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted:', banks);
-    };
-    return (
-        <form id="createbankform" onSubmit={handleSubmit}>
-            <div className="card card-primary">
-                <div className="card-header">
-                    <div className="card-title">
-                        <strong>Aadhaar Details</strong>
-                    </div>
-                </div>
-                <div className="card-body">
-                    <div className="row text-content">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="m-1">Aadhaar No</label>
-                                <input
-                                    type="number"
-                                    name="Aadhaar_card_number"
-                                    className="form-control rounded-0 text-uppercase"
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="m-1">Aadhaar Enrollment No</label>
-                                <input
-                                    type="number"
-                                    name="Aadhaar_enrollment_number"
-                                    className="form-control rounded-0"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="card card-body">
+            <div class="pt-3 pb-1 p-tab-c1">
+              <span> Gross Salary</span>
             </div>
-            <div className="card card-success mt-3">
-                <div className="card-header">
-                    <div className="card-title">
-                        <strong>Bank Detail Type</strong>
-                    </div>
-                </div>
-                <div className="card-body text-content" id="bank-detail-type-id">
-                    {bankDetails.map((bank, index) => (
-                        <div className="row bank-card" key={index}>
-                            <div className="form-group col-md-2">
-                                <label className="m-1">IFSC Code</label>
-                                <input
-                                    type="text"
-                                    name={`bank_isfc_code_${index}`}
-                                    className="ifsc_code form-control rounded-0 text-uppercase"
-                                    value={bank.ifscCode}
-                                    onChange={(e) => handleInputChange(index, "ifscCode", e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group col-md-3">
-                                <label className="m-1">Bank Name</label>
-                                <input
-                                    type="text"
-                                    name={`bank_name_${index}`}
-                                    className="bankNameClass form-control rounded-0"
-                                    value={bank.bankName}
-                                    readOnly
-                                />
-                            </div>
-                            <div className="form-group col-md-3">
-                                <label className="m-1">Bank Account No</label>
-                                <input
-                                    type="text"
-                                    name={`bank_acount_no_${index}`}
-                                    className="form-control rounded-0"
-                                    value={bank.accountNo}
-                                    onChange={(e) => handleInputChange(index, "accountNo", e.target.value)}
-                                />
-                            </div>
-                            <div className="form-group col-md-2">
-                                <label className="m-1">Account Type</label>
-                                <select
-                                    name={`bank_acount_type_${index}`}
-                                    className="form-control rounded-0"
-                                    value={bank.accountType}
-                                    onChange={(e) => handleInputChange(index, "accountType", e.target.value)}
-                                >
-                                    <option value="SB">Savings Account</option>
-                                    <option value="CA">Current Account</option>
-                                    <option value="CC">Cash Credit Account</option>
-                                    <option value="OD">Over Draft Account</option>
-                                    <option value="NRO">Non Resident Account</option>
-                                    <option value="OTH">Other</option>
-                                </select>
-                            </div>
-                            <div className="form-group text-center col-md-1">
-                                <label className="m-1">Refund</label>
-                                <div className="custom-control mt-1 custom-checkbox">
-                                    <input
-                                        id={`refund_${index}`}
-                                        className="custom-control-input custom-control-input-primary refund"
-                                        type="checkbox"
-                                        checked={bank.refund}
-                                        onChange={() => handleRefundChange(index)}
-                                    />
-                                    <label
-                                        className="custom-control-label"
-                                        htmlFor={`refund_${index}`}
-                                    ></label>
-                                </div>
-                            </div>
-                            <div className="form-group col-md-1" style={{ marginTop: "21px" }}>
-                                <button
-                                    className="btn btn-danger delete-bank"
-                                    type="button"
-                                    onClick={() => handleDeleteRow(index)}
-                                >
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                    <button
-                        className="btn btn-info add-more-non-salary-tds"
-                        type="button"
-                        onClick={handleAddRow}
-                    >
-                        Add More
-                    </button>
-                </div>
-            </div>
-            <div className="row mt-3">
-                <div className="col-md-12">
-                    <input
-                        type="submit"
-                        id="submit_client_bank_form"
-                        style={{ width: 'fit-content' }}
-                        className="btn btn-block rounded-0 btn-primary"
-                        value="Submit"
-                    />
-                </div>
-            </div>
-        </form>
-    );
-};
 
-export default BankDetails;
+            <div class="row">
+              <div class="accordion col-md-9">
+                <div class="accordion-item form mw-100">
+                  <div class="accordion-item-header">
+                    <span class="text-content">Salary Details As per 17(1)</span>
+                    <div class="col-md-4 d-flex pr-0">
+                      {% if previous_client_salary_details %}
+                          {% with details=previous_client_salary_details|get_index_item:0 %}
+                              {% with total_salary=details.Salary.total|default:"-" %}
+                                  <p class="text-red col-md-3 m-0" style="font-size:12px;">{{ total_salary|get_indian_currency }}</p>
+                              {% endwith %}
+                          {% endwith %}
+                      {% else %}
+                          <p class="text-red col-md-3 m-0" style="font-size:12px;">-</p>
+                      {% endif %}
+                      <input type="text" class="form-control col-md-9 rounded-0 total_salary inr_field text-content"
+                        name="tabs[0][total_salary]" readonly />
+                    </div>
+                  </div>
+                  <div class="accordion-item-description-wrapper pr-2">
+                    <div class="accordion-item-description">
+                      <div class="form_grid_acor">
+
+                        <div class="form-group row ml-3 justify-content-between">
+                          <input type="hidden" class="sal-type" value="1" name="tabs[0][salary_type][]" />
+                          <span class="col-md-6 text-content">Basic Salary</span>
+                          <div class="col-md-4 d-flex pr-0">
+                            {% if previous_client_salary_details %}
+                                {% with details=previous_client_salary_details|get_index_item:0 %}
+                                    {% with prev_value=details.Salary.NatureOfSalaryDtlsType|amount_by_type:1|default:"-" %}
+                                        <p class="text-red col-md-3 m-0" style="font-size:12px;">{{ prev_value|get_indian_currency }}</p>
+                                    {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <p class="text-red col-md-3 m-0" style="font-size:12px;">-</p>
+                            {% endif %}
+                            <div class="col-md-9 pr-0">
+                              <input type="text" class="form-control rounded-0 salary_amount inr_field"   
+                                name="tabs[0][salary_amount][]" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          class="form-group row ml-3 justify-content-between add_salary_div">
+                          <select class="form-control col-md-5 other_select text-content"
+                            id="OtherSalariesList" data-tab="0">
+                            <option>Select Additional Details</option>
+                            <option value="2">Dearness Allowance</option>
+                            <option value="3">Conveyance Allowance</option>
+                            <option value="4">House Rent Allowance</option>
+                            <option value="5">Leave Travel Allowance</option>
+                            <option value="6">Children Education Allowance</option>
+                            <option value="OTH">Others</option>
+                          </select>
+                          <div class="col-md-4 d-flex justify-content-end pr-0">
+                            <input type="text" class="form-control rounded-0 col-md-9"
+                              disabled />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item form mw-100">
+                  <div class="accordion-item-header">
+                    <span>Perquisites Value u/s 17(2)</span>
+                    <div class="col-md-4 d-flex pr-0">
+                      {% if previous_client_salary_details %}
+                          {% with details=previous_client_salary_details|get_index_item:0 %}
+                              {% with prev_value=details.Perquisites.total|default:"-" %}
+                                  <p class="text-red col-md-3 m-0" style="font-size:12px;">{{ prev_value|get_indian_currency }}</p>
+                              {% endwith %}
+                          {% endwith %}
+                      {% else %}
+                          <p class="text-red col-md-3 m-0" style="font-size:12px;">-</p>
+                      {% endif %}
+                      <input type="text"
+                        class="form-control col-md-9 rounded-0 total_perquisites col-md-4 inr_field"   
+                        name="tabs[0][total_perquisites]" readonly />
+                    </div>
+                  </div>
+                  <div class="accordion-item-description-wrapper pr-2">
+                    <div class="accordion-item-description">
+                      <div class="form_grid_acor">
+                        <div
+                          class="form-group row ml-3 justify-content-between add_perquisites_div">
+                          <select class="form-control col-md-5 other_select  text-content"
+                            id="OtherPerquisitesList" data-tab="0">
+                            <option value="">Select Additional Details</option>
+                            <option value="1">Accommodation</option>
+                            <option value="2">Cars / Other Automotive</option>
+                            <option value="3">Sweeper, gardener, watchman or personal
+                              attendant
+                            </option>
+                            <option value="4">Gas, electricity, water</option>
+                            <option value="5">Interest free or concessional loans</option>
+                            <option value="6">Holiday expenses</option>
+                            <option value="7">Free or concessional travel</option>
+                            <option value="8">Free meals</option>
+                            <option value="9">Free education</option>
+                            
+                            <option value="10">Stock options allotted or transferred by
+                              employer
+                              being an eligible start-up referred to in section 80-IAC-Tax not
+                              to be deferred</option>
+                            <option value="OTH">Other benefits or amenities</option>
+                          </select>
+                          <div class="col-md-4 d-flex justify-content-end pr-0">
+                            <input type="text" class="form-control rounded-0 col-md-9"
+                              disabled />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item form mw-100">
+                  <div class="accordion-item-header">
+                    <span>Profits in lieu of Salary u/s 17(3)</span>
+                    <div class="col-md-4 d-flex pr-0">
+                      {% if previous_client_salary_details %}
+                          {% with details=previous_client_salary_details|get_index_item:0 %}
+                              {% with prev_value=details.Profit.total|default:"-" %}
+                                  <p class="text-red col-md-3 m-0" style="font-size:12px;">{{ prev_value|get_indian_currency }}</p>
+                              {% endwith %}
+                          {% endwith %}
+                      {% else %}
+                          <p class="text-red col-md-3 m-0" style="font-size:12px;">-</p>
+                      {% endif %}
+                      <input type="text"
+                        class="form-control col-md-9 rounded-0 total_profit col-md-4 inr_field"   
+                        name="tabs[0][total_profits]" readonly />
+                    </div>
+                  </div>
+                  <div class="accordion-item-description-wrapper pr-2">
+                    <div class="accordion-item-description">
+                      <div class="form_grid_acor">
+                        <div
+                          class="form-group row ml-3 justify-content-between add_profit_div">
+                          <select class="form-control col-md-5 other_select  text-content"
+                            id="OtherProfitsList" data-tab="0">
+                            <option value="">Select Additional Details</option>
+                            <option value="1">Compensation due/received by an assessee from
+                              his
+                              employer or former employer in connection with the termination
+                              of his employment or modification thereto</option>
+                            <option value="2">Any payment due/received by an assessee from his
+                              employer or a former employer or from a provident or other fund,
+                              sum received under Keyman Insurance Policy including Bonus
+                              thereto</option>
+                            <option value="3">Any amount due/received by assessee from any
+                              person before joining or after cessation of employment with that
+                              person</option>
+                            <option value="OTH">Any Other</option>
+                          </select>
+                          <div class="col-md-4 d-flex justify-content-end pr-0">
+                            <input type="text" class="form-control rounded-0 col-md-9"
+                              disabled />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
