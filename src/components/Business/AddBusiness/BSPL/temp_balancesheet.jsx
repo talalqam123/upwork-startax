@@ -1,35 +1,36 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import './temp_balancesheet.css'; // Add this import
 import PANDL from './p&l';
 import PANDL2 from './p&l2';
 import PANDL3 from './p&l3';
+// import { formatNumber } from './utils'; // Create this utility if needed
 
 const BSPIncome = ({ balancesheet_profitloss = {} }) => {
     const [key, setKey] = useState('proprietorsFund');
     const [values, setValues] = useState({
-        proprietorsCapital: "",
-        revaluationReserve: "",
-        capitalReserve: "",
-        statutoryReserve: "",
-        anyOtherReserve: "",
-        totalReserves: "",
-        totalProprietorsFund: "",
-        foreignCurrencyLoans: "",
-        rupeeLoansFromBanks: "",
-        rupeeLoansFromOthers: "",
-        totalRupeeLoans: "",
-        totalSecuredLoans: "",
-        unsecuredLoansFromBanks: "",
-        unsecuredLoansFromOthers: "",
-        totalUnsecuredLoans: "",
-        totalLoanFunds: "",
-        deferredTaxLiability: "",
-        advancesFromPersons: "",
-        advancesFromOthers: "",
-        totalAdvances: "",
-        totalSourcesOfFunds: "",
+        proprietorsCapital: 0,
+        revaluationReserve: 0,
+        capitalReserve: 0,
+        statutoryReserve: 0,
+        anyOtherReserve: 0,
+        totalReserves: 0,
+        totalProprietorsFund: 0,
+        foreignCurrencyLoans: 0,
+        rupeeLoansFromBanks: 0,
+        rupeeLoansFromOthers: 0,
+        totalRupeeLoans: 0,
+        totalSecuredLoans: 0,
+        unsecuredLoansFromBanks: 0,
+        unsecuredLoansFromOthers: 0,
+        totalUnsecuredLoans: 0,
+        totalLoanFunds: 0,
+        deferredTaxLiability: 0,
+        advancesFromPersons: 0,
+        advancesFromOthers: 0,
+        totalAdvances: 0,
+        totalSourcesOfFunds: 0,
         grossBlock: 0,
         depreciation: 0,
         netBlock: 0,
@@ -385,8 +386,32 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
         values.totalDutiesTaxesCessTrade
     ]);
 
+    // Add new state for application of funds total
+    const [applicationTotal, setApplicationTotal] = useState(0);
+
+    // Add new useEffect to calculate application of funds total
+    useEffect(() => {
+        const total = values.totalFixedAssets + 
+                     values.totalGovSecurities + 
+                     values.totalCurrentAssets;
+        setApplicationTotal(total);
+    }, [values.totalFixedAssets, values.totalGovSecurities, values.totalCurrentAssets]);
+
+    // Create a function to format numbers (if you don't have one)
+    const formatAmount = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 2
+        }).format(amount);
+    };
+
+    // Calculate difference
+    const difference = values.totalSourcesOfFunds - applicationTotal;
+
     return (
         <div className="pt-3 balance-sheet-container">
+            
             <Tabs
                 id="controlled-tab-example"
                 activeKey={key}
@@ -395,69 +420,90 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
             >
                 <Tab eventKey="sourcesFund" title="Sources of Funds">
                     <form method="POST">
-                        <div className="card card-body text-content">
+                        <div className="card cardbspl card-body cardbspl-body text-content">
                             <div className="">
                                 <div>
                                     <strong>1: Proprietor's fund</strong>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1a: Proprietor's capital</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="proprietorsCapital"
+                                                value={values.proprietorsCapital}
+                                                onChange={(e) => handleInputChange('proprietorsCapital', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1b: Reserves and Surplus</span>
                                             <input
                                                 type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1bi: Revaluation Reserve</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="revaluationReserve"
+                                                value={values.revaluationReserve}
+                                                onChange={(e) => handleInputChange('revaluationReserve', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1bii: Capital Reserve</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="capitalReserve"
+                                                value={values.capitalReserve}
+                                                onChange={(e) => handleInputChange('capitalReserve', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1biii: Statutory Reserve</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="statutoryReserve"
+                                                value={values.statutoryReserve}
+                                                onChange={(e) => handleInputChange('statutoryReserve', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1biv: Any other Reserve</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="anyOtherReserve"
+                                                value={values.anyOtherReserve}
+                                                onChange={(e) => handleInputChange('anyOtherReserve', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1bv: Total (bi+bii+biii+biv)</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="totalReserves"
+                                                value={values.totalReserves}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
+                                                readOnly
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1c: Total proprietor's fund (a + bv)</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="totalProprietorsFund"
+                                                value={values.totalProprietorsFund}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
+                                                readOnly
                                             />
                                         </div>
                                     </div>
@@ -470,123 +516,129 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2a: Secured loans</span>
                                             <input
                                                 type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2ai: Foreign Currency Loans</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="foreignCurrencyLoans"
+                                                value={values.foreignCurrencyLoans}
+                                                onChange={(e) => handleInputChange('foreignCurrencyLoans', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aii: Rupee Loans</span>
                                             <input
                                                 type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiiA: From Banks</span>
                                             <input
-                                                type="text"
-                                                className="form-control rounded-0 flex-grow-1"
+                                                type="number"
+                                                name="rupeeLoansFromBanks"
+                                                value={values.rupeeLoansFromBanks}
+                                                onChange={(e) => handleInputChange('rupeeLoansFromBanks', e.target.value)}
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiiB: From Others</span>
                                         <input
                                             type="number"
                                             name="rupeeLoansFromOthers"
                                             value={values.rupeeLoansFromOthers}
                                             onChange={(e) => handleInputChange('rupeeLoansFromOthers', e.target.value)}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                         />
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiiC: Total(iiA + iiB)</span>
                                         <input
                                             type="number"
                                             name="totalRupeeLoans"
                                             value={values.totalRupeeLoans}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                             readOnly
                                         />
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-sm-12">
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiii: Total(ai + iiC)</span>
                                         <input
                                             type="number"
                                             name="totalSecuredLoans"
                                             value={values.totalSecuredLoans}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                             readOnly
                                         />
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}><strong>2b: Unsecured loans (including deposits)</strong></span>
 
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2bi: From Banks</span>
                                         <input
                                             type="number"
                                             name="unsecuredLoansFromBanks"
                                             value={values.unsecuredLoansFromBanks}
                                             onChange={(e) => handleInputChange('unsecuredLoansFromBanks', e.target.value)}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                         />
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2bii: From others</span>
                                         <input
                                             type="number"
                                             name="unsecuredLoansFromOthers"
                                             value={values.unsecuredLoansFromOthers}
                                             onChange={(e) => handleInputChange('unsecuredLoansFromOthers', e.target.value)}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                         />
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2biii: Total(bi+bii)</span>
                                         <input
                                             type="number"
                                             name="totalUnsecuredLoans"
                                             value={values.totalUnsecuredLoans}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                             readOnly
                                         />
                                     </div>
-                                    <div className="form-group d-flex align-items-center">
+                                    <div className="form-group formbspl-group d-flex align-items-center">
                                         <span style={{ marginLeft: '30px', minWidth: '200px' }}>2c: Total Loan Funds(aiii + biii)</span>
                                         <input
                                             type="number"
                                             name="totalLoanFunds"
                                             value={values.totalLoanFunds}
-                                            className="form-control rounded-0 flex-grow-1"
+                                            className="form-control formbspl-class rounded-0 flex-grow-1"
                                             readOnly
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>3: Deferred tax liability</strong></span>
                                 <input
                                     type="number"
                                     name="deferredTaxLiability"
                                     value={values.deferredTaxLiability}
                                     onChange={(e) => handleInputChange('deferredTaxLiability', e.target.value)}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                     style={{ maxWidth: 'calc(100% - 230px)' }}
                                 />
                             </div>
@@ -596,45 +648,45 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4i: From persons specified in <br /> section 40A(2)(b) of the I. T. Act</span>
                                             <input
                                                 type="number"
                                                 name="advancesFromPersons"
                                                 value={values.advancesFromPersons}
                                                 onChange={(e) => handleInputChange('advancesFromPersons', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4ii: From others</span>
                                             <input
                                                 type="number"
                                                 name="advancesFromOthers"
                                                 value={values.advancesFromOthers}
                                                 onChange={(e) => handleInputChange('advancesFromOthers', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4iii: Total Advances (i + ii)</span>
                                             <input
                                                 type="number"
                                                 name="totalAdvances"
                                                 value={values.totalAdvances}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>5: Sources of funds(1c + 2c + 3 + 4iii)</span>
                                             <input
                                                 type="number"
                                                 name="totalSourcesOfFunds"
                                                 value={values.totalSourcesOfFunds}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
@@ -646,63 +698,63 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                 </Tab>
                 <Tab eventKey="applicationFunds" title="Applications of Funds">
                     <form method="POST">
-                        <div className="card card-body text-content">
+                        <div className="card cardbspl card-body cardbspl-body text-content">
                             <div className="">
                                 <div>
                                     <strong>1: Fixed assets</strong>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1a: Gross: Block</span>
                                             <input
                                                 type="number"
                                                 name="grossBlock"
                                                 value={values.grossBlock}
                                                 onChange={(e) => handleInputChange('grossBlock', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1b: Depreciation</span>
                                             <input
                                                 type="number"
                                                 name="depreciation"
                                                 value={values.depreciation}
                                                 onChange={(e) => handleInputChange('depreciation', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1e: Total(1c + 1d)</span>
                                             <input
                                                 type="number"
                                                 name="totalFixedAssets"
                                                 value={values.totalFixedAssets}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1c: Net Block(1a-1b)</span>
                                             <input
                                                 type="number"
                                                 name="netBlock"
                                                 value={values.netBlock}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1d: Capital work in progress</span>
                                             <input
                                                 type="number"
                                                 name="capitalWorkInProgress"
                                                 value={values.capitalWorkInProgress}
                                                 onChange={(e) => handleInputChange('capitalWorkInProgress', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
@@ -715,45 +767,45 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2a: Long-term investments</span>
                                             <input
                                                 type="number"
                                                 name="longTermInvestments"
                                                 value={values.longTermInvestments}
                                                 onChange={(e) => handleInputChange('longTermInvestments', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2ai: Government and other Securities - Quoted</span>
                                             <input
                                                 type="number"
                                                 name="govSecuritiesQuoted"
                                                 value={values.govSecuritiesQuoted}
                                                 onChange={(e) => handleInputChange('govSecuritiesQuoted', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aii: Government and other Securities - Unquoted</span>
                                             <input
                                                 type="number"
                                                 name="govSecuritiesUnquoted"
                                                 value={values.govSecuritiesUnquoted}
                                                 onChange={(e) => handleInputChange('govSecuritiesUnquoted', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiii: Total(ai + aii)</span>
                                             <input
                                                 type="number"
                                                 name="totalGovSecurities"
                                                 value={values.totalGovSecurities}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
@@ -767,55 +819,55 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>3a: Current assets</span>
                                             <input
                                                 type="number"
                                                 name="currentAssets"
                                                 value={values.currentAssets}
                                                 onChange={(e) => handleInputChange('currentAssets', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>3ai: Inventories</span>
                                             <input
                                                 type="number"
                                                 name="inventories"
                                                 value={values.inventories}
                                                 onChange={(e) => handleInputChange('inventories', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>3aii: Sundry Debtors</span>
                                             <input
                                                 type="number"
                                                 name="sundryDebtors"
                                                 value={values.sundryDebtors}
                                                 onChange={(e) => handleInputChange('sundryDebtors', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>3aiii: Cash and Bank Balances</span>
                                             <input
                                                 type="number"
                                                 name="cashBankBalances"
                                                 value={values.cashBankBalances}
                                                 onChange={(e) => handleInputChange('cashBankBalances', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>3aiv: Total Current Assets (i + ii + iii)</span>
                                             <input
                                                 type="number"
                                                 name="totalCurrentAssets"
                                                 value={values.totalCurrentAssets}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
@@ -827,180 +879,180 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                 </Tab>
                 <Tab eventKey="manuFacAccount" title="Manufacturing Account">
                     <form method="POST">
-                        <div className="card card-body text-content">
+                        <div className="card cardbspl card-body cardbspl-body text-content">
                             <div className="">
                                 <div>
                                     <strong>1: Opening Inventory</strong>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1ai: Opening stock of raw-material</span>
                                             <input
                                                 type="number"
                                                 name="openingStockRawMaterial"
                                                 value={values.openingStockRawMaterial}
                                                 onChange={(e) => handleInputChange('openingStockRawMaterial', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1aii: Opening stock of Work in progress</span>
                                             <input
                                                 type="number"
                                                 name="openingStockWorkInProgress"
                                                 value={values.openingStockWorkInProgress}
                                                 onChange={(e) => handleInputChange('openingStockWorkInProgress', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1aiii: Total (i + ii)</span>
                                             <input
                                                 type="number"
                                                 name="totalOpeningStock"
                                                 value={values.totalOpeningStock}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1b: Purchases (net of refunds and duty or tax, if any)</span>
                                             <input
                                                 type="number"
                                                 name="purchases"
                                                 value={values.purchases}
                                                 onChange={(e) => handleInputChange('purchases', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1c: Direct wages</span>
                                             <input
                                                 type="number"
                                                 name="directWages"
                                                 value={values.directWages}
                                                 onChange={(e) => handleInputChange('directWages', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1d: Direct expenses</span>
                                             <input
                                                 type="number"
                                                 name="directExpenses"
                                                 value={values.directExpenses}
                                                 onChange={(e) => handleInputChange('directExpenses', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1di: Carriage inward</span>
                                             <input
                                                 type="number"
                                                 name="carriageInward"
                                                 value={values.carriageInward}
                                                 onChange={(e) => handleInputChange('carriageInward', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1dii: Power and fuel</span>
                                             <input
                                                 type="number"
                                                 name="powerAndFuel"
                                                 value={values.powerAndFuel}
                                                 onChange={(e) => handleInputChange('powerAndFuel', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1diii: Other direct expenses</span>
                                             <input
                                                 type="number"
                                                 name="otherDirectExpenses"
                                                 value={values.otherDirectExpenses}
                                                 onChange={(e) => handleInputChange('otherDirectExpenses', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1e: Factory Overheads</span>
                                             <input
                                                 type="number"
                                                 name="factoryOverheads"
                                                 value={values.factoryOverheads}
                                                 onChange={(e) => handleInputChange('factoryOverheads', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1ei: Indirect wages</span>
                                             <input
                                                 type="number"
                                                 name="indirectWages"
                                                 value={values.indirectWages}
                                                 onChange={(e) => handleInputChange('indirectWages', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1eii: Factory rent and rates</span>
                                             <input
                                                 type="number"
                                                 name="factoryRentAndRates"
                                                 value={values.factoryRentAndRates}
                                                 onChange={(e) => handleInputChange('factoryRentAndRates', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1eiii: Factory Insurance</span>
                                             <input
                                                 type="number"
                                                 name="factoryInsurance"
                                                 value={values.factoryInsurance}
                                                 onChange={(e) => handleInputChange('factoryInsurance', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1eiv: Factory fuel and power</span>
                                             <input
                                                 type="number"
                                                 name="factoryFuelAndPower"
                                                 value={values.factoryFuelAndPower}
                                                 onChange={(e) => handleInputChange('factoryFuelAndPower', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1ev: Factory general expenses</span>
                                             <input
                                                 type="number"
                                                 name="factoryGeneralExpenses"
                                                 value={values.factoryGeneralExpenses}
                                                 onChange={(e) => handleInputChange('factoryGeneralExpenses', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1evi: Depreciation of factory machinery</span>
                                             <input
                                                 type="number"
                                                 name="depreciationOfFactoryMachinery"
                                                 value={values.depreciationOfFactoryMachinery}
                                                 onChange={(e) => handleInputChange('depreciationOfFactoryMachinery', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1evii: Total (i+ii+iii+iv+v+vi)</span>
                                             <input
                                                 type="number"
                                                 name="totalFactoryOverheads"
                                                 value={values.totalFactoryOverheads}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>1f: Total of Debits to<br /> Manufacturing Account (Aiii+B+C+D+Evii)</span>
                                             <input
                                                 type="number"
                                                 name="totalDebitsToManufacturingAccount"
                                                 value={values.totalDebitsToManufacturingAccount}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
 
@@ -1017,24 +1069,24 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2ai: Raw material</span>
                                             <input
                                                 type="number"
                                                 name="closingStockRawMaterial"
                                                 value={values.closingStockRawMaterial}
                                                 onChange={(e) => handleInputChange('closingStockRawMaterial', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aii: Work-in-progresss</span>
                                             <input
                                                 type="number"
                                                 name="closingStockWorkInProgress"
                                                 value={values.closingStockWorkInProgress}
                                                 onChange={(e) => handleInputChange('closingStockWorkInProgress', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
@@ -1042,26 +1094,26 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
 
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>2aiii: Total (2i +2ii)</span>
                                             <input
                                                 type="number"
                                                 name="totalClosingStock"
                                                 value={values.totalClosingStock}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>3: Cost of Goods <br />Produced – transferred to <br />Trading Account (1F-2)</strong></span>
                                 <input
                                     type="number"
                                     name="costOfGoodsProduced"
                                     value={values.costOfGoodsProduced}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                     readOnly
                                     style={{ maxWidth: 'calc(100% - 230px)' }}
                                 />
@@ -1071,78 +1123,78 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                 </Tab>
                 <Tab eventKey="tradingAccount" title="Trading Account">
                     <form method="POST">
-                        <div className="card card-body text-content">
+                        <div className="card cardbspl card-body cardbspl-body text-content">
                             <div className="">
                                 <div>
                                     <strong>4: Revenue from operations</strong>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4a: Sales/ Gross receipts of business</span>
                                             <input
                                                 type="number"
                                                 name="salesGoodsReceipts"
                                                 value={values.salesGoodsReceipts}
                                                 onChange={(e) => handleInputChange('salesGoodsReceipts', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4ai: Sale of goods</span>
                                             <input
                                                 type="number"
                                                 name="saleOfGoods"
                                                 value={values.saleOfGoods}
                                                 onChange={(e) => handleInputChange('saleOfGoods', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4aii: Sale of services  </span>
                                             <input
                                                 type="number"
                                                 name="saleOfServices"
                                                 value={values.saleOfServices}
                                                 onChange={(e) => handleInputChange('saleOfServices', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4aiii: Other operating revenues (specify nature and amount)</span>
                                             <input
                                                 type="number"
                                                 name="otherOperatingRevenues"
                                                 value={values.otherOperatingRevenues}
                                                 onChange={(e) => handleInputChange('otherOperatingRevenues', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1 mr-2"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1 mr-2"
                                             />
                                             <input
                                                 type="number"
                                                 name="otherOperatingRevenuesAmount"
                                                 value={values.otherOperatingRevenuesAmount}
                                                 onChange={(e) => handleInputChange('otherOperatingRevenuesAmount', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4aiv: Total(i+ii+iii)</span>
                                             <input
                                                 type="number"
                                                 name="totalRevenueFromOperations"
                                                 value={values.totalRevenueFromOperations}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4b: Gross receipts from Profession</span>
                                             <input
                                                 type="number"
                                                 name="grossReceiptsFromProfession"
                                                 value={values.grossReceiptsFromProfession}
                                                 onChange={(e) => handleInputChange('grossReceiptsFromProfession', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4c: Duties, taxes and cess received or
                                                 receivable <br />in respect of goods and services sold or supplied</span>
                                             <input
@@ -1150,70 +1202,70 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                                 name="dutiesTaxesCessReceived"
                                                 value={values.dutiesTaxesCessReceived}
                                                 onChange={(e) => handleInputChange('dutiesTaxesCessReceived', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
-                                        </div><div className="form-group d-flex align-items-center">
+                                        </div><div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4ci: Union Excise duties</span>
                                             <input
                                                 type="number"
                                                 name="unionExciseDutiesTrade"
                                                 value={values.unionExciseDutiesTrade}
                                                 onChange={(e) => handleInputChange('unionExciseDutiesTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cii: Service Taxs</span>
                                             <input
                                                 type="number"
                                                 name="serviceTaxTrade"
                                                 value={values.serviceTaxTrade}
                                                 onChange={(e) => handleInputChange('serviceTaxTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>5: Closing Stock of Finished Stocks</strong></span>
                                             <input
                                                 type="number"
                                                 name="closingStockFinishedGoods"
                                                 value={values.closingStockFinishedGoods}
                                                 onChange={(e) => handleInputChange('closingStockFinishedGoods', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 style={{ maxWidth: 'calc(100% - 230px)' }}
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>6: Total of credits to Trading Account (4D + 5 )</strong></span>
                                             <input
                                                 type="number"
                                                 name="totalCreditsToTradingAccount"
                                                 value={values.totalCreditsToTradingAccount}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                                 style={{ maxWidth: 'calc(100% - 230px)' }}
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>7: Opening Stock of Finished Goods</strong></span>
                                             <input
                                                 type="number"
                                                 name="openingStockFinishedGoods"
                                                 value={values.openingStockFinishedGoods}
                                                 onChange={(e) => handleInputChange('openingStockFinishedGoods', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 style={{ maxWidth: 'calc(100% - 230px)' }}
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>8: Purchases (net of refunds and duty or tax, if any)</strong></span>
                                             <input
                                                 type="number"
                                                 name="purchasesNetOfRefunds"
                                                 value={values.purchasesNetOfRefunds}
                                                 onChange={(e) => handleInputChange('purchasesNetOfRefunds', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 style={{ maxWidth: 'calc(100% - 230px)' }}
                                             />
                                         </div>
@@ -1221,83 +1273,83 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
 
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4ciii: VAT/ Sales tax</span>
                                             <input
                                                 type="number"
                                                 name="vatSalesTaxTrade"
                                                 value={values.vatSalesTaxTrade}
                                                 onChange={(e) => handleInputChange('vatSalesTaxTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4civ: Central Goods & Service Tax (CGST)</span>
                                             <input
                                                 type="number"
                                                 name="cgstTrade"
                                                 value={values.cgstTrade}
                                                 onChange={(e) => handleInputChange('cgstTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cv: State Goods & Services Tax (SGST)</span>
                                             <input
                                                 type="number"
                                                 name="sgstTrade"
                                                 value={values.sgstTrade}
                                                 onChange={(e) => handleInputChange('sgstTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cvi: Integrated Goods & Services Tax (IGST)</span>
                                             <input
                                                 type="number"
                                                 name="igstTrade"
                                                 value={values.igstTrade}
                                                 onChange={(e) => handleInputChange('igstTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cvii: Union Territory Goods & Services Tax (UTGST)</span>
                                             <input
                                                 type="number"
                                                 name="utgstTrade"
                                                 value={values.utgstTrade}
                                                 onChange={(e) => handleInputChange('utgstTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cviii: Any other duty, tax and cess</span>
                                             <input
                                                 type="number"
                                                 name="otherDutyTaxCessTrade"
                                                 value={values.otherDutyTaxCessTrade}
                                                 onChange={(e) => handleInputChange('otherDutyTaxCessTrade', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4cix: Total (i + ii + iii + iv +v+ vi+vii+viii)</span>
                                             <input
                                                 type="number"
                                                 name="totalDutiesTaxesCessTrade"
                                                 value={values.totalDutiesTaxesCessTrade}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>4d: Total Revenue from operations (Aiv + B +Cix)</span>
                                             <input
                                                 type="number"
                                                 name="totalRevenueFromOperations"
                                                 value={values.totalRevenueFromOperations}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
@@ -1311,55 +1363,55 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>9ai: Carriage inward</span>
                                             <input
                                                 type="number"
                                                 name="tradingCarriageInward"
                                                 value={values.tradingCarriageInward}
                                                 onChange={(e) => handleInputChange('tradingCarriageInward', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
 
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>9aiii: Other direct expenses</span>
                                             <input
                                                 type="number"
                                                 name="tradingOtherDirectExpenses"
                                                 value={values.tradingOtherDirectExpenses}
                                                 onChange={(e) => handleInputChange('tradingOtherDirectExpenses', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1 mr-2"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1 mr-2"
                                             />
                                             <input
                                                 type="number"
                                                 name="otherDirectExpensesAmount"
                                                 value={values.otherDirectExpensesAmount}
                                                 onChange={(e) => handleInputChange('otherDirectExpensesAmount', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>9aii: Power and fuel</span>
                                             <input
                                                 type="number"
                                                 name="tradingPowerAndFuel"
                                                 value={values.tradingPowerAndFuel}
                                                 onChange={(e) => handleInputChange('tradingPowerAndFuel', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>9aiiiA: Total</span>
                                             <input
                                                 type="number"
                                                 name="totalTradingDirectExpenses"
                                                 value={values.totalTradingDirectExpenses}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
@@ -1372,175 +1424,175 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10ai: Custom duty</span>
                                             <input
                                                 type="number"
                                                 name="customDuty"
                                                 value={values.customDuty}
                                                 onChange={(e) => handleInputChange('customDuty', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
 
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10aii: Counter veiling duty</span>
                                             <input
                                                 type="number"
                                                 name="counterVeilingDuty"
                                                 value={values.counterVeilingDuty}
                                                 onChange={(e) => handleInputChange('counterVeilingDuty', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1 "
+                                                className="form-control formbspl-class rounded-0 flex-grow-1 "
                                             />
 
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10aiii: Special additional duty</span>
                                             <input
                                                 type="number"
                                                 name="specialAdditionalDuty"
                                                 value={values.specialAdditionalDuty}
                                                 onChange={(e) => handleInputChange('specialAdditionalDuty', e.target.value)}
-                                                className="form-contr ol rounded-0 flex-grow-1"
+                                                className="form-contr ol formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10aiv: Union excise duty</span>
                                             <input
                                                 type="number"
                                                 name="unionExciseDuty"
                                                 value={values.unionExciseDuty}
                                                 onChange={(e) => handleInputChange('unionExciseDuty', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10av: Service Tax</span>
                                             <input
                                                 type="number"
                                                 name="serviceTax"
                                                 value={values.serviceTax}
                                                 onChange={(e) => handleInputChange('serviceTax', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10avi: VAT/ Sales tax</span>
                                             <input
                                                 type="number"
                                                 name="vatSalesTax"
                                                 value={values.vatSalesTax}
                                                 onChange={(e) => handleInputChange('vatSalesTax', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
 
                                     </div>
                                     <div className="col-md-6 col-sm-12">
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10avii: Central Goods & Service Tax (CGST)</span>
                                             <input
                                                 type="number"
                                                 name="cgst"
                                                 value={values.cgst}
                                                 onChange={(e) => handleInputChange('cgst', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10aviii: State Goods & Services Tax (SGST)</span>
                                             <input
                                                 type="number"
                                                 name="sgst"
                                                 value={values.sgst}
                                                 onChange={(e) => handleInputChange('sgst', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10aix: Integrated Goods & Services Tax (IGST)</span>
                                             <input
                                                 type="number"
                                                 name="igst"
                                                 value={values.igst}
                                                 onChange={(e) => handleInputChange('igst', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10ax: Union Territory Goods & Services Tax (UTGST)</span>
                                             <input
                                                 type="number"
                                                 name="utgst"
                                                 value={values.utgst}
                                                 onChange={(e) => handleInputChange('utgst', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10axi: Any other tax, paid or payable</span>
                                             <input
                                                 type="number"
                                                 name="otherTaxPaidOrPayable"
                                                 value={values.otherTaxPaidOrPayable}
                                                 onChange={(e) => handleInputChange('otherTaxPaidOrPayable', e.target.value)}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                             />
                                         </div>
-                                        <div className="form-group d-flex align-items-center">
+                                        <div className="form-group formbspl-group d-flex align-items-center">
                                             <span style={{ marginLeft: '30px', minWidth: '200px' }}>10axii: Total (10i + 10ii + 10iii + <br /> 10iv + 10v + 10vi + 10vii + 10viii + 10ix + 10x + 10xi)</span>
                                             <input
                                                 type="number"
                                                 name="totalDutiesTaxesPaid"
                                                 value={values.totalDutiesTaxesPaid}
-                                                className="form-control rounded-0 flex-grow-1"
+                                                className="form-control formbspl-class rounded-0 flex-grow-1"
                                                 readOnly
                                             />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>11: Cost of goods produced - <br />Transferred from Manufacturing Account</strong></span>
                                 <input
                                     type="number"
                                     name="costOfGoodsProducedTransferred"
                                     value={values.costOfGoodsProducedTransferred}
                                     onChange={(e) => handleInputChange('costOfGoodsProducedTransferred', e.target.value)}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                     style={{ maxWidth: 'calc(100% - 230px)' }}
                                 />
                             </div>
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginRight: '30px', minWidth: '200px' }}><strong>12: Gross Profit from <br />Business/Profession - transferred<br /> to Profit and<br /> Loss account (6-7-8-9-10xii-11)</strong></span>
                                 <input
                                     type="number"
                                     name="grossProfitFromBusiness"
                                     value={values.grossProfitFromBusiness}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                     readOnly
                                     style={{ maxWidth: 'calc(100% - 230px)' }}
                                 />
                             </div>
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginLeft: '30px', minWidth: '200px' }}>12a: Turnover from Intraday Trading</span>
                                 <input
                                     type="number"
                                     name="turnoverFromIntradayTrading"
                                     value={values.turnoverFromIntradayTrading}
                                     onChange={(e) => handleInputChange('turnoverFromIntradayTrading', e.target.value)}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                 />
                             </div>
-                            <div className="form-group d-flex align-items-center">
+                            <div className="form-group formbspl-group d-flex align-items-center">
                                 <span style={{ marginLeft: '30px', minWidth: '200px' }}>12b: Income from Intraday Trading - transferred to Profit and Loss account</span>
                                 <input
                                     type="number"
                                     name="incomeFromIntradayTrading"
                                     value={values.incomeFromIntradayTrading}
                                     onChange={(e) => handleInputChange('incomeFromIntradayTrading', e.target.value)}
-                                    className="form-control rounded-0 flex-grow-1"
+                                    className="form-control formbspl-class rounded-0 flex-grow-1"
                                 />
                             </div>
                         </div>
@@ -1557,7 +1609,28 @@ const BSPIncome = ({ balancesheet_profitloss = {} }) => {
                     <PANDL3 />
                 </Tab>
             </Tabs>
+            <div className="floating-totals-bar">
+                <div className="total-item">
+                    <span className="total-label">Total Sources of Funds</span>
+                    <span className="total-value">
+                        {formatAmount(values.totalSourcesOfFunds)}
+                    </span>
+                </div>
+                <div className="total-item">
+                    <span className="total-label">Total Applications of Funds</span>
+                    <span className="total-value">
+                        {formatAmount(applicationTotal)}
+                    </span>
+                </div>
+                <div className="total-item">
+                    <span className="total-label">Difference</span>
+                    <span className={`total-value ${difference >= 0 ? 'difference-positive' : 'difference-negative'}`}>
+                        {formatAmount(difference)}
+                    </span>
+                </div>
+            </div>
         </div >
+
     );
 };
 
