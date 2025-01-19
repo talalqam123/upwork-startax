@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import BusinessTabs from './BusinessTabs';
 
+
+const BUSINESS_OPTIONS = [
+    { value: 'RETAIL', label: 'Retail Trading' },
+    { value: 'WHOLESALE', label: 'Wholesale Business' },
+    { value: 'SERVICES', label: 'Service Provider' },
+];
 const Income44ADA = () => {
     const [formData, setFormData] = useState({
         nature_of_business: [
@@ -16,7 +22,8 @@ const Income44ADA = () => {
         GrsTrnOverBank44ADA: '',
         TotPersumptiveInc44ADA: ''
     });
-
+const [searchTerm, setSearchTerm] = useState('');
+const [showDropdown, setShowDropdown] = useState(false);
     // Format currency in Indian format
     const formatCurrency = (value) => {
         if (!value) return '';
@@ -55,13 +62,26 @@ const Income44ADA = () => {
     };
 
     // Handle business form
-    const handleBusinessChange = (index, field, value) => {
+    const handleBusinessChange = (index, field, value, label = '') => {
         const updatedBusinesses = [...formData.nature_of_business];
-        updatedBusinesses[index][field] = value;
+        if (field === 'CodeAD') {
+            updatedBusinesses[index] = {
+                ...updatedBusinesses[index],
+                CodeADA: value,
+                CodeADA_label: label || value
+            };
+        } else {
+            updatedBusinesses[index] = {
+                ...updatedBusinesses[index],
+                [field]: value
+            };
+        }
         setFormData(prev => ({
             ...prev,
             nature_of_business: updatedBusinesses
         }));
+        setSearchTerm('');
+        setShowDropdown(false);
     };
 
     const handleAddBusiness = () => {
@@ -154,15 +174,39 @@ const Income44ADA = () => {
                                 <label className="m-1 text-content">
                                     Nature of Business <span className="text-danger">*</span>
                                 </label>
-                                <select
-                                    className="form-control business_name"
-                                    value={business.CodeADA}
-                                    onChange={(e) => handleBusinessChange(index, 'CodeADA', e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select Business</option>
-                                    {/* Add business options here */}
-                                </select>
+                                <div className="position-relative">
+                                    <input
+                                        type="text"
+                                        className="form-control rounded-0"
+                                        value={searchTerm || business.CodeADA_label}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            setShowDropdown(true);
+                                        }}
+                                        onFocus={() => setShowDropdown(true)}
+                                        placeholder="Search business type..."
+                                    />
+                                    {showDropdown && (
+                                        <div className="dropdown-menu show w-100" style={{ position: 'absolute', zIndex: 1000 }}>
+                                            {BUSINESS_OPTIONS.filter(option =>
+                                                option.label.toLowerCase().includes(searchTerm.toLowerCase())
+                                            ).map(option => (
+                                                <button
+                                                    key={option.value}
+                                                    className="dropdown-item"
+                                                    onClick={() => handleBusinessChange(index, 'CodeADA', option.value, option.label)}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                            {BUSINESS_OPTIONS.filter(option =>
+                                                option.label.toLowerCase().includes(searchTerm.toLowerCase())
+                                            ).length === 0 && (
+                                                <div className="dropdown-item text-muted">No matches found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form-group col-md-3">

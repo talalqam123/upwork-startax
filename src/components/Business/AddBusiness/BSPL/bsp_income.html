@@ -1,0 +1,219 @@
+<table class="bspl_table col-md-8 text-content">
+    <tbody>
+      <tr data-widget="expandable-table" aria-expanded="false" class="header">
+        <td class="header">
+          <strong>
+            <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+            1. Sources of Funds
+          </strong>
+        </td>
+      </tr>
+      <tr class="expandable-body d-none">
+        <td>
+          <div class="p-0">
+            <table class="w-100 table table-hover m-0">
+              <tbody>
+                <tr>
+                  <td colspan="2">1: Proprietor's fund</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px" > 1a: Proprietor's capital</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="text" name="proprtrCapital" value="{{ balancesheet_profitloss.proprtrCapital }}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">1b: Reserves and Surplus</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="resrveSurplus" value="{{balancesheet_profitloss.resrveSurplus}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">1bi: Revaluation Reserve</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="revalReserve" value="{{balancesheet_profitloss.revalReserve}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">1bii: Capital Reserve</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="capitlReserve" value="{{balancesheet_profitloss.capitlReserve}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">1biii: Statutory Reserve</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="statutoryReserve" value="{{balancesheet_profitloss.statutoryReserve}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">1biv: Any other Reserve</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="otherReserve" value="{{balancesheet_profitloss.otherReserve}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">1bv: Total (bi+bii+biii+biv)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalReserve" value="{{balancesheet_profitloss.totalReserve}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">1c: Total proprietor's fund (a + bv)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalProprtrFund" value="{{balancesheet_profitloss.totalProprtrFund}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">2: Loan funds</td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <span style="margin-left: 30px">2a: Secured loans</span>
+                  </td>
+                  
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">2ai: Foreign Currency Loans</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="foreignLoans" value="{{balancesheet_profitloss.foreignLoans}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <span style="margin-left: 50px">2aii: Rupee Loans</span>
+                  </td>
+            
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 70px">2aiiA: From Banks</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="rupeeFromBanks" value="{{balancesheet_profitloss.rupeeFromBanks}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 70px">2aiiB: From Others</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="rupeeFromOthers" value="{{balancesheet_profitloss.rupeeFromOthers}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 70px">2aiiC: Total(iiA + iiB)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalRupeeLoans" value="{{balancesheet_profitloss.totalRupeeLoans}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">2aiii: Total(ai + iiC)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalSecuredLoans" value="{{balancesheet_profitloss.totalSecuredLoans}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <span style="margin-left: 30px">2b: Unsecured loans (including deposits)</span>
+                  </td>
+                  
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">2bi: From Banks</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="unsecFromBanks" value="{{balancesheet_profitloss.unsecFromBanks}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">2bii: From others</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="unsecFromOthers" value="{{balancesheet_profitloss.unsecFromOthers}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 50px">2biii: Total(bi+bii)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalUnsecLoans" value="{{balancesheet_profitloss.totalUnsecLoans}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">2c: Total Loan Funds(aiii + biii)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalLoanFunds" value="{{balancesheet_profitloss.totalLoanFunds}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>3: Deferred tax liability</td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="deferredTax" value="{{balancesheet_profitloss.deferredTax}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">4: Advances</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">4i: From persons specified in section 40A(2)(b) of the I. T. Act</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="advances40A" value="{{balancesheet_profitloss.advances40A}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">4ii: From others</span>
+                  </td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="advancesOthers" value="{{balancesheet_profitloss.advancesOthers}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span style="margin-left: 30px">4iii: Total Advances (i + ii)</span>
+                  </td>
+                  <td class="td_input">
+                    <input readonly class="w-100 border-0 form-control" type="number" name="totalAdvances" value="{{balancesheet_profitloss.totalAdvances}}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>5: Sources of funds(1c + 2c + 3 + 4iii)</td>
+                  <td class="td_input">
+                    <input class="w-100 border-0 form-control" type="number" name="totalSourcesOfFunds" value="{{balancesheet_profitloss.totalSourcesOfFunds}}" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>

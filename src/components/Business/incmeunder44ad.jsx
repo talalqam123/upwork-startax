@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import BusinessTabs from './BusinessTabs';
+import BuisinessBase from './business_base';
 import Income44ADA from './Income44ADA';
 import Income44AE from './Income44AE';
-import BuisinessBase from './business_base';
+// Add business options array
+const BUSINESS_OPTIONS = [
+    { value: 'RETAIL', label: 'Retail Trading' },
+    { value: 'WHOLESALE', label: 'Wholesale Business' },
+    { value: 'SERVICES', label: 'Service Provider' },
+];
 
 const Income44AD = () => {
     const [isAnyIncomeFilled, setIsAnyIncomeFilled] = useState(false);
@@ -28,6 +34,10 @@ const Income44AD = () => {
     const [isTyped44adProfitCash, setIsTyped44adProfitCash] = useState(false);
     const [isTyped44adProfitOther, setIsTyped44adProfitOther] = useState(false);
     const [isTyped44adProfitBank, setIsTyped44adProfitBank] = useState(false);
+
+    // Add state for search
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showDropdown, setShowDropdown] = useState(false);
 
     // Format currency in Indian format
     const formatCurrency = (value) => {
@@ -115,13 +125,26 @@ const Income44AD = () => {
     };
 
     // Handle business form
-    const handleBusinessChange = (index, field, value) => {
+    const handleBusinessChange = (index, field, value, label = '') => {
         const updatedBusinesses = [...formData.nature_of_business];
-        updatedBusinesses[index][field] = value;
+        if (field === 'CodeAD') {
+            updatedBusinesses[index] = {
+                ...updatedBusinesses[index],
+                CodeAD: value,
+                CodeAD_label: label || value
+            };
+        } else {
+            updatedBusinesses[index] = {
+                ...updatedBusinesses[index],
+                [field]: value
+            };
+        }
         setFormData(prev => ({
             ...prev,
             nature_of_business: updatedBusinesses
         }));
+        setSearchTerm('');
+        setShowDropdown(false);
     };
 
     const handleAddBusiness = () => {
@@ -182,15 +205,39 @@ const Income44AD = () => {
                                 <label className="m-1 text-content">
                                     Nature of Business <span className="text-danger">*</span>
                                 </label>
-                                <select
-                                    className="form-control rounded-0 business_name"
-                                    value={business.CodeAD}
-                                    onChange={(e) => handleBusinessChange(index, 'CodeAD', e.target.value)}
-                                    required
-                                >
-                                    <option value="">Select Business</option>
-                                    {/* Add your business options here */}
-                                </select>
+                                <div className="position-relative">
+                                    <input
+                                        type="text"
+                                        className="form-control rounded-0"
+                                        value={searchTerm || business.CodeAD_label}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            setShowDropdown(true);
+                                        }}
+                                        onFocus={() => setShowDropdown(true)}
+                                        placeholder="Search business type..."
+                                    />
+                                    {showDropdown && (
+                                        <div className="dropdown-menu show w-100" style={{ position: 'absolute', zIndex: 1000 }}>
+                                            {BUSINESS_OPTIONS.filter(option =>
+                                                option.label.toLowerCase().includes(searchTerm.toLowerCase())
+                                            ).map(option => (
+                                                <button
+                                                    key={option.value}
+                                                    className="dropdown-item"
+                                                    onClick={() => handleBusinessChange(index, 'CodeAD', option.value, option.label)}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                            {BUSINESS_OPTIONS.filter(option =>
+                                                option.label.toLowerCase().includes(searchTerm.toLowerCase())
+                                            ).length === 0 && (
+                                                <div className="dropdown-item text-muted">No matches found</div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form-group col-md-3">
@@ -393,10 +440,19 @@ const Income44AD = () => {
         </div>
     );
 
-   // In Income44AD.jsx, replace the render44ADAContent function with:
-const render44ADAContent = () => <Income44ADA />;
+    const render44ADAContent = () => (
+        <div>
+            
+           <Income44ADA />
+        </div>
+    );
 
-const render44AEContent = () => <Income44AE />;
+    const render44AEContent = () => (
+        <div>
+           
+           <Income44AE/>
+        </div>
+    );
 
     // Render active tab content
     const renderActiveTabContent = () => {
@@ -413,7 +469,6 @@ const render44AEContent = () => <Income44AE />;
     };
 
     return (
-        <>
         <div className="col-12">
             <div className="card card-primary card-outline card-tabs">
                 {/* Tabs Header */}
@@ -439,13 +494,13 @@ const render44AEContent = () => <Income44AE />;
                         ))}
                     </ul>
                 </div>
-
+             
                 {/* Form Content */}
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className="card-body">
                         {renderActiveTabContent()}
                     </div>
-
+                    <BuisinessBase />
                     <div className="card-footer">
                         <div className="col-md-12 d-flex justify-content-end">
                             <input
@@ -455,16 +510,14 @@ const render44AEContent = () => <Income44AE />;
                                 className="btn btn-block rounded-0 btn-primary"
                                 value="Submit"
                             />
+                            
                         </div>
 
                     </div>
                 </form>
-                
+
             </div >
-           
         </div >
-        <BuisinessBase />
-        </>
     );
 };
 

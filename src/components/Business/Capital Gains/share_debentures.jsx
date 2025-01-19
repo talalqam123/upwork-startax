@@ -83,7 +83,7 @@ const ShareDebenturesForm = ({ clientRelId }) => {
                             className="btn btn-block rounded-0 btn-primary"
                             value="Submit"
                         />
-                        <BackButton link="/client" />
+                        <BackButton link="/client/income/capital-gains" />
                     </div>
                 </div>
             </form>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BackButton from "../../Backbutton";
 
 
-const CapitalGainsForm = ({ clientId, clientRelId }) => {
+const VDAIncomeForm = ({ clientId, clientRelId }) => {
   const [assets, setAssets] = useState([{
 
         asset_name: "",
@@ -198,11 +198,11 @@ const CapitalGainsForm = ({ clientId, clientRelId }) => {
           >
             Submit
           </button>
-          <BackButton link="/client" />
+          <BackButton link="/client/income/capital-gains" />
         </div>
       </div>
     </form>
   );
 };
 
-export default CapitalGainsForm;
+export default VDAIncomeForm;

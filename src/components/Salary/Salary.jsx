@@ -1,107 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    addSalaryTab,
+    removeSalaryTab,
+    updateSalaryTab,
+    setActiveTab,
+    saveSalaryData
+} from '../../store/slices/salarySlice';
 import GrossSalaryForm from './GrossSalary';
 import SalarySection from './DeductionExemption';
 
 const SalaryForm = () => {
-    const [salaryTabs, setSalaryTabs] = useState([
-        {
-            employerName: 'Employer 1',
-            empType: '',
-            tanNumber: '',
-            tds: '',
-            address: '',
-            pincode: '',
-            stateCode: '',
-            city: '',
-        },
-    ]);
+    const dispatch = useDispatch();
+    const underlineRef = useRef(null);
+    const tabsRef = useRef([]);
+    const { salaryTabs, activeTabIndex, loading } = useSelector((state) => state.salary);
 
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
+    useEffect(() => {
+        updateUnderline(activeTabIndex);
+    }, [activeTabIndex, salaryTabs]);
+
+    const updateUnderline = (index) => {
+        if (!underlineRef.current || !tabsRef.current[index]) return;
+        
+        const activeTab = tabsRef.current[index];
+        const { offsetLeft, offsetWidth } = activeTab;
+        
+        underlineRef.current.style.width = `${offsetWidth}px`;
+        underlineRef.current.style.left = `${offsetLeft}px`;
+    };
 
     const handleAddSalaryTab = () => {
-        setSalaryTabs([
-            ...salaryTabs,
-            {
-                employerName: `Employer ${salaryTabs.length + 1}`,
-                empType: '',
-                tanNumber: '',
-                tds: '',
-                address: '',
-                pincode: '',
-                stateCode: '',
-                city: '',
-            },
-        ]);
-        setActiveTabIndex(salaryTabs.length);
+        dispatch(addSalaryTab());
     };
 
     const handleRemoveSalaryTab = (index) => {
-        if (salaryTabs.length > 1) {
-            setSalaryTabs(salaryTabs.filter((_, i) => i !== index));
-            setActiveTabIndex(Math.max(0, activeTabIndex - 1));
-        } else {
-            // Reset the tab instead of removing the last one
-            const resetTabs = [...salaryTabs];
-            resetTabs[index] = {
-                employerName: `Employer 1`,
-                empType: '',
-                tanNumber: '',
-                tds: '',
-                address: '',
-                pincode: '',
-                stateCode: '',
-                city: '',
-            };
-            setSalaryTabs(resetTabs);
-        }
+        dispatch(removeSalaryTab(index));
     };
 
     const handleInputChange = (index, field, value) => {
-        const updatedTabs = [...salaryTabs];
-        updatedTabs[index][field] = value;
-        setSalaryTabs(updatedTabs);
+        dispatch(updateSalaryTab({ index, field, value }));
     };
 
     const toggleActiveTab = (index) => {
-        setActiveTabIndex(index);
+        dispatch(setActiveTab(index));
+        updateUnderline(index);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission here
-        // You can collect all the data from salaryTabs and other components
-        const formData = {
-            tabs: salaryTabs,
-            // Add other form data as needed
-        };
-
-        // Make API call to your backend
-        fetch('/api/store_salary_income', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Add any necessary headers (e.g., CSRF token)
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Handle response
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        dispatch(saveSalaryData({ tabs: salaryTabs }));
     };
 
     return (
         <form className="salary_form" onSubmit={handleSubmit}>
             <div className="tab-wrapper salary-data">
                 <div className="tab-header">
-                    <div className="salary_tabs d-flex">
+                    <div className="salary_tabs d-flex position-relative">
                         {salaryTabs.map((tab, index) => (
                             <div
                                 key={index}
+                                ref={(el) => (tabsRef.current[index] = el)}
                                 className={`tab-btn d-flex flex-row align-items-center ${activeTabIndex === index ? 'active' : ''}`}
                                 onClick={() => toggleActiveTab(index)}
                             >
@@ -116,7 +75,16 @@ const SalaryForm = () => {
                                 </span>
                             </div>
                         ))}
-                        <div className="underline"></div>
+                        <div
+                            ref={underlineRef}
+                            className="underline position-absolute"
+                            style={{
+                                height: "2px",
+                                backgroundColor: "purple",
+                                bottom: "0",
+                                transition: "width 0.3s, left 0.3s",
+                            }}
+                        ></div>
                     </div>
                     <button className="tab-btn-add tab-btn-add-salary" onClick={handleAddSalaryTab}>
                         <i className="fas fa-plus"></i>
@@ -259,29 +227,36 @@ const SalaryForm = () => {
                                 )}
                             </div>
 
-                           <GrossSalaryForm/>
-                           <SalarySection/>
+                            <GrossSalaryForm />
+                            <SalarySection />
                         </div>
                     ))}
                 </div>
-            </div>
-            
-            {/* Add submit button */}
-            <div className="form-group d-flex justify-content-end mt-3">
-                <button 
-                    type="submit" 
-                    className="btn btn-primary salary_form_submit"
-                >
-                    Submit
-                </button>
+                <div className="row ml-2">
+        <div className="col-md-12 mb-4">
+          <button
+            type="submit"
+            id="Client_address_form"
+            style={{ width: 'fit-content' }}
+            className="btn btn-block btn-primary salary_form_submit"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
             </div>
 
+            {/* Add submit button */}
+            
+            
+
             {/* Add hidden input for tabs */}
-            <input 
-                type="hidden" 
-                name="tab" 
-                value={salaryTabs.map((_, index) => index).join(',')} 
+            <input
+                type="hidden"
+                name="tab"
+                value={salaryTabs.map((_, index) => index).join(',')}
             />
+            {loading && <div className="loading-spinner">Loading...</div>}
         </form>
     );
 };

@@ -80,7 +80,7 @@ const TrpInfoForm = () => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-          <BackButton link="/client" />
+          <BackButton link="/client/final/more-info" />
           </div>
         </div>
       </form>

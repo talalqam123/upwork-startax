@@ -31,7 +31,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect('/client/tds/non-salary')}
+            onClick={() => handleRedirect('/client/tds-taxes/tds-tcs/non-salary')}
           >
             Non Salary TDS
           </button>
@@ -47,7 +47,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect('/client/tds/property')}
+            onClick={() => handleRedirect('/client/tds-taxes/tds-tcs/sale-rent')}
           >
             Add TDS on Sale/Rent of Immovable Property
           </button>
@@ -63,7 +63,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect('/client/tds/tcs')}
+            onClick={() => handleRedirect('/client/tds-taxes/tds-tcs/tcs')}
           >
             Taxes Collected at Source (TCS)
           </button>
@@ -79,7 +79,7 @@ const TdsTcsComponent = () => {
           </div>
           <button
             className="tds-tsx-buttons btn h-auto w-auto btn-block bg-gradient-info btn-flat col-3 text-sm"
-            onClick={() => handleRedirect('/client/tds/esops')}
+            onClick={() => handleRedirect('/client/tds-taxes/tds-tcs/esops')}
           >
             Tax Deferred on ESOPs (Section 80IAC)
           </button>

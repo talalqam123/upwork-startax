@@ -17,51 +17,51 @@ const AdvancedInfo = () => {
         {[
           {
             label: "Residential Status",
-            link: "/client/final/residential_status/",
+            link: "/client/final/more-info/resedential",
           },
           {
             label: "Unlisted Shares",
-            link: "/client/final/unlisted_shares/",
+            link: "/client/final/more-info/unlisted",
           },
           {
             label: "Directorship Details",
-            link: "/client/final/directorship_details/",
+            link: "/client/final/more-info/directorship",
           },
           {
             label: "Foreign Assets, Incomes & Taxes",
-            link: "/client/final/foreign_assets_incomes_taxes/",
+            link: "/client/final/more-info/foreign-assets",
           },
           {
             label: "Schedule Specified Person Income",
-            link: "/client/final/schedule_spi/",
+            link: "/client/final/more-info/schedule-spi",
           },
           {
             label: "Schedule AL: Assets & Liabilities",
-            link: "/client/final/schedule_al/",
+            link: "/client/final/more-info/schedule-al",
           },
           {
             label: "Current Account Deposits",
-            link: "/client/final/current_account_deposits/",
+            link: "/client/final/more-info/current-deposits",
           },
           {
             label: "Expenditure on Foreign Travel",
-            link: "/client/final/expenditure_on_foreign_travel/",
+            link: "/client/final/more-info/foreign-travel",
           },
           {
             label: "Expenditure on Electricity Consumption",
-            link: "/client/final/expenditure_on_electricity_consumption/",
+            link: "/client/final/more-info/electricity-consumption",
           },
           {
             label: "Clause(iv), seventh proviso to 139(1)",
-            link: "/client/final/clause_iv_seventh/",
+            link: "/client/final/more-info/clause-iv",
           },
           {
             label: "TRP (TAX RETURN PREPARER)",
-            link: "/client/final/trp_info/",
+            link: "/client/final/more-info/trp",
           },
           {
             label: "Representative Assessee",
-            link: "/client/final/assessee_info/",
+            link: "/client/final/more-info/assessee",
           },
         ].map((item, index) => (
           <div key={index} className="col-md-12 mt-4 card card-body">

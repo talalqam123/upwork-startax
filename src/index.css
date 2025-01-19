@@ -149,7 +149,9 @@ button:focus-visible {
     padding: 0;
     overflow-x: hidden;
   }
-  
+  .body {
+    margin-bottom: 0px !important;
+}
   .css-1gqmilo-MuiDataGrid-columnHeaderTitle {
     
     font-weight: 600 !important

@@ -8,25 +8,25 @@ const BSPLIncomeForm = ({ clientId, year }) => {
     {
       id: "01",
       title: "Balance Sheet + P&L Account",
-      path: "/client/business/BSPL/fill-bspl",
+      path: "/client/income/business/fill-bspl",
       buttonText: "Fill BSPL"
     },
     {
       id: "02",
       title: "Depreciation",
-      path: "/client/business/BSPL/depreciation",
+      path: "/client/income/business/bspl/depreciation",
       buttonText: "Fill Depreciation"
     },
     {
       id: "03",
       title: "Schedule ICDS",
-      path: "/client/business/BSPL/icds",
+      path: "/client/income/business/bspl/icds",
       buttonText: "Fill ICDS"
     },
     {
       id: "04",
       title: "Schedule ESR",
-      path: "/client/business/BSPL/esr",
+      path: "/client/income/business/bspl/esr",
       buttonText: "Fill ESR"
     }
   ];

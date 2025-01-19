@@ -601,15 +601,22 @@ const HousePropertyForm = ({ clientId, year }) => {
                           />
                         </div>
                       </div>
-                      <div className="col-md-1">
+                      <div className="form-group d-flex" style={{"flex-direction": " column"}} >
+                         <label class="m-0">Cancel</label>
                         <button
                           type="button"
-                          className="btn btn-danger btn-sm rounded-0"
+                          className="cancel btn btn-danger"
                           onClick={() => handleRemoveTenant(index, tenantIndex)}
                         >
                           <i className="fas fa-trash"></i>
                         </button>
                       </div>
+                      {/* <div class="form-group d-flex" style={{ "flex-direction": " column" }} >
+                        <label class="m-0">Cancel</label>
+                        <div class="cancel btn btn-danger">
+                          <i class="fas fa-trash"></i>
+                        </div>
+                      </div> */}
                     </div>
                   ))}
                   <button

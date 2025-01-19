@@ -1,72 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
-import Home from "./Home";
-import ClientDetails from "./ClientDetails";
-import AddClientInfo from "./add_clientdetails";
-import RemunerationForm from "./Business/AddBusiness/BSPL/remuneration";
-import AddClient from "./add_client_by_id";
-import AppRoutes from "../App";
-import ClientSummary from "./26AS_AIS";
-const Layout = ({ darkMode, toggleDarkMode }) => {
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import LoadingBar from './LoadingBar';
+import faviconImg from '../../public/static/dist/img/favicon.ico'
 
+const Layout = ({ darkMode, toggleDarkMode, isLoading }) => {
   return (
     <>
-      <nav className={`main-header navbar navbar-expand navbar-light ${darkMode ? "navbar-dark" : ""}`} style={{ margin: "0" }}>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a href="/" className="brand-link">
-              <img
-                src="../static/dist/img/favicon.ico"
-                alt="AdminLTE Logo"
-                className="brand-image img-circle elevation-3"
-                style={{ opacity: 0.8 }}
-              />
-              <span className="brand-text font-weight-light">Star Tax</span>
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="/" className="nav-link">
-              Home
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="#" className="nav-link">
-              Uplinks
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="#" className="nav-link">
-              Uplinks
-            </a>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <a href="#" className="nav-link" data-toggle="modal" data-target="#helpModal">
-              Help
-            </a>
-          </li>
-        </ul>
+      <nav className={`main-header navbar navbar-expand ${darkMode ? "navbar-dark bg-dark" : "navbar-light bg-white"}`} 
+           style={{ 
+             margin: "0",
+             padding: "0.5rem 1rem",
+             boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
+             position: "sticky",
+             top: 0,
+             zIndex: 1000
+           }}>
+        <div className="container-fluid">
+          {/* Brand Logo */}
+          <a href="/" className="navbar-brand d-flex align-items-center">
+            <img
+              src={faviconImg}
+              alt="Star Tax Logo"
+              className="brand-image"
+              style={{ 
+                height: "32px",
+                width: "auto",
+                marginRight: "10px"
+              }}
+            />
+            <span className="brand-text font-weight-bold">Star Tax</span>
+          </a>
 
-        <div className="drkMode ml-auto" onClick={toggleDarkMode}>
-          <div className="inner_div_drk mr-3">
-            <img src="../static/dist/img/moon.png" alt="Dark Mode" className={`drkimg ${darkMode ? "active" : ""}`} />
-            <img src="../static/dist/img/sun.png" alt="Light Mode" className={`lightimg ${!darkMode ? "active" : ""}`} />
+          {/* Navigation Links */}
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <a href="/" className="nav-link px-3 rounded-pill hover-effect">
+                Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a href="#" className="nav-link px-3 rounded-pill hover-effect">
+                Uplinks
+              </a>
+            </li>
+            <li className="nav-item">
+              <a href="#" className="nav-link px-3 rounded-pill hover-effect">
+                Help
+              </a>
+            </li>
+          </ul>
+
+          {/* Right Side Items */}
+          <div className="d-flex align-items-center gap-3">
+            {/* Dark Mode Toggle */}
+            <div className="dark-mode-toggle" 
+                 onClick={toggleDarkMode}
+                 style={{
+                   cursor: "pointer",
+                   padding: "8px",
+                   borderRadius: "50%",
+                   background: darkMode ? "#2c3e50" : "#f8f9fa",
+                   transition: "all 0.3s ease"
+                 }}>
+              {darkMode ? (
+                <i className="fas fa-sun" style={{ color: "#ffd700" }}></i>
+              ) : (
+                <i className="fas fa-moon" style={{ color: "#2c3e50" }}></i>
+              )}
+            </div>
+
+            {/* Logout Button */}
+            <button
+              onClick={() => $('#logoutModal').modal('show')}
+              className="btn btn-outline-danger d-flex align-items-center gap-2"
+              style={{
+                borderRadius: "20px",
+                padding: "8px 16px",
+                transition: "all 0.3s ease"
+              }}
+            >
+              <i className="fas fa-sign-out-alt"></i>
+              <span className="d-none d-md-inline">Logout</span>
+            </button>
           </div>
         </div>
-
-        <div className="ml-auto ml-md-0">
-          <a
-            data-toggle="modal"
-            data-target="#logoutModal"
-            className="logout-navbar px-3 py-2 rounded-0"
-            role="button"
-          >
-            <i className="nav-icon fas fa-sign-out-alt mr-0 mr-md-1"></i>&nbsp;
-            <p className="m-0 d-none d-md-block">Logout</p>
-          </a>
-        </div>
       </nav>
-
-
+      <LoadingBar isLoading={isLoading} />
       <div className="modal fade" id="helpModal" tabIndex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
@@ -113,28 +132,24 @@ const Layout = ({ darkMode, toggleDarkMode }) => {
   );
 };
 
-
 const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
   };
 
-
   return (
     <div className={`body hold-transition layout-fixed sidebar-closed ${darkMode ? "dark-mode" : ""}`}>
       <div className="wrapper">
-        <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode} isLoading={isLoading} />
         <div className="content-wrapper" style={{ margin: "0" }}>
-         
-          <Outlet />
+          <Outlet context={darkMode} /> {/* Pass darkMode directly as context */}
         </div>
       </div>
     </div>
-  )
+  );
+};
 
-
-
-}
 export default Dashboard;

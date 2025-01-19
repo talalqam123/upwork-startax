@@ -1,5 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faAddressBook,
+  faMoneyBill,
+  faHandHoldingDollar,
+  faReceipt,
+  faFileInvoice,
+  faUser,
+  faLocationDot,
+  faBuildingColumns,
+  faClipboard,
+  faBriefcase,
+  faHouse,
+  faChartLine,
+  faMoneyBillTransfer,
+  faMoneyCheck,
+  faFileContract,
+  faFileSignature,
+  faFingerprint,
+  faFileCircleCheck
+} from '@fortawesome/free-solid-svg-icons';
+import { useNavigate, useLocation, Routes, Route, Navigate } from "react-router-dom";
 import BasicDetailsForm from "./BasicDetails";
 import AddressForm from "./Address";
 import BankDetails from "./Banks";
@@ -18,234 +39,324 @@ import AdvancedInfo from "./Final/More Info/more_info";
 import SelfAssessment from "./TDS/Self Assessment/self_assessment";
 import TdsTcsComponent from "./TDS/tds_tcs";
 import TdsOtherDetails from "./TDS/Other Details/other_details";
+import LoadingBar from './LoadingBar';
+import RemunerationForm from "./Business/AddBusiness/BSPL/remuneration";
+import BSPLIncomeForm from "./Business/AddBusiness/BSPL/bspl_income";
+import NoBooksOfAccountIncome from "./Business/AddBusiness/no.ofbook_accounts";
+import SpeculativeIncomeForm from "./Business/AddBusiness/speculativeincomeform";
+import GSTDetailsForm from "./Business/Financial Staements & Schedules/gst";
+import BusinessIncomeForm from "./Business/Financial Staements & Schedules/schedule_bp";
+import ScheduleOI from "./Business/Financial Staements & Schedules/schedule_oi";
+import AuditorDetailsForm from "./Business/Audit Details/auditordetails";
+import Form3CA3CB from "./Business/Audit Details/3ca_3cb_3_cd";
+import DetailsOfTradingConcern from "./Business/Quantitave Details/trading_concern";
+import ManufacturingAcc from "./Business/AddBusiness/BSPL/manufacturingAcc";
+import BSPIncome from "./Business/AddBusiness/BSPL/temp_balancesheet"; // Add BSPIncome component
+import DepreciationForm from "./Business/AddBusiness/BSPL/bspl_depreciationForm"; // Add DepreciationForm component
+import ScheduleICDSForm from "./Business/AddBusiness/BSPL/bspl_scheduleicds";
+import ESRDetailsForm from "./Business/AddBusiness/BSPL/bspl_esrdetails";
+import ShareDebenturesForm from "./Business/Capital Gains/share_debentures";
+import VDAIncomeForm from "./Business/Capital Gains/vda_income";
+import MutualFunds from "./Business/Capital Gains/mutual_funds";
+import StockOptionsForm from "./Business/Capital Gains/stock_rsu";
+import LandOrBuildingForm from "./Business/Capital Gains/landorbuilding_form";
+import OtherAssetForm from "./Business/Capital Gains/any_other_asset";
+import DeemedCapitalGainsForm from "./Business/Capital Gains/deemed_capital_gain";
+import NonSalaryTDS from "./TDS/TDS-TCS/non_salary_tds";
+import TdsOnProperty from "./TDS/TDS-TCS/tds_property";
+import TCSForm from "./TDS/TDS-TCS/tcs_form";
+import DeferredTaxESOPs from "./TDS/TDS-TCS/deferred_info";
+import ResidentialStatus from "./Final/More Info/resedential";
+import UnlistedShares from "./Final/More Info/unlistedshare";
+import DirectorshipDetails from "./Final/More Info/directorship";
+import ForeignAssetsIncomes from "./Final/More Info/Advanced Info/Foreign Assets/Foreignassets";
+import ScheduleSPI from "./Final/More Info/schedule_spi";
+import PropertyDetails from "./Final/More Info/schedule_al";
+import ExpenditureOnForeignTravel from "./Final/More Info/expenditure_on_foreign";
+import ExpenditureOnElectricityConsumption from "./Final/More Info/expenditure_on_elec";
+import ClauseIVSeventhProviso from "./Final/More Info/clause.iv";
+import TrpInfoForm from "./Final/More Info/trpinfo";
+import RepresentativeAssesseeForm from "./Final/More Info/Representative_assesse";
+import ForeignBank from "./Final/More Info/Advanced Info/Foreign Assets/foreignbank";
+import ForeignCustodialAccount from "./Final/More Info/Advanced Info/Foreign Assets/foreign_custodial";
+import ForeignEquityDebtInterest from "./Final/More Info/Advanced Info/Foreign Assets/foreign_equity";
+import ForeignCashValueInsurance from "./Final/More Info/Advanced Info/Foreign Assets/foreign_casvalue";
+import FinancialInterestForm from "./Final/More Info/Advanced Info/Foreign Assets/foreign_interest";
+import ImmovablePropertyForm from "./Final/More Info/Advanced Info/Foreign Assets/immovable_prop";
+import OtherAssets from "./Final/More Info/Advanced Info/Foreign Assets/other_assets";
+import AccountsHavingSigningAuthority from "./Final/More Info/Advanced Info/Foreign Assets/signing_authority";
+import TrustOutsideIndiaTrustee from "./Final/More Info/Advanced Info/Foreign Assets/trust_outside_india";
+import OtherSourcesIncomeOutsideIndia from "./Final/More Info/Advanced Info/Foreign Assets/other_income";
+const TABS_CONFIG = {
+  "Permanent Details": {
+    icon: faAddressBook,
+    path: "permanent",
+    subTabs: {
+      "Basic Details": { Component: BasicDetailsForm, path: "basic", icon: faUser },
+      "Address": { Component: AddressForm, path: "address", icon: faLocationDot },
+      "Bank": { Component: BankDetails, path: "bank", icon: faBuildingColumns },
+      "Additional Details": { Component: AdditionalDetails, path: "additional", icon: faClipboard }
+    }
+  },
+  "Income": {
+    icon: faMoneyBill,
+    path: "income",
+    subTabs: {
+      "Salary": { Component: SalaryPage, path: "salary", icon: faBriefcase },
+      "Business": { 
+        Component: IncomeUnder44AD, 
+        path: "business", 
+        icon: faHandHoldingDollar,
+        subRoutes: {
+          "remuneration": RemunerationForm,
+          "bspl": BSPLIncomeForm,  
+          "no-books": NoBooksOfAccountIncome,
+          "speculative": SpeculativeIncomeForm,
+          "gst": GSTDetailsForm,
+          "schedule-bp": BusinessIncomeForm,
+          "schedule-oi": ScheduleOI,
+          "auditor": AuditorDetailsForm,
+          "form-3ca-3cb": Form3CA3CB,
+          "trading": DetailsOfTradingConcern,
+          "manufacturing-raw": ManufacturingAcc,  // You'll need to create this component
+          "fill-bspl": BSPIncome, // Add route for Fill BSPL
+          "bspl/depreciation": DepreciationForm, // You'll need to create this component
+          "bspl/icds": ScheduleICDSForm, // You'll need to create this component
+          "bspl/esr": ESRDetailsForm, // You'll need to create this component
+        }
+      },
+      "House Property": { Component: HousePropertyForm, path: "house", icon: faHouse},
+      "Capital Gains": { Component: CapitalGains, path: "capital-gains", icon: faChartLine,
+        subRoutes: {
+            "debentures": ShareDebenturesForm,
+            "vda-income": VDAIncomeForm,
+            "mutual-funds": MutualFunds,
+            "stock-rsu": StockOptionsForm,
+            "landbuilding" : LandOrBuildingForm,
+            "other-asset" : OtherAssetForm,
+            "deemed" :DeemedCapitalGainsForm
+        }
+
+       },
+      "Exempt Income": { Component: ExemptIncomeForm, path: "exempt", icon: faMoneyBillTransfer },
+      "Other Income": { Component: OtherIncomeForm, path: "other", icon: faMoneyCheck }
+    }
+  },
+  "Deduction": {
+    icon: faReceipt,
+    path: "deduction",
+    subTabs: {
+      "80C to 80G": { Component: DeductionForm, path: "80c-to-80g", icon: faFileContract },
+      "More Deductions": { Component: MoreDeductions, path: "more-deductions", icon: faFileSignature },
+      "Other Deductions": { Component: OtherDeductions, path: "other-deductions", icon: faFingerprint }
+    }
+  },
+  "TDS/Taxes": {
+    icon: faFileInvoice,
+    path: "tds-taxes",
+    subTabs: {
+      "TDS/TCS": { Component: TdsTcsComponent, path: "tds-tcs", icon: faFileContract,
+        subRoutes:{
+            "non-salary": NonSalaryTDS,
+            "sale-rent": TdsOnProperty,
+            "tcs": TCSForm,
+            "esops" : DeferredTaxESOPs
+        }
+
+       },
+      "Self Assessment": { Component: SelfAssessment, path: "self-assessment", icon: faFileSignature },
+      "Other Details": { Component: TdsOtherDetails, path: "other-details", icon: faClipboard },
+      "AIS/TIS": { Component: null, path: "ais-tis", icon: faFileCircleCheck }
+    }
+  },
+  "Final": {
+    icon: faFileInvoice,
+    path: "final",
+    subTabs: {
+      "More Info": { Component: AdvancedInfo, path: "more-info",
+        subRoutes: {
+             "resedential" : ResidentialStatus,
+             "unlisted" :UnlistedShares,
+             "directorship":  DirectorshipDetails,
+             "foreign-assets" : ForeignAssetsIncomes,
+             "schedule-spi": ScheduleSPI,
+             "schedule-al": PropertyDetails,
+             "current-deposits" :null,
+             "foreign-travel" :ExpenditureOnForeignTravel,
+             "electricity-consumption" :ExpenditureOnElectricityConsumption,
+             "clause-iv" :ClauseIVSeventhProviso,
+             "trp" : TrpInfoForm,
+             "assessee" : RepresentativeAssesseeForm,
+            // Foreign Assets Routes
+            "foreign-assets/foreign-bank" : ForeignBank,
+            "foreign-assets/foreign-custodial-account" : ForeignCustodialAccount,
+            "foreign-assets/foreign-equity-debt-interest" : ForeignEquityDebtInterest,
+            "foreign-assets/foreign-cash-value-insurance" : ForeignCashValueInsurance,
+            "foreign-assets/financial-interest" : FinancialInterestForm,
+            "foreign-assets/immovable-property" : ImmovablePropertyForm,
+            "foreign-assets/other-assets" : OtherAssets,
+            "foreign-assets/signing-authority" : AccountsHavingSigningAuthority,
+            "foreign-assets/trust-outside-india-trustee" : TrustOutsideIndiaTrustee,
+            "foreign-assets/other-sources-income-outside-india" : OtherSourcesIncomeOutsideIndia
+        }
+       },
+      "Filing": { Component: ExportSummary, path: "filing" },
+      "Utility": { Component: null, path: "utility" }
+    }
+  }
+};
+
 const ClientDetails = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Get initial active tabs from URL on component mount
+    const getInitialTabs = () => {
+        const path = location.pathname.split('/');
+        // Remove empty string and 'client' from path
+        const [mainPath, subPath] = path.filter(p => p && p !== 'client');
+        
+        let initialMainTab = "Permanent Details";
+        let initialSubTab = "Basic Details";
+
+        // Find matching tab configuration from URL
+        Object.entries(TABS_CONFIG).forEach(([tabName, tabConfig]) => {
+            if (tabConfig.path === mainPath) {
+                initialMainTab = tabName;
+                Object.entries(tabConfig.subTabs).forEach(([subTabName, subTabConfig]) => {
+                    if (subTabConfig.path === subPath) {
+                        initialSubTab = subTabName;
+                    }
+                });
+            }
+        });
+
+        return { mainTab: initialMainTab, subTab: initialSubTab };
+    };
+
+    const { mainTab, subTab } = getInitialTabs();
+    const [activeTab, setActiveTab] = useState(mainTab);
+    const [activeSubTab, setActiveSubTab] = useState(subTab);
+    
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedYear, setSelectedYear] = useState("2024");
     const [isYearModalOpen, setIsYearModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState("Permanent Details");
-    const [activePermanentTab, setActivePermanentTab] = useState("Basic Details");
-    const [activeIncomeTab, setActiveIncomeTab] = useState("Salary");
-    const [activeDeductionsTab, setActiveDeductionsTab] = useState("80C to 80G");
-    const [activeFinalTab, setFinalTab] = useState("Filing");
-    const [activeTDSTab, setTDSTab] = useState("TDS/TCS");
-    const clientYear = 2024;
-    const clientRelId = 'client123';
-    const navigate = useNavigate();
-    // All Tabs
-    const allTabs = [
-        { category: "Permanent Details", tabName: "Basic Details" },
-        { category: "Permanent Details", tabName: "Address" },
-        { category: "Permanent Details", tabName: "Bank" },
-        { category: "Permanent Details", tabName: "Additional Details" },
-        { category: "Income", tabName: "Salary" },
-        { category: "Income", tabName: "Business" },
-        { category: "Income", tabName: "House Property" },
-        { category: "Income", tabName: "Capital Gain" },
-        { category: "Income", tabName: "Other Income" },
-        { category: "Deduction", tabName: "80C to 80G" },
-        { category: "Deduction", tabName: "More Deductions" },
-        { category: "Deduction", tabName: "Other Deductions" },
-        { category: "TDS/Taxes", tabName: "TDS/TCS" },
-        { category: "Final", tabName: "Filing" },
-    ];
-    // Filtered Tabs based on Search
-    const filteredTabs = allTabs.filter(
-        (tab) =>
-            tab.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            tab.tabName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const handleTabSelect = (tab) => {
-        setActiveTab(tab.category);
-        if (tab.category === "Permanent Details") setActivePermanentTab(tab.tabName);
-        setSearchQuery(""); // Clear the search input after selecting a tab
+    const [isLoading, setIsLoading] = useState(false);
+    const [contentOpacity, setContentOpacity] = useState(1);
+    const TRANSITION_DURATION = 500; // 500ms for transition
+
+    const simulateLoading = () => {
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), TRANSITION_DURATION);
     };
 
-    const dummyHouseData = [
-        {
-            PropertyType: "D",
-            ifLetOut: "D",
-            PropertyOwner: "SE",
-        },
-        {
-            PropertyType: "S",
-            ifLetOut: "S",
-            PropertyOwner: "MI",
-        },
-    ];
+    // Update active tabs based on route changes
+    useEffect(() => {
+        const path = location.pathname.split('/');
+        // Remove empty string and 'client' from path
+        const [mainPath, subPath] = path.filter(p => p && p !== 'client');
 
-    const address = {
-        residence_type: 'foreign',
-        residence_no: '123',
-        road_street: 'Street ABC',
-        pincode: '12345',
-        zip_code: '98765',
-        phone_number: '9876543210',
-        state_code: 'NY',
-        district: 'District XYZ',
-        email: 'client@example.com',
-        country_mobile_code: '+1',
-        address: 'Area 1',
-        country: 'US',
-    };
+        if (!mainPath) return; // Don't update if no path
 
-    const states = [
-        ['NY', 'New York'],
-        ['CA', 'California'],
-        ['TX', 'Texas'],
-    ];
-
-    const countries = [
-        ['US', 'United States'],
-        ['IN', 'India'],
-    ];
-
-    const allClients = [
-        {
-            relative_id: 'client123',
-            full_name: 'John Doe',
-            pan_number: 'ABCDE1234F',
-            fathers_name: 'Robert Doe',
-            address: {
-                residence_type: 'foreign',
-                residence_no: '123',
-                road_street: 'Street ABC',
-                pincode: '12345',
-                zip_code: '98765',
-                phone_number: '9876543210',
-                state_code: 'NY',
-                district: 'District XYZ',
-                email: 'client@example.com',
-                country_mobile_code: '+1',
-                address: 'Area 1',
-                country: 'US',
+        Object.entries(TABS_CONFIG).forEach(([tabName, tabConfig]) => {
+            if (tabConfig.path === mainPath) {
+                setActiveTab(tabName);
+                Object.entries(tabConfig.subTabs).forEach(([subTabName, subTabConfig]) => {
+                    if (subTabConfig.path === subPath) {
+                        setActiveSubTab(subTabName);
+                    }
+                });
             }
-        },
-        // Add more clients as needed
-    ];
+        });
+    }, [location.pathname]);
 
-    const dummyNotes = [
-        { id: 1, note: 'Complete profile setup', date_created: new Date(), is_compleated: false },
-        { id: 2, note: 'Update MSME registration details', date_created: new Date(), is_compleated: true },
-    ];
-
-    const dummyAdditionalDetails = {
-        passport_no: 'A1234567',
-        voter_id_no: '1234567890',
-        nationality: 'CountryX',
-        qualification: 'Bachelor of Science',
-        occupation: 'Engineer',
-        marital_status: 'Married',
+    const handleTabChange = (tab) => {
+        setContentOpacity(0.1); // Start fade out
+        simulateLoading();
+        setTimeout(() => {
+            setActiveTab(tab);
+            const defaultSubTab = Object.keys(TABS_CONFIG[tab].subTabs)[0];
+            setActiveSubTab(defaultSubTab);
+            navigate(`/client/${TABS_CONFIG[tab].path}/${TABS_CONFIG[tab].subTabs[defaultSubTab].path}`);
+            setContentOpacity(1); // Fade in
+        }, TRANSITION_DURATION / 2); // Switch content halfway through the transition
     };
 
-    const dummyUdyamDetails = {
-        is_msme: 'Yes',
-        registration_date: '01/01/2020',
-        major_activity: 'Manufacturing',
-        msme_registration_no: 'MSME123456',
-        enterpris_type: 'small',
+    const handleSubTabChange = (mainTab, subTab) => {
+        setContentOpacity(0.1); // Start fade out
+        simulateLoading();
+        setTimeout(() => {
+            setActiveSubTab(subTab);
+            navigate(`/client/${TABS_CONFIG[mainTab].path}/${TABS_CONFIG[mainTab].subTabs[subTab].path}`);
+            setContentOpacity(1); // Fade in
+        }, TRANSITION_DURATION / 2);
     };
-
-    // const clientYear = 2023;
-    const clientId = '12345';
-    const clientSalaryDetails = [
-        {
-            EmployerName: 'Employer 1',
-            EmployerCategory: 'CGOV',
-            EmployerAddress: {
-                TanNumber: 'ABCDE1234F',
-                TDSDeducted: '5000',
-                Address: '123 Street, City',
-                PinCode: '123456',
-                StateCode: 'UP',
-                City: 'Lucknow',
-            },
-            Salary: {
-                total: '1000000',
-                NatureOfSalaryDtlsType: [],
-            },
-            Perquisites: {
-                total: '20000',
-                NatureOfPerquisitesType: [],
-            },
-            Profit: {
-                total: '15000',
-                NatureOfProfitInLieuOfSalaryType: [],
-            },
-            AllwncExemptUs10: {
-                TotalAllwncExemptUs10: '5000',
-                AllwncExemptUs10Dtls: [],
-            },
-            DeductionUs16: '50000',
-        },
-    ];
-    //   const states = [
-    //     { code: 'UP', name: 'Uttar Pradesh' },
-    //     { code: 'DL', name: 'Delhi' },
-    //     { code: 'MH', name: 'Maharashtra' },
-    //   ];
-    const previousClientSalaryDetails = [
-        {
-            EmployerName: 'Previous Employer 1',
-            EmployerCategory: 'SGOV',
-            EmployerAddress: {
-                TanNumber: 'XYZDE5678F',
-                TDSDeducted: '3000',
-                Address: '456 Lane, City',
-                PinCode: '654321',
-                StateCode: 'DL',
-                City: 'New Delhi',
-            },
-            Salary: {
-                total: '800000',
-                NatureOfSalaryDtlsType: [],
-            },
-            Perquisites: {
-                total: '10000',
-                NatureOfPerquisitesType: [],
-            },
-            Profit: {
-                total: '5000',
-                NatureOfProfitInLieuOfSalaryType: [],
-            },
-            AllwncExemptUs10: {
-                TotalAllwncExemptUs10: '3000',
-                AllwncExemptUs10Dtls: [],
-            },
-            DeductionUs16: '30000',
-        },
-    ];
-    const dummyIncome44AD = {
-        nature_of_business: [
-            { CodeAD_label: 'Business 1', NameOfBusinessAD: 'Shop', DescriptionAD: 'Retail Store' },
-        ],
-        GrsTotalTrnOverInCash: 10000,
-        GrsTrnOverAnyOthMode: 5000,
-        GrsTrnOverBank: 20000,
-        GrsPrftInCash: 3000,
-        GrsPrftOverAnyOthMode: 1000,
-        GrsPrftOverBank: 7000,
-        isAnyIncomeFilled: true,
-    };
-
-
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
+    };
+
+    const getFilteredTabs = () => {
+        if (!searchQuery) return [];
+        
+        const results = [];
+        Object.entries(TABS_CONFIG).forEach(([tabName, config]) => {
+            Object.entries(config.subTabs).forEach(([subTabName, subTabConfig]) => {
+                // Search in both main tab and subtab names, case-insensitive
+                if (
+                    tabName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    subTabName.toLowerCase().includes(searchQuery.toLowerCase())
+                ) {
+                    results.push({
+                        category: tabName,
+                        tabName: subTabName,
+                        path: `${config.path}/${subTabConfig.path}`,
+                        icon: subTabConfig.icon
+                    });
+                }
+            });
+        });
+        return results;
+    };
+
+    const handleSearchSelect = (result) => {
+        setContentOpacity(0.1); // Start fade out
+        simulateLoading();
+        
+        setTimeout(() => {
+            const mainTab = result.category;
+            const subTab = result.tabName;
+            
+            setActiveTab(mainTab);
+            setActiveSubTab(subTab);
+            
+            // Navigate to the correct path using the TABS_CONFIG
+            const mainPath = TABS_CONFIG[mainTab].path;
+            const subPath = TABS_CONFIG[mainTab].subTabs[subTab].path;
+            navigate(`/client/${mainPath}/${subPath}`);
+            
+            setSearchQuery(""); // Clear search
+            setContentOpacity(1); // Fade in
+        }, TRANSITION_DURATION / 2);
     };
 
     const handleYearChange = (e) => {
         setSelectedYear(e.target.value);
     };
 
-
+    const contentStyles = {
+        transition: 'opacity 0.5s ease',
+        opacity: contentOpacity,
+    };
 
     return (
         <>
+            <LoadingBar isLoading={isLoading} duration={TRANSITION_DURATION} />
             {/* Main content */}
             <section className="content">
                 <div className="container-fluid pt-1 px-0 pr-2">
                     {/* EXAMPLE */}
-                    <div className="card card-default">
+                    <div className="card card-default " style = {{"marginBottom" : 0                    }}>
                         <div className="row mx-0 align-items-center card-header toP_br">
                             <h3
                                 className="card-title col-md-3 col-sm-12 m-0"
@@ -273,15 +384,16 @@ const ClientDetails = () => {
                                     </div>
                                     {/* Dropdown for Search Results */}
                                     {searchQuery && (
-                                        <div className="dropdown-menu show w-100">
-                                            {filteredTabs.length > 0 ? (
-                                                filteredTabs.map((tab, index) => (
+                                        <div className="dropdown-menu show w-100" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                            {getFilteredTabs().length > 0 ? (
+                                                getFilteredTabs().map((result, index) => (
                                                     <button
                                                         key={index}
-                                                        className="dropdown-item"
-                                                        onClick={() => handleTabSelect(tab)}
+                                                        className="dropdown-item d-flex align-items-center"
+                                                        onClick={() => handleSearchSelect(result)}
                                                     >
-                                                        {tab.category} - {tab.tabName}
+                                                        <FontAwesomeIcon icon={result.icon} className="mr-2" />
+                                                        <span>{result.category} - {result.tabName}</span>
                                                     </button>
                                                 ))
                                             ) : (
@@ -377,185 +489,82 @@ const ClientDetails = () => {
                             <div className="row mx-0">
                                 <div className="col-md-12 px-0">
                                     <div className="process-sec-cntnt mt-3" style={{ gap: "8px" }}>
-                                        {/* Tabs */}
+                                        {/* Main Tabs */}
                                         <div className="process-tab-btns">
                                             <ul>
-                                                {["Permanent Details", "Income", "Deduction", "TDS/Taxes", "Final"].map((tabName) => (
+                                                {Object.entries(TABS_CONFIG).map(([tab, config]) => (
                                                     <li
-                                                        key={tabName}
-                                                        className={`btn btn-block bg-gradient-primary btn-flat ${tabName === activeTab ? "active" : ""}`}
-                                                        onClick={() => setActiveTab(tabName)} // Set the clicked tab as active
+                                                        key={tab}
+                                                        className={`btn btn-block bg-gradient-primary btn-flat ${tab === activeTab ? "active" : ""}`}
+                                                        onClick={() => handleTabChange(tab)}
                                                     >
-                                                        <span>{tabName}</span>
+                                                        <FontAwesomeIcon icon={config.icon} className="mr-2" />
+                                                        <span>{tab}</span>
                                                     </li>
                                                 ))}
                                             </ul>
                                         </div>
 
-                                        {/* Tabs content */}
+                                        {/* Tab Content */}
                                         <div className="process-tabs-cntnt">
-                                            {/* Permanent Details Tab */}
-                                            {activeTab === "Permanent Details" && (
-                                                <div className="basic_details_collasp p-tab-cntnt inner_tabs_collec active">
-                                                    <div className="p-tab-c1">
-                                                        <span>01 Permanent Details</span>
-                                                        <div className="inerr_taabs-tab-btns mb-4">
-                                                            <ul>
-                                                                {["Basic Details", "Address", "Bank", "Additional Details"].map((option) => (
-                                                                    <li
-                                                                        key={option}
-                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activePermanentTab ? "active" : ""}`}
-                                                                        onClick={() => setActivePermanentTab(option)}
-                                                                    >
-                                                                        <span>{option}</span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activePermanentTab === "Basic Details" && <BasicDetailsForm />}
-                                                            {activePermanentTab === "Address" && (
-                                                                <AddressForm
-                                                                    clientYear={clientYear}
-                                                                    clientRelId={clientRelId}
-                                                                    address={address}
-                                                                    states={states}
-                                                                    countries={countries}
-                                                                    allClients={allClients}
-                                                                />
-                                                            )}
-                                                            {activePermanentTab === "Bank" && (
-                                                                <BankDetails clientId={1} clientYear={2024} clientRelId={1001} />
-                                                            )}
-                                                            {activePermanentTab === "Additional Details" && (
-                                                                <AdditionalDetails
-                                                                    clientId={1}
-                                                                    clientYear={2024}
-                                                                    clientRelId={101}
-                                                                    notes={dummyNotes}
-                                                                    additionalDetails={dummyAdditionalDetails}
-                                                                    udyamDetails={dummyUdyamDetails}
-                                                                />
-                                                            )}
-                                                        </div>
+                                            <div className="p-tab-cntnt inner_tabs_collec active">
+                                                <div className="p-tab-c1">
+                                                    <span>
+                                                        <FontAwesomeIcon icon={TABS_CONFIG[activeTab].icon} className="mr-2" />
+                                                        {activeTab}
+                                                    </span>
+                                                    
+                                                    {/* Sub Tabs */}
+                                                    <div className="inerr_taabs-tab-btns mb-4">
+                                                        <ul>
+                                                            {Object.entries(TABS_CONFIG[activeTab].subTabs).map(([subTab, subTabConfig]) => (
+                                                                <li
+                                                                    key={subTab}
+                                                                    className={`btn btn-block btn-outline-primary btn-flat ${subTab === activeSubTab ? "active" : ""}`}
+                                                                    onClick={() => handleSubTabChange(activeTab, subTab)}
+                                                                >
+                                                                    <FontAwesomeIcon icon={subTabConfig.icon} className="mr-2" />
+                                                                    <span>{subTab}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
 
+                                                    {/* Routed Content */}
+                                                    <div className="mt-3 inerr-tab-cntnt active" style={contentStyles}>
+                                                        <Routes>
+                                                            {Object.entries(TABS_CONFIG).map(([tabName, tabConfig]) => (
+                                                                Object.entries(tabConfig.subTabs).map(([subTabName, subTabConfig]) => {
+                                                                    const SubTabComponent = subTabConfig.Component;
+                                                                    return (
+                                                                        <React.Fragment key={`${tabConfig.path}/${subTabConfig.path}`}>
+                                                                            {SubTabComponent && (
+                                                                                <Route
+                                                                                    path={`${tabConfig.path}/${subTabConfig.path}`}
+                                                                                    element={<SubTabComponent />}
+                                                                                />
+                                                                            )}
+                                                                            {/* Add subroutes if they exist */}
+                                                                            {subTabConfig.subRoutes && Object.entries(subTabConfig.subRoutes).map(([subRoutePath, SubRouteComponent]) => (
+                                                                                <Route
+                                                                                    key={`${tabConfig.path}/${subTabConfig.path}/${subRoutePath}`}
+                                                                                    path={`${tabConfig.path}/${subTabConfig.path}/${subRoutePath}`}
+                                                                                    element={<SubRouteComponent />}
+                                                                                />
+                                                                            ))}
+                                                                        </React.Fragment>
+                                                                    );
+                                                                })
+                                                            ))}
+                                                            <Route
+                                                                path="/"
+                                                                element={<Navigate to="permanent/basic" replace />}
+                                                            />
+                                                            <Route path="*" element={<Navigate to="permanent/basic" replace />} />
+                                                        </Routes>
                                                     </div>
                                                 </div>
-                                            )}
-                                            {activeTab === "Income" && (
-                                                <div className="income_collasp p-tab-cntnt inner_tabs_collec active">
-                                                    <div className="p-tab-c1">
-                                                        <span>02 Income</span>
-                                                        <div className="inerr_taabs-tab-btns mb-4">
-                                                            <ul>
-                                                                {["Salary", "Business", "House Property", "Capital Gains", "Exempt Income", "Other Income"].map((option) => (
-                                                                    <li
-                                                                        key={option}
-                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeIncomeTab ? "active" : ""}`}
-                                                                        onClick={() => setActiveIncomeTab(option)}
-                                                                    >
-                                                                        <span>{option}</span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeIncomeTab === "Salary" && (<SalaryPage
-                                                            />)}
-                                                            {activeIncomeTab === "Business" && <IncomeUnder44AD clientFullName="John Doe"
-                                                                clientRelId="12345"
-                                                                income44AD={dummyIncome44AD}
-                                                                year="2023-24"
-                                                            />}
-                                                            {activeIncomeTab === "House Property" && <HousePropertyForm clientId="12345" year="2024" />}
-                                                            {activeIncomeTab === "Capital Gains" && <CapitalGains clientRelId={1234} />}
-                                                            {activeIncomeTab === "Exempt Income" && <ExemptIncomeForm />}
-                                                            {activeIncomeTab === "Other Income" && <OtherIncomeForm />}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {activeTab === "Deduction" && (
-                                                <div className="p-tab-cntnt inner_tabs_collec active">
-                                                    <div className="p-tab-c1">
-                                                        <span>03 Deduction</span>
-                                                        <div className="inerr_taabs-tab-btns mb-4">
-                                                            <ul>
-                                                                {["80C to 80G", "More Deductions", "Other Deductions"].map((option) => (
-                                                                    <li
-                                                                        key={option}
-                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeDeductionsTab ? "active" : ""}`}
-                                                                        onClick={() => setActiveDeductionsTab(option)}
-                                                                    >
-                                                                        <span>{option}</span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeDeductionsTab === "80C to 80G" && <DeductionForm />}
-                                                            {activeDeductionsTab === "More Deductions" && <MoreDeductions />}
-                                                            {activeDeductionsTab === "Other Deductions" && <OtherDeductions />}
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {activeTab === "TDS/Taxes" && (
-                                                <div className="p-tab-cntnt inner_tabs_collec active">
-                                                    <div className="p-tab-c1">
-                                                        <span>04 TDS/Taxes</span>
-                                                        <div className="inerr_taabs-tab-btns mb-4">
-                                                            <ul>
-                                                                {["TDS/TCS", "Self Assessment", "Other Details", "AIS/TIS"].map((option) => (
-                                                                    <li
-                                                                        key={option}
-                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeTDSTab ? "active" : ""}`}
-                                                                        onClick={() => setTDSTab(option)}
-                                                                    >
-                                                                        <span>{option}</span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeTDSTab === "TDS/TCS" && <TdsTcsComponent />}
-                                                            {activeTDSTab === "Self Assessment" && <SelfAssessment />}
-                                                            {activeTDSTab === "Other Details" && <TdsOtherDetails />}
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {activeTab === "Final" && (
-                                                <div className="p-tab-cntnt inner_tabs_collec active">
-                                                    <div className="p-tab-c1">
-                                                        <span>03 Deduction</span>
-                                                        <div className="inerr_taabs-tab-btns mb-4">
-                                                            <ul>
-                                                                {["More Info", "Filing", "Utility"].map((option) => (
-                                                                    <li
-                                                                        key={option}
-                                                                        className={`btn btn-block btn-outline-primary btn-flat ${option === activeFinalTab ? "active" : ""}`}
-                                                                        onClick={() => setFinalTab(option)}
-                                                                    >
-                                                                        <span>{option}</span>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="mt-3 inerr-tab-cntnt active">
-                                                            {activeFinalTab === "More Info" && <AdvancedInfo />}
-                                                            {activeFinalTab === "Filing" && <ExportSummary />}
-                                                            {/* {activeDeductionsTab === "Utility" && <OtherDeductions />} */}
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {/* Other Tabs like Income, Deduction, etc */}
-                                            {/* Similar structure for the other tabs... */}
-
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

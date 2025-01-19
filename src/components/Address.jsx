@@ -21,6 +21,8 @@ const AddressForm = () => {
 
   const [clients, setClients] = useState([]);
   const [pincodeData, setPincodeData] = useState([]);
+  const [stateOptions, setStateOptions] = useState([]);
+  const [countryOptions, setCountryOptions] = useState([]); // Add this new state
 
   useEffect(() => {
     // Fetch or set client data if needed
@@ -37,11 +39,21 @@ const AddressForm = () => {
         skipEmptyLines: true,
         complete: (results) => {
           setPincodeData(results.data);
+          // Extract unique states from the CSV data
+          const uniqueStates = [...new Set(results.data.map(item => item.state))];
+          setStateOptions(uniqueStates);
         },
       });
     };
     fetchPincodeData();
   }, []);
+
+  useEffect(() => {
+    // Set country options from countrycode.json
+    const countries = Object.keys(countrycode);
+    setCountryOptions(countries);
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState({ ...formState, [name]: value });
@@ -57,6 +69,14 @@ const AddressForm = () => {
           state_code: matchedData.state,
         }));
       }
+    }
+    if (name === "country_name") {
+      // Update country code when country name is selected
+      const selectedCountryCode = countrycode[value];
+      setFormState((prevState) => ({
+        ...prevState,
+        country_code: selectedCountryCode?.toString() || "",
+      }));
     }
     if (name === "country_code") {
       // Match country code and auto-fill the country name
@@ -230,7 +250,7 @@ const AddressForm = () => {
               <input
                 type="text"
                 name=""
-                className="form-control"
+                className="form-control rounded-0"
                 value={formState.mobile_number}
                 onChange={handleInputChange}
               />
@@ -238,13 +258,19 @@ const AddressForm = () => {
             {stateCodeVisible && (
               <div className="form-group">
                 <label>State</label>
-                <input
-                  type="text"
+                <select
                   name="state_code"
-                  className="form-control"
+                  className="form-control rounded-0"
                   value={formState.state_code}
-                  readOnly
-                />
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select State</option>
+                  {stateOptions.map((state, index) => (
+                    <option key={index} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
             {countryMobileCodeVisible && (
@@ -253,7 +279,7 @@ const AddressForm = () => {
                 <input
                   type="number"
                   name="country_code"
-                  className="form-control"
+                  className="form-control rounded-0"
                   value={formState.country_code}
                   onChange={handleInputChange}
                 />
@@ -294,9 +320,9 @@ const AddressForm = () => {
                 <input
                   type="text"
                   name="district"
-                  className="form-control"
+                  className="form-control rounded-0"
                   value={formState.district}
-                  readOnly
+                  onChange={handleInputChange}
                 />
               </div>
             )}
@@ -306,7 +332,7 @@ const AddressForm = () => {
                 <input
                   type="text"
                   name="district"
-                  className="form-control"
+                  className="form-control rounded-0"
                   value={formState.district}
                   onChange={handleInputChange}
                 />
@@ -317,7 +343,7 @@ const AddressForm = () => {
               <input
                 type="email"
                 name="email"
-                className="form-control"
+                className="form-control rounded-0"
                 value={formState.email}
                 onChange={handleInputChange}
               />
@@ -325,16 +351,25 @@ const AddressForm = () => {
 
             {/* Country Name */}
             {countryCodeVisible && (
-              <div className="form-group">
-                <label>Country Name</label>
-                <input
-                  type="text"
-                  name="country_name"
-                  className="form-control"
-                  value={formState.country_name}
-                  readOnly
-                />
-              </div>
+              <>
+                
+                <div className="form-group">
+                  <label>Country Name</label>
+                  <select
+                    name="country_name"
+                    className="form-control rounded-0"
+                    value={formState.country_name}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select Country</option>
+                    {countryOptions.map((country, index) => (
+                      <option key={index} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
             )}
             {/* More fields go here */}
           </div>

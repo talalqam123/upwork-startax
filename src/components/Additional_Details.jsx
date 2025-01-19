@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 
-const AdditionalDetails = ({
-  clientId,
-  clientYear,
-  clientRelId,
-  notes,
-  additionalDetails,
-  udyamDetails,
-}) => {
+const AdditionalDetails = () => {
   const [noteText, setNoteText] = useState('');
-  const [notesList, setNotesList] = useState(notes);
-  
+  const [notesList, setNotesList] = useState([]);
+  const [additionalDetails, setAdditionalDetails] = useState({
+    passport_no: '',
+    voter_id_no: '',
+    nationality: '',
+    qualification: '',
+    occupation: '',
+    marital_status: ''
+  });
+  const [udyamDetails, setUdyamDetails] = useState({
+    is_msme: '',
+    registration_date: '',
+    major_activity: '',
+    msme_registration_no: '',
+    enterpris_type: ''
+  });
+
   const handleCheckboxChange = (noteId, e) => {
     const updatedNotes = notesList.map(note => 
       note.id === noteId ? { ...note, is_compleated: e.target.checked } : note
@@ -29,11 +37,9 @@ const AdditionalDetails = ({
 
   const handleNoteSubmit = (e) => {
     e.preventDefault();
-    // Assuming there's an API endpoint to add new notes
     const newNote = { id: Date.now(), note: noteText, date_created: new Date(), is_compleated: false };
     setNotesList([...notesList, newNote]);
     setNoteText('');
-    // Submit the form to add new note (you can replace this with actual API call)
     submitForm(newNote.id, 'post');
   };
 
@@ -44,6 +50,22 @@ const AdditionalDetails = ({
     } else if (actionType === 'delete') {
       console.log(`Delete action for note ${noteId}`);
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAdditionalDetails(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleUdyamChange = (e) => {
+    const { name, value } = e.target;
+    setUdyamDetails(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   return (
@@ -102,8 +124,7 @@ const AdditionalDetails = ({
       </div>
 
       {/* Additional Details Form */}
-      <form method="POST" action={`/basic_details/permanent_additional/${clientYear}/${clientRelId}`}>
-        <input type="hidden" name="client_id" value={clientId} />
+      <form method="POST" action="#">
         <div className="row text-content">
           <div className="col-md-6">
             <div className="form-group">
@@ -112,7 +133,8 @@ const AdditionalDetails = ({
                 type="number"
                 name="passport_no"
                 className="form-control rounded-0"
-                value={additionalDetails.passport_no || ''}
+                value={additionalDetails.passport_no}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -121,7 +143,8 @@ const AdditionalDetails = ({
                 type="number"
                 name="voter_id_no"
                 className="form-control rounded-0"
-                value={additionalDetails.voter_id_no || ''}
+                value={additionalDetails.voter_id_no}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -130,7 +153,8 @@ const AdditionalDetails = ({
                 type="text"
                 name="nationality"
                 className="form-control rounded-0"
-                value={additionalDetails.nationality || ''}
+                value={additionalDetails.nationality}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -141,7 +165,8 @@ const AdditionalDetails = ({
                 type="text"
                 name="qualification"
                 className="form-control rounded-0"
-                value={additionalDetails.qualification || ''}
+                value={additionalDetails.qualification}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -150,7 +175,8 @@ const AdditionalDetails = ({
                 type="text"
                 name="occupation"
                 className="form-control rounded-0"
-                value={additionalDetails.occupation || ''}
+                value={additionalDetails.occupation}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -158,7 +184,8 @@ const AdditionalDetails = ({
               <select
                 className="form-control rounded-0"
                 name="marital_status"
-                value={additionalDetails.marital_status || ''}
+                value={additionalDetails.marital_status}
+                onChange={handleInputChange}
               >
                 <option value="">Select Option</option>
                 <option value="Married">Married</option>
@@ -180,7 +207,8 @@ const AdditionalDetails = ({
                   <select
                     name="is_msme"
                     className="form-control rounded-0"
-                    value={udyamDetails.is_msme || ''}
+                    value={udyamDetails.is_msme}
+                    onChange={handleUdyamChange}
                   >
                     <option value="">Select Option</option>
                     <option value="Yes">Yes</option>
@@ -192,8 +220,9 @@ const AdditionalDetails = ({
                   <input
                     type="text"
                     name="registration_date"
-                    value={udyamDetails.registration_date || ''}
+                    value={udyamDetails.registration_date}
                     className="form-control rounded-0"
+                    onChange={handleUdyamChange}
                   />
                 </div>
                 <div className="form-group">
@@ -201,7 +230,8 @@ const AdditionalDetails = ({
                   <select
                     name="major_activity"
                     className="form-control rounded-0"
-                    value={udyamDetails.major_activity || ''}
+                    value={udyamDetails.major_activity}
+                    onChange={handleUdyamChange}
                   >
                     <option value="">Select Option</option>
                     <option value="Manufacturing">Manufacturing</option>
@@ -216,8 +246,9 @@ const AdditionalDetails = ({
                   <input
                     type="text"
                     name="msme_registration_no"
-                    value={udyamDetails.msme_registration_no || ''}
+                    value={udyamDetails.msme_registration_no}
                     className="form-control rounded-0"
+                    onChange={handleUdyamChange}
                   />
                 </div>
                 <div className="form-group">
@@ -225,7 +256,8 @@ const AdditionalDetails = ({
                   <select
                     name="enterpris_type"
                     className="form-control rounded-0"
-                    value={udyamDetails.enterpris_type || ''}
+                    value={udyamDetails.enterpris_type}
+                    onChange={handleUdyamChange}
                   >
                     <option value="">Select Option</option>
                     <option value="micro">Micro Enterprises</option>

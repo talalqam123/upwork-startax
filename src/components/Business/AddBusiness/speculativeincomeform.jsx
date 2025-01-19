@@ -52,7 +52,7 @@ const SpeculativeIncomeForm = ({ clientRelId }) => {
               className="btn btn-block rounded-0 btn-primary"
               value="Submit"
             />
-            <BackButton link="/client" />  {/* Fixed: Proper prop passing */}
+            <BackButton link="/client/income/business" />  {/* Fixed: Proper prop passing */}
           </div>
         </div>
       </form>

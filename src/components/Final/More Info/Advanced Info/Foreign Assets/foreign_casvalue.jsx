@@ -193,7 +193,7 @@ const ForeignCashValueInsurance = () => {
 
       <div className="row mt-4">
         <div className="col-md-12 d-flex">
-          <BackButton link="/client/final/foreign_assets_incomes_taxes" />
+          <BackButton link="/client/final/more-info" />
         </div>
       </div>
     </div>

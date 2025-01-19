@@ -3,20 +3,22 @@ import { useNavigate } from "react-router-dom";
 import StockOptionsForm from "./stock_rsu";
 import LandOrBuildingForm from "./landorbuilding_form";
 import OtherAssetForm from "./any_other_asset";
+import BSPLBalanceSheet from "../AddBusiness/BSPL/temp_balancesheet";
 const CapitalGains = ({ clientFullName, clientRelId }) => {
     const navigate = useNavigate();
     
     const sections = [
-        { id: "01", label: "Share/Debentures", url: `/client/Capital/capital_gains_share_debentures` },
-        { id: "02", label: "VDA Income", url: `/client/Capital/capital_gains_vda_income` },
-        { id: "03", label: "Mutual Funds", url: `/client/Capital/capital_gains_mutual_funds` },
-        { id: "04", label: "Stock Options/ RSUs", url: `/client/Capital/capital_gains_stock_rsu` },
-        { id: "05", label: "Land or Building (Property)", url: `/client/Capital/capital_gains_land_property` },
-        { id: "06", label: "Any other asset", url: `/client/Capital/capital_gains_any_other_asset` },
-        { id: "07", label: "Deemed Capital Gains", url: `/client/Capital/capital_gains_deemed_capital_gain` },
+        { id: "01", label: "Share/Debentures", url: `/client/income/capital-gains/debentures` },
+        { id: "02", label: "VDA Income", url: `/client/income/capital-gains/vda-income` },
+        { id: "03", label: "Mutual Funds", url: `/client/income/capital-gains/mutual-funds` },
+        { id: "04", label: "Stock Options/ RSUs", url: `/client/income/capital-gains/stock-rsu` },
+        { id: "05", label: "Land or Building (Property)", url: `/client/income/capital-gains/landbuilding` },
+        { id: "06", label: "Any other asset", url: `/client/income/capital-gains/other-asset` },
+        { id: "07", label: "Deemed Capital Gains", url: `/client/income/capital-gains/deemed` },
     ];
 
     return (
+            
         <div className="main_row d-block">
             <div className="row mt-5 inr_tabs_button">
                 <div className="col-md-12">
@@ -41,6 +43,7 @@ const CapitalGains = ({ clientFullName, clientRelId }) => {
                 ))}
             </div>
         </div>
+        
     );
 };
 

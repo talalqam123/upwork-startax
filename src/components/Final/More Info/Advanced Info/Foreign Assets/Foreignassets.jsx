@@ -56,52 +56,52 @@ const ForeignAssetsIncomes = () => {
               { 
                 id: 1, 
                 label: "Details Of Foreign Bank", 
-                link: "/client/final/foreign_assets_incomes_taxes/foreign_bank" 
+                link: "/client/final/more-info/foreign-assets/foreign-bank" 
               },
               {
                 id: 2,
                 label: "Details Of Foreign Custodial Account",
-                link: "/client/final/foreign_assets_incomes_taxes/foreign_custodial_account",
+                link: "/client/final/more-info/foreign-assets/foreign-custodial-account",
               },
               {
                 id: 3,
                 label: "Details Of Foreign Equity Debt Interest",
-                link: "/client/final/foreign_assets_incomes_taxes/foreign_equity_debt_interest",
+                link: "/client/final/more-info/foreign-assets/foreign-equity-debt-interest",
               },
               {
                 id: 4,
                 label: "Details Of Foreign Cash Value Insurance",
-                link: "/client/final/foreign_assets_incomes_taxes/foreign_cash_value_insurance",
+                link: "/client/final/more-info/foreign-assets/foreign-cash-value-insurance",
               },
               {
                 id: 5,
                 label: "Details Of Financial Interest",
-                link: "/client/final/foreign_assets_incomes_taxes/financial_interest",
+                link: "/client/final/more-info/foreign-assets/financial-interest",
               },
               {
                 id: 6,
                 label: "Details Of Immovable Property",
-                link: "/client/final/foreign_assets_incomes_taxes/immovable_property",
+                link: "/client/final/more-info/foreign-assets/immovable-property",
               },
               {
                 id: 7,
                 label: "Details Of Other Assets",
-                link: "/client/final/foreign_assets_incomes_taxes/other_assets",
+                link: "/client/final/more-info/foreign-assets/other-assets",
               },
               {
                 id: 8,
                 label: "Details Of Accounts Having Signing Authority",
-                link: "/client/final/foreign_assets_incomes_taxes/accounts_having_signing_authority",
+                link: "/client/final/more-info/foreign-assets/signing-authority",
               },
               {
                 id: 9,
                 label: "Details Of Trust Outside India Trustee",
-                link: "/client/final/foreign_assets_incomes_taxes/trust_outside_india_trustee",
+                link: "/client/final/more-info/foreign-assets/trust-outside-india-trustee",
               },
               {
                 id: 10,
                 label: "Details Of Other Sources Income Outside India",
-                link: "/client/final/foreign_assets_incomes_taxes/other_sources_income_outside_india",
+                link: "/client/final/more-info/foreign-assets/other-sources-income-outside-india",
               },
             ].map((item) => (
               <div className="col-md-8 mt-4" key={item.id}>

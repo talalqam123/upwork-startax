@@ -37,25 +37,25 @@ const BusinessIncome = ({ clientRelId }) => {
       number: '01',
       description: 'Remuneration from Partnership Firms',
       buttonText: 'Add Remuneration',
-      link: '/client/business/remuneration',
+      link: '/client/income/business/remuneration',
     },
     {
       number: '02',
       description: 'Balance Sheet with Profit & Loss Account',
       buttonText: 'Add BSPL Income',
-      link: `/client/business/BSPL`,
+      link: '/client/income/business/bspl',  // Updated path
     },
     {
       number: '03',
       description: 'Books of Account are Not Maintained',
       buttonText: 'Add No Books of Account Income',
-      link: `/client/business/business_no_book`,
+      link: '/client/income/business/no-books',
     },
     {
       number: '04',
       description: 'Speculative Income',
       buttonText: 'Add Speculative Income',
-      link: `/client/business/business_speculative`,
+      link: '/client/income/business/speculative',
     },
   ];
 
@@ -64,19 +64,19 @@ const BusinessIncome = ({ clientRelId }) => {
       number: '01',
       description: 'GST Details',
       buttonText: 'Add GST Details',
-      link: `/client/business/business_gst`,
+      link: '/client/income/business/gst',
     },
     {
       number: '02',
       description: 'Schedule BP',
       buttonText: 'Fill Schedule BP',
-      link: `/client/business/schedule_bp`,
+      link: '/client/income/business/schedule-bp',
     },
     {
       number: '03',
       description: 'Schedule OI (Other Information)',
       buttonText: 'Fill Schedule OI',
-      link: `/client/business/schedule_oi`,
+      link: '/client/income/business/schedule-oi',
     },
   ];
 
@@ -85,13 +85,13 @@ const BusinessIncome = ({ clientRelId }) => {
       number: '01',
       description: 'Auditor Details',
       buttonText: 'Fill Auditor Details',
-      link: `/client/business/audit`,
+      link: '/client/income/business/auditor',
     },
     {
       number: '02',
       description: 'Form 3CA/3CB - 3CD',
       buttonText: 'Fill Form 3CA/3CB - 3CD',
-      link: `/client/business/cacbcd3`,
+      link: '/client/income/business/form-3ca-3cb',
     },
   ];
 
@@ -100,19 +100,19 @@ const BusinessIncome = ({ clientRelId }) => {
       number: '01',
       description: 'Details of Trading Concern',
       buttonText: 'Fill Details',
-      link: `/client/business/tradin`,
+      link: '/client/income/business/trading',
     },
     {
       number: '02',
       description: 'Details of Manufacturing Concern (Raw Materials)',
       buttonText: 'Fill Details',
-      link: `/client/business/manufacturing_materials`,
+      link: '/client/income/business/manufacturing-raw',
     },
     {
       number: '03',
       description: 'Details of Manufacturing Concern (Finished Products)',
       buttonText: 'Fill Details',
-      link: `/client/business/manufacturing_products`,
+      link: '/client/income/business/manufacturing-finished',
     },
   ];
 

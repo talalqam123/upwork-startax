@@ -73,7 +73,7 @@ const ScheduleICDSForm = () => {
             className="btn btn-block rounded-0 btn-primary"
             value="Submit"
           />
-          <BackButton link="/client/business/bspl" />
+          <BackButton link="/client/income/business" />
         </div>
       </div>
     </div>
