@@ -3,7 +3,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import './temp_balancesheet.css'; // Add this import
 import PANDL from './p&l';
-import PANDL2 from './P&L2.JSX';
+import PANDL2 from './p&l2';
 import PANDL3 from './p&l3';
 
 const BSPIncome = ({ balancesheet_profitloss = {} }) => {
