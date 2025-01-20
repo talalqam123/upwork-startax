@@ -1,5 +1,5 @@
 import React from "react";
-import BackButton from "../../../Backbutton";
+import BackButton from "../../../Client Details/Backbutton";
 
 function RemunerationForm() {
   return (

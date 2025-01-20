@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faAddressBook,
@@ -18,75 +18,76 @@ import {
   faFileContract,
   faFileSignature,
   faFingerprint,
-  faFileCircleCheck
+  faFileCircleCheck,
+  faTools
 } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, useLocation, Routes, Route, Navigate } from "react-router-dom";
-import BasicDetailsForm from "./BasicDetails";
-import AddressForm from "./Address";
-import BankDetails from "./Banks";
-import AdditionalDetails from "./Additional_Details";
-import SalaryPage from "./Salary/Salary";
-import IncomeUnder44AD from "./Business/incmeunder44ad";
-import HousePropertyForm from "./Business/House Property/houseproperty";
-import CapitalGains from "./Business/Capital Gains/capitalgains_index";
-import ExemptIncomeForm from "./Business/Exempt Income/exempt_income";
-import OtherIncomeForm from "./Business/Other Income/otherincome";
-import DeductionForm from "./Deductions/80c_to_80g";
-import MoreDeductions from "./Deductions/more_deductions";
-import OtherDeductions from "./Deductions/other_deductions";
-import ExportSummary from "./Final/Filing/filling";
-import AdvancedInfo from "./Final/More Info/more_info";
-import SelfAssessment from "./TDS/Self Assessment/self_assessment";
-import TdsTcsComponent from "./TDS/tds_tcs";
-import TdsOtherDetails from "./TDS/Other Details/other_details";
-import LoadingBar from './LoadingBar';
-import RemunerationForm from "./Business/AddBusiness/BSPL/remuneration";
-import BSPLIncomeForm from "./Business/AddBusiness/BSPL/bspl_income";
-import NoBooksOfAccountIncome from "./Business/AddBusiness/no.ofbook_accounts";
-import SpeculativeIncomeForm from "./Business/AddBusiness/speculativeincomeform";
-import GSTDetailsForm from "./Business/Financial Staements & Schedules/gst";
-import BusinessIncomeForm from "./Business/Financial Staements & Schedules/schedule_bp";
-import ScheduleOI from "./Business/Financial Staements & Schedules/schedule_oi";
-import AuditorDetailsForm from "./Business/Audit Details/auditordetails";
-import Form3CA3CB from "./Business/Audit Details/3ca_3cb_3_cd";
-import DetailsOfTradingConcern from "./Business/Quantitave Details/trading_concern";
-import ManufacturingAcc from "./Business/AddBusiness/BSPL/manufacturingAcc";
-import BSPIncome from "./Business/AddBusiness/BSPL/temp_balancesheet"; // Add BSPIncome component
-import DepreciationForm from "./Business/AddBusiness/BSPL/bspl_depreciationForm"; // Add DepreciationForm component
-import ScheduleICDSForm from "./Business/AddBusiness/BSPL/bspl_scheduleicds";
-import ESRDetailsForm from "./Business/AddBusiness/BSPL/bspl_esrdetails";
-import ShareDebenturesForm from "./Business/Capital Gains/share_debentures";
-import VDAIncomeForm from "./Business/Capital Gains/vda_income";
-import MutualFunds from "./Business/Capital Gains/mutual_funds";
-import StockOptionsForm from "./Business/Capital Gains/stock_rsu";
-import LandOrBuildingForm from "./Business/Capital Gains/landorbuilding_form";
-import OtherAssetForm from "./Business/Capital Gains/any_other_asset";
-import DeemedCapitalGainsForm from "./Business/Capital Gains/deemed_capital_gain";
-import NonSalaryTDS from "./TDS/TDS-TCS/non_salary_tds";
-import TdsOnProperty from "./TDS/TDS-TCS/tds_property";
-import TCSForm from "./TDS/TDS-TCS/tcs_form";
-import DeferredTaxESOPs from "./TDS/TDS-TCS/deferred_info";
-import ResidentialStatus from "./Final/More Info/resedential";
-import UnlistedShares from "./Final/More Info/unlistedshare";
-import DirectorshipDetails from "./Final/More Info/directorship";
-import ForeignAssetsIncomes from "./Final/More Info/Advanced Info/Foreign Assets/Foreignassets";
-import ScheduleSPI from "./Final/More Info/schedule_spi";
-import PropertyDetails from "./Final/More Info/schedule_al";
-import ExpenditureOnForeignTravel from "./Final/More Info/expenditure_on_foreign";
-import ExpenditureOnElectricityConsumption from "./Final/More Info/expenditure_on_elec";
-import ClauseIVSeventhProviso from "./Final/More Info/clause.iv";
-import TrpInfoForm from "./Final/More Info/trpinfo";
-import RepresentativeAssesseeForm from "./Final/More Info/Representative_assesse";
-import ForeignBank from "./Final/More Info/Advanced Info/Foreign Assets/foreignbank";
-import ForeignCustodialAccount from "./Final/More Info/Advanced Info/Foreign Assets/foreign_custodial";
-import ForeignEquityDebtInterest from "./Final/More Info/Advanced Info/Foreign Assets/foreign_equity";
-import ForeignCashValueInsurance from "./Final/More Info/Advanced Info/Foreign Assets/foreign_casvalue";
-import FinancialInterestForm from "./Final/More Info/Advanced Info/Foreign Assets/foreign_interest";
-import ImmovablePropertyForm from "./Final/More Info/Advanced Info/Foreign Assets/immovable_prop";
-import OtherAssets from "./Final/More Info/Advanced Info/Foreign Assets/other_assets";
-import AccountsHavingSigningAuthority from "./Final/More Info/Advanced Info/Foreign Assets/signing_authority";
-import TrustOutsideIndiaTrustee from "./Final/More Info/Advanced Info/Foreign Assets/trust_outside_india";
-import OtherSourcesIncomeOutsideIndia from "./Final/More Info/Advanced Info/Foreign Assets/other_income";
+import { useNavigate, useLocation, Routes, Route, Navigate, useMatch } from "react-router-dom";
+import BasicDetailsForm from "../Permanent Details/BasicDetails";
+import AddressForm from "../Permanent Details/Address";
+import BankDetails from "../Permanent Details/Banks";
+import AdditionalDetails from "../Permanent Details/Additional_Details";
+import SalaryPage from "../Business/Salary/Salary";
+import IncomeUnder44AD from "../Business/incmeunder44ad";
+import HousePropertyForm from "../Business/House Property/houseproperty";
+import CapitalGains from "../Business/Capital Gains/capitalgains_index";
+import ExemptIncomeForm from "../Business/Exempt Income/exempt_income";
+import OtherIncomeForm from "../Business/Other Income/otherincome";
+import DeductionForm from "../Deductions/80c_to_80g";
+import MoreDeductions from "../Deductions/more_deductions";
+import OtherDeductions from "../Deductions/other_deductions";
+import ExportSummary from "../Final/Filing/filling";
+import AdvancedInfo from "../Final/More Info/more_info";
+import SelfAssessment from "../TDS/Self Assessment/self_assessment";
+import TdsTcsComponent from "../TDS/tds_tcs";
+import TdsOtherDetails from "../TDS/Other Details/other_details";
+import LoadingBar from '../LoadingBar';
+import RemunerationForm from "../Business/AddBusiness/BSPL/remuneration";
+import BSPLIncomeForm from "../Business/AddBusiness/BSPL/bspl_income";
+import NoBooksOfAccountIncome from "../Business/AddBusiness/no.ofbook_accounts";
+import SpeculativeIncomeForm from "../Business/AddBusiness/speculativeincomeform";
+import GSTDetailsForm from "../Business/Financial Staements & Schedules/gst";
+import BusinessIncomeForm from "../Business/Financial Staements & Schedules/schedule_bp";
+import ScheduleOI from "../Business/Financial Staements & Schedules/schedule_oi";
+import AuditorDetailsForm from "../Business/Audit Details/auditordetails";
+import Form3CA3CB from "../Business/Audit Details/3ca_3cb_3_cd";
+import DetailsOfTradingConcern from "../Business/Quantitave Details/trading_concern";
+import ManufacturingAcc from "../Business/AddBusiness/BSPL/manufacturingAcc";
+import BSPIncome from "../Business/AddBusiness/BSPL/temp_balancesheet"; // Add BSPIncome component
+import DepreciationForm from "../Business/AddBusiness/BSPL/bspl_depreciationForm"; // Add DepreciationForm component
+import ScheduleICDSForm from "../Business/AddBusiness/BSPL/bspl_scheduleicds";
+import ESRDetailsForm from "../Business/AddBusiness/BSPL/bspl_esrdetails";
+import ShareDebenturesForm from "../Business/Capital Gains/share_debentures";
+import VDAIncomeForm from "../Business/Capital Gains/vda_income";
+import MutualFunds from "../Business/Capital Gains/mutual_funds";
+import StockOptionsForm from "../Business/Capital Gains/stock_rsu";
+import LandOrBuildingForm from "../Business/Capital Gains/landorbuilding_form";
+import OtherAssetForm from "../Business/Capital Gains/any_other_asset";
+import DeemedCapitalGainsForm from "../Business/Capital Gains/deemed_capital_gain";
+import NonSalaryTDS from "../TDS/TDS-TCS/non_salary_tds";
+import TdsOnProperty from "../TDS/TDS-TCS/tds_property";
+import TCSForm from "../TDS/TDS-TCS/tcs_form";
+import DeferredTaxESOPs from "../TDS/TDS-TCS/deferred_info";
+import ResidentialStatus from "../Final/More Info/resedential";
+import UnlistedShares from "../Final/More Info/unlistedshare";
+import DirectorshipDetails from "../Final/More Info/directorship";
+import ForeignAssetsIncomes from "../Final/More Info/Advanced Info/Foreign Assets/Foreignassets";
+import ScheduleSPI from "../Final/More Info/schedule_spi";
+import PropertyDetails from "../Final/More Info/schedule_al";
+import ExpenditureOnForeignTravel from "../Final/More Info/expenditure_on_foreign";
+import ExpenditureOnElectricityConsumption from "../Final/More Info/expenditure_on_elec";
+import ClauseIVSeventhProviso from "../Final/More Info/clause.iv";
+import TrpInfoForm from "../Final/More Info/trpinfo";
+import RepresentativeAssesseeForm from "../Final/More Info/Representative_assesse";
+import ForeignBank from "../Final/More Info/Advanced Info/Foreign Assets/foreignbank";
+import ForeignCustodialAccount from "../Final/More Info/Advanced Info/Foreign Assets/foreign_custodial";
+import ForeignEquityDebtInterest from "../Final/More Info/Advanced Info/Foreign Assets/foreign_equity";
+import ForeignCashValueInsurance from "../Final/More Info/Advanced Info/Foreign Assets/foreign_casvalue";
+import FinancialInterestForm from "../Final/More Info/Advanced Info/Foreign Assets/foreign_interest";
+import ImmovablePropertyForm from "../Final/More Info/Advanced Info/Foreign Assets/immovable_prop";
+import OtherAssets from "../Final/More Info/Advanced Info/Foreign Assets/other_assets";
+import AccountsHavingSigningAuthority from "../Final/More Info/Advanced Info/Foreign Assets/signing_authority";
+import TrustOutsideIndiaTrustee from "../Final/More Info/Advanced Info/Foreign Assets/trust_outside_india";
+import OtherSourcesIncomeOutsideIndia from "../Final/More Info/Advanced Info/Foreign Assets/other_income";
 const TABS_CONFIG = {
   "Permanent Details": {
     icon: faAddressBook,
@@ -166,7 +167,7 @@ const TABS_CONFIG = {
        },
       "Self Assessment": { Component: SelfAssessment, path: "self-assessment", icon: faFileSignature },
       "Other Details": { Component: TdsOtherDetails, path: "other-details", icon: faClipboard },
-      "AIS/TIS": { Component: null, path: "ais-tis", icon: faFileCircleCheck }
+      "AIS/TIS": {  Component: () => <div>AIS/TIS Component</div>, path: "ais-tis", icon: faFileCircleCheck }
     }
   },
   "Final": {
@@ -201,7 +202,11 @@ const TABS_CONFIG = {
         }
        },
       "Filing": { Component: ExportSummary, path: "filing" },
-      "Utility": { Component: null, path: "utility" }
+      "Utility": { 
+        Component: () => <div>Utility Component</div>, // Add a placeholder component
+        path: "utility",
+        icon: faTools // Add appropriate icon
+      }
     }
   }
 };
@@ -209,25 +214,27 @@ const TABS_CONFIG = {
 const ClientDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const match = useMatch('/client/*');
 
     // Get initial active tabs from URL on component mount
     const getInitialTabs = () => {
-        const path = location.pathname.split('/');
-        // Remove empty string and 'client' from path
-        const [mainPath, subPath] = path.filter(p => p && p !== 'client');
-        
+        const pathSegments = location.pathname.split('/').filter(Boolean);
+        const mainPath = pathSegments[1]; // after 'client'
+        const subPath = pathSegments[2];
+
         let initialMainTab = "Permanent Details";
         let initialSubTab = "Basic Details";
 
-        // Find matching tab configuration from URL
+        // Match exact paths only
         Object.entries(TABS_CONFIG).forEach(([tabName, tabConfig]) => {
             if (tabConfig.path === mainPath) {
                 initialMainTab = tabName;
-                Object.entries(tabConfig.subTabs).forEach(([subTabName, subTabConfig]) => {
-                    if (subTabConfig.path === subPath) {
-                        initialSubTab = subTabName;
-                    }
-                });
+                const subTabEntry = Object.entries(tabConfig.subTabs).find(
+                    ([_, subTabConfig]) => subTabConfig.path === subPath
+                );
+                if (subTabEntry) {
+                    initialSubTab = subTabEntry[0];
+                }
             }
         });
 
@@ -270,27 +277,82 @@ const ClientDetails = () => {
         });
     }, [location.pathname]);
 
-    const handleTabChange = (tab) => {
-        setContentOpacity(0.1); // Start fade out
-        simulateLoading();
-        setTimeout(() => {
+    // Memoize the navigation functions to prevent unnecessary re-renders
+    const handleTabChange = useCallback((tab) => {
+        setContentOpacity(0.1);
+        setIsLoading(true);
+        const defaultSubTab = Object.keys(TABS_CONFIG[tab].subTabs)[0];
+        const newPath = `/client/${TABS_CONFIG[tab].path}/${TABS_CONFIG[tab].subTabs[defaultSubTab].path}`;
+        
+        // Use requestAnimationFrame for smoother transitions
+        requestAnimationFrame(() => {
             setActiveTab(tab);
-            const defaultSubTab = Object.keys(TABS_CONFIG[tab].subTabs)[0];
             setActiveSubTab(defaultSubTab);
-            navigate(`/client/${TABS_CONFIG[tab].path}/${TABS_CONFIG[tab].subTabs[defaultSubTab].path}`);
-            setContentOpacity(1); // Fade in
-        }, TRANSITION_DURATION / 2); // Switch content halfway through the transition
-    };
+            navigate(newPath, { replace: true });
+            
+            // Delay opacity restoration
+            setTimeout(() => {
+                setContentOpacity(1);
+                setIsLoading(false);
+            }, TRANSITION_DURATION / 2);
+        });
+    }, [navigate]);
 
-    const handleSubTabChange = (mainTab, subTab) => {
-        setContentOpacity(0.1); // Start fade out
-        simulateLoading();
-        setTimeout(() => {
+    const handleSubTabChange = useCallback((mainTab, subTab) => {
+        setContentOpacity(0.1);
+        setIsLoading(true);
+        
+        // Add check for valid paths
+        if (!TABS_CONFIG[mainTab]?.subTabs[subTab]?.path) {
+            console.error('Invalid path configuration');
+            return;
+        }
+
+        const newPath = `/client/${TABS_CONFIG[mainTab].path}/${TABS_CONFIG[mainTab].subTabs[subTab].path}`;
+        
+        requestAnimationFrame(() => {
             setActiveSubTab(subTab);
-            navigate(`/client/${TABS_CONFIG[mainTab].path}/${TABS_CONFIG[mainTab].subTabs[subTab].path}`);
-            setContentOpacity(1); // Fade in
-        }, TRANSITION_DURATION / 2);
-    };
+            navigate(newPath, { replace: true });
+            
+            setTimeout(() => {
+                setContentOpacity(1);
+                setIsLoading(false);
+            }, TRANSITION_DURATION / 2);
+        });
+    }, [navigate]);
+
+    // Update URL handling
+    useEffect(() => {
+        const cleanupPath = location.pathname.replace('/client/', '');
+        const [mainPath, subPath] = cleanupPath.split('/');
+
+        if (!mainPath) {
+            navigate('/client/permanent/basic', { replace: true });
+            return;
+        }
+
+        // Add validation to prevent invalid routes
+        let foundTab = false;
+        let foundSubTab = false;
+
+        Object.entries(TABS_CONFIG).forEach(([tabName, tabConfig]) => {
+            if (tabConfig.path === mainPath) {
+                setActiveTab(tabName);
+                foundTab = true;
+                Object.entries(tabConfig.subTabs).forEach(([subTabName, subTabConfig]) => {
+                    if (subTabConfig.path === subPath) {
+                        setActiveSubTab(subTabName);
+                        foundSubTab = true;
+                    }
+                });
+            }
+        });
+
+        // Redirect to default route if invalid path
+        if (!foundTab || !foundSubTab) {
+            navigate('/client/permanent/basic', { replace: true });
+        }
+    }, [location.pathname, navigate]);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -333,7 +395,7 @@ const ClientDetails = () => {
             // Navigate to the correct path using the TABS_CONFIG
             const mainPath = TABS_CONFIG[mainTab].path;
             const subPath = TABS_CONFIG[mainTab].subTabs[subTab].path;
-            navigate(`/client/${mainPath}/${subPath}`);
+            navigate(`/client/${mainPath}/${subPath}`, { replace: true });
             
             setSearchQuery(""); // Clear search
             setContentOpacity(1); // Fade in
@@ -348,6 +410,27 @@ const ClientDetails = () => {
         transition: 'opacity 0.5s ease',
         opacity: contentOpacity,
     };
+
+    // Fix the year modal JSX syntax error
+    const yearModalContent = (
+        <div className="modal fade" id="change_year_modal" style={{ display: isYearModalOpen ? "block" : "none" }} aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <p>Are you sure you want to change year?</p>
+                    </div>
+                    <div className="modal-footer justify-content-between">
+                        <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => setIsYearModalOpen(false)}>
+                            Close
+                        </button>
+                        <button type="button" className="btn btn-primary">
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <>
@@ -466,23 +549,7 @@ const ClientDetails = () => {
                             </div>
 
                             {/* Year Change Modal */}
-                            <div className="modal fade" id="change_year_modal" style={{ display: isYearModalOpen ? "block" : "none" }} aria-hidden="true">
-                                <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        <div className="modal-body">
-                                            <p>Are you sure you want to change year?</p>
-                                        </div>
-                                        <div className="modal-footer justify-content-between">
-                                            <button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => setIsYearModalOpen(false)}>
-                                                Close
-                                            </button>
-                                            <button type="button" className="btn btn-primary">
-                                                Yes
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {yearModalContent}
                         </div>
 
                         <div className="card-body px-0">

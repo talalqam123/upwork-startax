@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import AddClientModal from "./AddclientModal";
-import { clientAPI } from '../services/api';
+import { clientAPI } from '../../services/api';
 import { toast } from 'react-toastify';
+import LoadingBar from '../LoadingBar';
 
 const Home = () => {
   const darkMode = useOutletContext(); // Get darkMode from context
@@ -12,6 +13,8 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Start with loading true
+  const [searchText, setSearchText] = useState('');
 
   // Define columns
   const columns = [
@@ -80,6 +83,16 @@ const Home = () => {
     fetchClients();
   }, []);
 
+  // Add initial loading effect
+  useEffect(() => {
+    // Simulate initial loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1 second initial loading
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Handle client deletion
   const handleDelete = async (id) => {
     try {
@@ -105,8 +118,45 @@ const Home = () => {
     }
   };
 
+  // Add search filter function
+  const filteredRows = useMemo(() => {
+    return rows.filter((row) => {
+      return Object.values(row).some((value) => {
+        if (value === null || value === undefined) return false;
+        return value.toString().toLowerCase().includes(searchText.toLowerCase());
+      });
+    });
+  }, [rows, searchText]);
+
+  // Add search box above DataGrid
+  const searchBox = (
+    <div className="col-4 d-flex justify-content-end">
+      <div className="input-group mb-3" style={{ maxWidth: '300px' }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search clients..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+        {searchText && (
+          <div className="input-group-append">
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setSearchText('')}
+            >
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
+      <LoadingBar isLoading={isLoading} duration={1000} />
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -138,11 +188,12 @@ const Home = () => {
                     Add Client
                   </button>
                 </div>
+                {searchBox}
               </div>
               <div className="card-body">
                 <div style={{ height: 400, width: "100%" }}>
                   <DataGrid
-                    rows={rows}
+                    rows={filteredRows}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5, 10, 15]}

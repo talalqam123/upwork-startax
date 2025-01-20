@@ -1,6 +1,6 @@
 import { Block } from '@mui/icons-material';
 import React, { useState } from 'react';
-import BackButton from '../../Backbutton';
+import BackButton from '../../Client Details/Backbutton';
 
 const NonSalaryTDS = () => {
   const initialData = [

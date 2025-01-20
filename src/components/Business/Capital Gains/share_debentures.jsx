@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../Backbutton";
+import BackButton from "../../Client Details/Backbutton";
 
 const ShareDebenturesForm = ({ clientRelId }) => {
     const navigate = useNavigate();

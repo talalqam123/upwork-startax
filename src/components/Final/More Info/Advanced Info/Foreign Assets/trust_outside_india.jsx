@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BackButton from '../../../../Backbutton';
+import BackButton from '../../../../Client Details/Backbutton';
 
 const TrustOutsideIndiaTrustee = () => {
   const [rows, setRows] = useState([

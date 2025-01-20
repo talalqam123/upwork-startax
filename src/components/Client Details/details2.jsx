@@ -5,19 +5,19 @@ import AddressForm from "./Address";
 import BankDetails from "./Banks";
 import AdditionalDetails from "./Additional_Details";
 import SalaryPage from "./Salary/Salary";
-import IncomeUnder44AD from "./Business/incmeunder44ad";
-import HousePropertyForm from "./Business/House Property/houseproperty";
-import CapitalGains from "./Business/Capital Gains/capitalgains_index";
-import ExemptIncomeForm from "./Business/Exempt Income/exempt_income";
-import OtherIncomeForm from "./Business/Other Income/otherincome";
-import DeductionForm from "./Deductions/80c_to_80g";
-import MoreDeductions from "./Deductions/more_deductions";
-import OtherDeductions from "./Deductions/other_deductions";
-import ExportSummary from "./Final/Filing/filling";
-import AdvancedInfo from "./Final/More Info/more_info";
-import SelfAssessment from "./TDS/Self Assessment/self_assessment";
-import TdsTcsComponent from "./TDS/tds_tcs";
-import TdsOtherDetails from "./TDS/Other Details/other_details";
+import IncomeUnder44AD from "../Business/incmeunder44ad";
+import HousePropertyForm from "../Business/House Property/houseproperty";
+import CapitalGains from "../Business/Capital Gains/capitalgains_index";
+import ExemptIncomeForm from "../Business/Exempt Income/exempt_income";
+import OtherIncomeForm from "../Business/Other Income/otherincome";
+import DeductionForm from "../Deductions/80c_to_80g";
+import MoreDeductions from "../Deductions/more_deductions";
+import OtherDeductions from "../Deductions/other_deductions";
+import ExportSummary from "../Final/Filing/filling";
+import AdvancedInfo from "../Final/More Info/more_info";
+import SelfAssessment from "../TDS/Self Assessment/self_assessment";
+import TdsTcsComponent from "../TDS/tds_tcs";
+import TdsOtherDetails from "../TDS/Other Details/other_details";
 
 // Separate permanent details config into its own constant
 const PERMANENT_DETAILS = {

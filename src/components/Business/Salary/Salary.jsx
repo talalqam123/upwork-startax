@@ -1,16 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useOutletContext } from 'react-router-dom'; // Add this import
 import {
     addSalaryTab,
     removeSalaryTab,
     updateSalaryTab,
     setActiveTab,
     saveSalaryData
-} from '../../store/slices/salarySlice';
+} from '../../../store/slices/salarySlice';
 import GrossSalaryForm from './GrossSalary';
 import SalarySection from './DeductionExemption';
 
 const SalaryForm = () => {
+    const darkMode = useOutletContext(); // Get darkMode from context
     const dispatch = useDispatch();
     const underlineRef = useRef(null);
     const tabsRef = useRef([]);
@@ -53,18 +55,18 @@ const SalaryForm = () => {
     };
 
     return (
-        <form className="salary_form" onSubmit={handleSubmit}>
-            <div className="tab-wrapper salary-data">
-                <div className="tab-header">
+        <form className={`salary_form ${darkMode ? 'dark-mode' : ''}`} onSubmit={handleSubmit}>
+            <div className={`tab-wrapper salary-data ${darkMode ? 'dark-mode' : ''}`}>
+                <div className={`tab-header ${darkMode ? 'dark-mode' : ''}`}>
                     <div className="salary_tabs d-flex position-relative">
                         {salaryTabs.map((tab, index) => (
                             <div
                                 key={index}
                                 ref={(el) => (tabsRef.current[index] = el)}
-                                className={`tab-btn d-flex flex-row align-items-center ${activeTabIndex === index ? 'active' : ''}`}
+                                className={`tab-btn d-flex flex-row align-items-center ${activeTabIndex === index ? 'active' : ''} ${darkMode ? 'dark-mode' : ''}`}
                                 onClick={() => toggleActiveTab(index)}
                             >
-                                <button className="salary-tab-button" type="button">
+                                <button className={`salary-tab-button ${darkMode ? 'dark-mode' : ''}`} type="button">
                                     {tab.employerName}
                                 </button>
                                 <span
@@ -91,14 +93,14 @@ const SalaryForm = () => {
                     </button>
                 </div>
 
-                <div className="tab-body salary_tabs_body">
+                <div className={`tab-body salary_tabs_body ${darkMode ? 'dark-mode' : ''}`}>
                     {salaryTabs.map((tab, index) => (
                         <div
                             key={index}
-                            className={`tab-content ${activeTabIndex === index ? '' : 'd-none'}`}
+                            className={`tab-content ${activeTabIndex === index ? '' : 'd-none'} ${darkMode ? 'dark-mode' : ''}`}
                             data-tab={index}
                         >
-                            <div className="card card-body">
+                            <div className={`card card-body ${darkMode ? 'dark-mode' : ''}`}>
                                 <div className="row">
                                     <div className="col-md-3">
                                         <div className="form-group">

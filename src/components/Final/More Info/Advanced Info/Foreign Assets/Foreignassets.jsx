@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BackButton from "../../../../Backbutton";
+import BackButton from "../../../../Client Details/Backbutton";
 const ForeignAssetsIncomes = () => {
   const navigate = useNavigate();  // Added missing parentheses here
   const navigateTo = (link) => {

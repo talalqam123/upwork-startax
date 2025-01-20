@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import countrycode from '../../public/countrycode.json'
+import countrycode from '../../../public/countrycode.json'
 import Papa from "papaparse";
 const AddressForm = () => {
   const [formState, setFormState] = useState({

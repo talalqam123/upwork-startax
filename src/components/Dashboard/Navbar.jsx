@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import LoadingBar from './LoadingBar';
-import faviconImg from '../../public/static/dist/img/favicon.ico'
-
+import LoadingBar from '../LoadingBar';
+import faviconImg from '../../../public/static/dist/img/favicon.ico'
+//  /static/dist/img/favicon.ico'
 const Layout = ({ darkMode, toggleDarkMode, isLoading }) => {
   return (
     <>

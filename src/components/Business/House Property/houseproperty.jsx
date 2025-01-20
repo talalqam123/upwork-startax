@@ -561,7 +561,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                 </div>
                 <div className="card-body">
                   {property.Tenants.map((tenant, tenantIndex) => (
-                    <div key={tenantIndex} className="row mb-3">
+                    <div key={tenantIndex} className="row mb-3 align-items-end"> {/* Added align-items-end */}
                       <div className="col-md-4">
                         <div className="form-group">
                           <label>Tenant Name</label>
@@ -588,7 +588,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                           />
                         </div>
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3"> {/* Changed from col-md-4 to col-md-3 */}
                         <div className="form-group">
                           <label>Tenant PAN</label>
                           <input
@@ -601,22 +601,15 @@ const HousePropertyForm = ({ clientId, year }) => {
                           />
                         </div>
                       </div>
-                      <div className="form-group d-flex" style={{"flex-direction": " column"}} >
-                         <label class="m-0">Cancel</label>
+                      <div className="col-md-1"> {/* Added col-md-1 for proper spacing */}
                         <button
                           type="button"
-                          className="cancel btn btn-danger"
+                          className="btn btn-danger"
                           onClick={() => handleRemoveTenant(index, tenantIndex)}
                         >
                           <i className="fas fa-trash"></i>
                         </button>
                       </div>
-                      {/* <div class="form-group d-flex" style={{ "flex-direction": " column" }} >
-                        <label class="m-0">Cancel</label>
-                        <div class="cancel btn btn-danger">
-                          <i class="fas fa-trash"></i>
-                        </div>
-                      </div> */}
                     </div>
                   ))}
                   <button
@@ -742,6 +735,12 @@ const HousePropertyForm = ({ clientId, year }) => {
                   </div>
                 </div>
               </div>
+              <div class="row mt-4">
+          <div class="col-md-12 d-flex">
+            <input type="submit" style={{"width": "fit-content"}} class="btn btn-block btn-primary house_property_form_submit"
+              value="Submit" />
+          </div>
+        </div>
             </div>
 
 
@@ -750,13 +749,10 @@ const HousePropertyForm = ({ clientId, year }) => {
           ))}
 
         </div>
+        
       </div>
 
-      <div className="text-center mt-3">
-        <button type="submit" className="btn btn-primary rounded-0">
-          Submit
-        </button>
-      </div>
+      
     </form>
   );
 };

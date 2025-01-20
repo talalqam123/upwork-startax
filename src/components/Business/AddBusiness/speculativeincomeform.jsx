@@ -1,5 +1,5 @@
 import React from 'react';
-import BackButton from '../../Backbutton';  // Fixed: Proper component name casing
+import BackButton from '../../Client Details/Backbutton';  // Fixed: Proper component name casing
 
 const SpeculativeIncomeForm = ({ clientRelId }) => {
   return (
