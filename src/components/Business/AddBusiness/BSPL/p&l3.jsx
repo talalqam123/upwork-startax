@@ -4,50 +4,50 @@ import Tab from 'react-bootstrap/Tab';
 const PANDL3 = () => {
     const [values, setValues] = useState({
         // Gift and Donation
-        giftExpenses: 0,
-        donationExpenses: 0,
+        giftExpenses: "",
+        donationExpenses: "",
 
         // Rates and Taxes
-        ratesAndTaxes: 0,
-        unionExciseDuty: 0,
-        serviceTax: 0,
-        vatSalesTax: 0,
-        cess: 0,
-        cgst: 0,
-        sgst: 0,
-        igst: 0,
-        utgst: 0,
-        otherRateTaxDutyCess: 0,
-        totalRatesAndTaxes: 0,
+        ratesAndTaxes: "",
+        unionExciseDuty: "",
+        serviceTax: "",
+        vatSalesTax: "",
+        cess: "",
+        cgst: "",
+        sgst: "",
+        igst: "",
+        utgst: "",
+        otherRateTaxDutyCess: "",
+        totalRatesAndTaxes: "",
 
         // Bad Debts
-        badDebts: 0,
-        badDebtsPan: 0,
-        badDebtsOthers: 0,
-        badDebtsLessThanOneLakh: 0,
-        totalBadDebts: 0,
+        badDebts: "",
+        badDebtsPan: "",
+        badDebtsOthers: "",
+        badDebtsLessThanOneLakh: "",
+        totalBadDebts: "",
 
         // Provisions and Profit
-        provisionForBadDebts: 0,
-        otherProvisions: 0,
-        profitBeforeInterestDepreciationTaxes: 0,
+        provisionForBadDebts: "",
+        otherProvisions: "",
+        profitBeforeInterestDepreciationTaxes: "",
 
         // Interest
-        interest: 0,
-        interestPaidOutsideIndia: 0,
-        interestToOthers: 0,
-        totalInterest: 0,
+        interest: "",
+        interestPaidOutsideIndia: "",
+        interestToOthers: "",
+        totalInterest: "",
 
         // Final calculations
-        depreciationAmortisation: 0,
-        netProfitBeforeTaxes: 0,
-        provisionForCurrentTax: 0,
-        provisionForDeferredTax: 0,
-        profitAfterTax: 0,
-        balanceBroughtForward: 0,
-        amountAvailableForAppropriation: 0,
-        transferredToReservesAndSurplus: 0,
-        balanceCarriedToBalanceSheet: 0
+        depreciationAmortisation: "",
+        netProfitBeforeTaxes: "",
+        provisionForCurrentTax: "",
+        provisionForDeferredTax: "",
+        profitAfterTax: "",
+        balanceBroughtForward: "",
+        amountAvailableForAppropriation: "",
+        transferredToReservesAndSurplus: "",
+        balanceCarriedToBalanceSheet: ""
     });
 
     const handleInputChange = (name, value) => {

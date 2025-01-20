@@ -4,46 +4,46 @@ import Tab from 'react-bootstrap/Tab';
 const PANDL2 = () => {
     const [values, setValues] = useState({
         // Insurance related
-        medicalInsurance: 0,
-        lifeInsurance: 0,
-        keyMansInsurance: 0,
-        otherInsurance: 0,
-        totalExpenditureOnInsurance: 0,
+        medicalInsurance: "",
+        lifeInsurance: "",
+        keyMansInsurance: "",
+        otherInsurance: "",
+        totalExpenditureOnInsurance: "",
         
         // General expenses
-        workmenStaffWelfareExpenses: 0,
-        entertainmentExpenses: 0,
-        hospitalityExpenses: 0,
-        conferenceExpenses: 0,
-        salesPromotionExpenses: 0,
-        advertisementExpenses: 0,
+        workmenStaffWelfareExpenses: "",
+        entertainmentExpenses: "",
+        hospitalityExpenses: "",
+        conferenceExpenses: "",
+        salesPromotionExpenses: "",
+        advertisementExpenses: "",
         
         // Commission related
-        commissionExpenses: 0,
-        commissionPaidOutsideIndia: 0,
-        commissionToOthers: 0,
-        totalCommission: 0,
+        commissionExpenses: "",
+        commissionPaidOutsideIndia: "",
+        commissionToOthers: "",
+        totalCommission: "",
         
         // Royalty related
-        royaltyPaidOutsideIndia: 0,
-        royaltyToOthers: 0,
-        totalRoyalty: 0,
+        royaltyPaidOutsideIndia: "",
+        royaltyToOthers: "",
+        totalRoyalty: "",
         
         // Professional fees related
-        professionalFeesPaidOutsideIndia: 0,
-        professionalFeesToOthers: 0,
-        totalProfessionalFees: 0,
+        professionalFeesPaidOutsideIndia: "",
+        professionalFeesToOthers: "",
+        totalProfessionalFees: "",
         
         // Other expenses
-        hotelBoardingLodgingExpenses: 0,
-        travelingExpenses: 0,
-        foreignTravelingExpenses: 0,
-        conveyanceExpenses: 0,
-        telephoneExpenses: 0,
-        guestHouseExpenses: 0,
-        clubExpenses: 0,
-        festivalCelebrationExpenses: 0,
-        scholarshipExpenses: 0
+        hotelBoardingLodgingExpenses: "",
+        travelingExpenses: "",
+        foreignTravelingExpenses: "",
+        conveyanceExpenses: "",
+        telephoneExpenses: "",
+        guestHouseExpenses: "",
+        clubExpenses: "",
+        festivalCelebrationExpenses: "",
+        scholarshipExpenses: "",
     });
 
     const handleInputChange = (name, value) => {
@@ -96,7 +96,7 @@ const PANDL2 = () => {
 
     return (
         <form method="POST">
-            <div className="card card-body text-content">
+           <div>
                 {/* Insurance Section */}
                 <div className="">
                     <div>
