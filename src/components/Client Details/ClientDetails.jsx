@@ -88,6 +88,7 @@ import OtherAssets from "../Final/More Info/Advanced Info/Foreign Assets/other_a
 import AccountsHavingSigningAuthority from "../Final/More Info/Advanced Info/Foreign Assets/signing_authority";
 import TrustOutsideIndiaTrustee from "../Final/More Info/Advanced Info/Foreign Assets/trust_outside_india";
 import OtherSourcesIncomeOutsideIndia from "../Final/More Info/Advanced Info/Foreign Assets/other_income";
+import ImportTdsTcs from "../TDS/ImportTdsTcs";
 const TABS_CONFIG = {
   "Permanent Details": {
     icon: faAddressBook,
@@ -158,6 +159,7 @@ const TABS_CONFIG = {
     subTabs: {
       "TDS/TCS": { Component: TdsTcsComponent, path: "tds-tcs", icon: faFileContract,
         subRoutes:{
+            "import" : ImportTdsTcs,
             "non-salary": NonSalaryTDS,
             "sale-rent": TdsOnProperty,
             "tcs": TCSForm,
@@ -173,8 +175,12 @@ const TABS_CONFIG = {
   "Final": {
     icon: faFileInvoice,
     path: "final",
+    defaultSubTab: "Filing", // Add this line to set default subtab
     subTabs: {
-      "More Info": { Component: AdvancedInfo, path: "more-info",
+       // Move Filing to be first
+      "More Info": { 
+        Component: AdvancedInfo, 
+        path: "more-info",
         subRoutes: {
              "resedential" : ResidentialStatus,
              "unlisted" :UnlistedShares,
@@ -201,7 +207,7 @@ const TABS_CONFIG = {
             "foreign-assets/other-sources-income-outside-india" : OtherSourcesIncomeOutsideIndia
         }
        },
-      "Filing": { Component: ExportSummary, path: "filing" },
+       "Filing": { Component: ExportSummary, path: "filing" },
       "Utility": { 
         Component: () => <div>Utility Component</div>, // Add a placeholder component
         path: "utility",
@@ -215,6 +221,43 @@ const ClientDetails = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const match = useMatch('/client/*');
+
+    // Add state for client name
+    const [clientName, setClientName] = useState("Client");
+
+    // Get client data from location state
+    useEffect(() => {
+        console.log('Current location:', location); // Debug log
+        console.log('Location state:', location.state); // Debug log
+        console.log('localStorage:', localStorage.getItem('currentClient')); // Debug log
+
+        const setClientInfo = (clientData) => {
+            if (clientData?.first_name) {
+                setClientName(clientData.first_name);
+                localStorage.setItem('currentClient', JSON.stringify(clientData));
+            }
+        };
+
+        if (location.state?.client) {
+            setClientInfo(location.state.client);
+        } else {
+            // If no state, try localStorage
+            const savedClient = localStorage.getItem('currentClient');
+            if (savedClient) {
+                try {
+                    const parsedClient = JSON.parse(savedClient);
+                    setClientInfo(parsedClient);
+                } catch (e) {
+                    console.error('Error parsing saved client:', e);
+                    // If there's an error, redirect to dashboard
+                    navigate('/');
+                }
+            } else {
+                // If no saved client data, redirect to dashboard
+                navigate('/');
+            }
+        }
+    }, [location, navigate]);
 
     // Get initial active tabs from URL on component mount
     const getInitialTabs = () => {
@@ -281,7 +324,7 @@ const ClientDetails = () => {
     const handleTabChange = useCallback((tab) => {
         setContentOpacity(0.1);
         setIsLoading(true);
-        const defaultSubTab = Object.keys(TABS_CONFIG[tab].subTabs)[0];
+        const defaultSubTab = TABS_CONFIG[tab].defaultSubTab || Object.keys(TABS_CONFIG[tab].subTabs)[0];
         const newPath = `/client/${TABS_CONFIG[tab].path}/${TABS_CONFIG[tab].subTabs[defaultSubTab].path}`;
         
         // Use requestAnimationFrame for smoother transitions
@@ -432,6 +475,11 @@ const ClientDetails = () => {
         </div>
     );
 
+    // Update document title when tab or client name changes
+    useEffect(() => {
+        document.title = `Startax: ${clientName} : ${activeTab}`;
+    }, [clientName, activeTab]);
+
     return (
         <>
             <LoadingBar isLoading={isLoading} duration={TRANSITION_DURATION} />
@@ -449,7 +497,7 @@ const ClientDetails = () => {
                                     // handle redirection
                                 }}
                             >
-                                {"Client Full Name"}
+                                {clientName} {/* Update this line */}
                             </h3>
                             <div className="col-lg-3 col-md-12 col-sm-12">
                                 <div className="input-group shadow-sm input-group-sm flex-column">

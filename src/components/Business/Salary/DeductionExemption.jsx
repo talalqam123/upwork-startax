@@ -76,6 +76,20 @@ const SalarySection = () => {
     }
   };
 
+  // Add this CSS inline style object
+  const infoButtonStyle = {
+    position: 'absolute',
+    right: '-25px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    zIndex: 1
+  };
+
+  const inputContainerStyle = {
+    position: 'relative',
+    width: '100%'
+  };
+
   return (
     <div className="card card-body">
       <div className="pt-3 pb-3 p-tab-c1">
@@ -193,14 +207,14 @@ const SalarySection = () => {
                     </span>
                     <div className="col-md-4 d-flex justify-content-end">
                       <p className="text-red col-md-3 m-0" style={{ fontSize: '12px' }}>-</p>
-                      <div className="col-md-9 position-relative">
+                      <div className="col-md-9" style={inputContainerStyle}>
                         <input
                           type="text"
                           className="form-control rounded-0 deduction_amount inr_field deduction16ia"
                           value={deductions.standardDeduction}
                           onChange={(e) => handleDeductionChange('standardDeduction', e.target.value)}
                         />
-                        <span className="tooltips">
+                        <span className="tooltips" style={infoButtonStyle}>
                           <i className="fas fa-info-circle"></i>
                           <span className="tooltips-content">
                             <b>Amount:</b> Up to ₹50,000 of Gross Salary.
@@ -219,14 +233,14 @@ const SalarySection = () => {
                     </span>
                     <div className="col-md-4 d-flex justify-content-end">
                       <p className="text-red col-md-3 m-0" style={{ fontSize: '12px' }}>-</p>
-                      <div className="col-md-9 position-relative">
+                      <div className="col-md-9" style={inputContainerStyle}>
                         <input
                           type="text"
                           className="form-control rounded-0 deduction_amount inr_field"
                           value={deductions.entertainmentTax}
                           onChange={(e) => handleDeductionChange('entertainmentTax', e.target.value)}
                         />
-                        <span className="tooltips">
+                        <span className="tooltips" style={infoButtonStyle}>
                           <i className="fas fa-info-circle"></i>
                           <span className="tooltips-content">
                             <strong>Applicable to:</strong> Only for Government Employees.
@@ -251,14 +265,14 @@ const SalarySection = () => {
                     </span>
                     <div className="col-md-4 d-flex justify-content-end">
                       <p className="text-red col-md-3 m-0" style={{ fontSize: '12px' }}>-</p>
-                      <div className="col-md-9 position-relative">
+                      <div className="col-md-9" style={inputContainerStyle}>
                         <input
                           type="text"
                           className="form-control rounded-0 deduction_amount inr_field"
                           value={deductions.professionalTax}
                           onChange={(e) => handleDeductionChange('professionalTax', e.target.value)}
                         />
-                        <span className="tooltips">
+                        <span className="tooltips" style={infoButtonStyle}>
                           <i className="fas fa-info-circle"></i>
                           <span className="tooltips-content">
                             <b>Amount:</b> As per the actual professional tax paid.

@@ -16,7 +16,7 @@ const TdsTcsComponent = () => {
         </div>
         <button
           className="btn bg-gradient-info btn-flat"
-          onClick={() => handleRedirect('/client/tds/import')}
+          onClick={() => handleRedirect('/client/tds-taxes/tds-tcs/import')}
         >
           Import TDS/TCS
         </button>

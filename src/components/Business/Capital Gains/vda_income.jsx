@@ -168,7 +168,7 @@ const VDAIncomeForm = ({ clientId, clientRelId }) => {
                         <label className="m-0">Cancel</label>
                         <button
                           type="button"
-                          className="btn btn-danger removeCrypto"
+                          className="btn btn-danger"
                           onClick={() => removeAsset(index)}
                         >
                           <i className="fas fa-trash"></i>
@@ -181,7 +181,7 @@ const VDAIncomeForm = ({ clientId, clientRelId }) => {
             </table>
             <button
               type="button"
-              className="mb-3 w-auto btn btn-block bg-primary btn-flat add_more_vda_btn"
+              className="mb-3 w-auto btn btn-block bg-primary btn-flat"
               onClick={addNewAsset}
             >
               Add More

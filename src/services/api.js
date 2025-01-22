@@ -13,8 +13,8 @@ export const clientAPI = {
     getAllClients: async () => {
         try {
             const response = await api.get('/clients');
-            console.log('API Response:', response); // Debug log
-            return response;
+            // Return just the data property from the response
+            return { data: response.data };  // This matches your API response format
         } catch (error) {
             console.error('API Error:', error);
             throw error;

@@ -1,0 +1,115 @@
+{% extends "../2024_base.html" %}
+{% load custom_filters %}
+{% block title %}
+  {{client_full_name}}: Import TDS/TCS
+{% endblock title %}
+
+{% block tds_tax_block %}
+{% load custom_tags %}
+{% block style_link %}
+<style>
+    /* Style for the loading spinner */
+    .loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        display: none; /* Hidden initially */
+        border: 5px solid #f3f3f3; /* Light gray background */
+        border-top: 5px solid #3498db; /* Blue spinner */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    /* Spinner animation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock style_link %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-body">
+                <form id="importTdsTcsByPdf" action="{% url 'catalog_2024:tds_tcs_import' client_rel_id=client_rel_id %}" method='POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row justify-content-center my-5 text-content">
+                        <div class="col-md-6">
+                            <div class="card card-default">
+                                <div class="card-header">
+                                    <h3 class="card-title">Import TDS/TCS</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" accept=".pdf" id="tds_file" name="tds_file" aria-describedby="input_tds_file">
+                                            <label class="custom-file-label" for="tds_file">Choose file</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="submit" style="width: fit-content" class="btn btn-block btn-primary" value="Upload" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button class="btn bg-gradient-warning text-white" type="button" onclick="window.location.href='{% url 'catalog_2024:tds_tcs' client_rel_id=client_rel_id %}'">
+                    Back
+                </button>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock tds_tax_block %}
+
+{% block custom_script %}
+<script>
+    $(document).ready(function() {
+        $('#tds_file').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').text(fileName ? fileName : 'Choose file');
+        });
+          $('#importTdsTcsByPdf').on('submit', function() {
+            // Show the loading spinner
+            $('#loadingSpinner').show();
+
+            // Change the cursor to 'wait'
+            $('body').css('cursor', 'wait');
+
+            // Disable the submit button to prevent multiple submissions
+            $('input[type="submit"]').prop('disabled', true);
+        });
+    });
+</script>
+{% endblock custom_script %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

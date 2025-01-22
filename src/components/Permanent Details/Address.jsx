@@ -24,11 +24,7 @@ const AddressForm = () => {
   const [stateOptions, setStateOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]); // Add this new state
 
-  useEffect(() => {
-    // Fetch or set client data if needed
-    const fetchedClients = []; // Replace with actual data fetching logic
-    setClients(fetchedClients);
-  }, []);
+  
   useEffect(() => {
     // Load the CSV data
     const fetchPincodeData = async () => {

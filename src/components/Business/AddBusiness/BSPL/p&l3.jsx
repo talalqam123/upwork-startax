@@ -260,6 +260,7 @@ const PANDL3 = () => {
                                     value={values.totalRatesAndTaxes}
                                     onChange={(e) => handleInputChange('totalRatesAndTaxes', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
+                                    readOnly
                                 />
                             </div>
                         </div>
@@ -353,6 +354,7 @@ const PANDL3 = () => {
                                     value={values.totalBadDebts}
                                     onChange={(e) => handleInputChange('totalBadDebts', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
+                                    readOnly
                                 />
                             </div>
                         </div>
@@ -436,6 +438,7 @@ const PANDL3 = () => {
                                         value={values.totalInterest}
                                         onChange={(e) => handleInputChange('totalInterest', e.target.value)}
                                         className="form-control rounded-0 flex-grow-1"
+                                        readOnly
                                     />
                                 </div>
                             </div>

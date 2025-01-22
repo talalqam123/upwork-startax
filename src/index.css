@@ -157,3 +157,26 @@ button:focus-visible {
     font-weight: 600 !important
 
 }
+
+/* Add these styles at the end of the file */
+.MuiDataGrid-root {
+  overflow: hidden !important;
+  padding-right: 0 !important;
+}
+
+.MuiDataGrid-virtualScroller {
+  overflow: auto !important;
+  padding-right: 0 !important;
+}
+
+/* Override any body padding */
+body {
+  padding-right: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Ensure modals don't cause padding */
+.modal-open {
+  padding-right: 0 !important;
+  overflow: hidden;
+}

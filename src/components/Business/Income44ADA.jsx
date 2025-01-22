@@ -234,7 +234,7 @@ const [showDropdown, setShowDropdown] = useState(false);
 
                             <div className="col-md-3">
                                 <button
-                                    className="btn btn-danger remove_business btn-sm mt-4"
+                                    className="btn btn-danger btn-sm mt-4"
                                     type="button"
                                     onClick={() => handleRemoveBusiness(index)}
                                 >
@@ -245,7 +245,7 @@ const [showDropdown, setShowDropdown] = useState(false);
                     ))}
 
                     <button
-                        className="btn btn-info add_more_business rounded-0"
+                        className="btn btn-info add-more-non-salary-tds"
                         type="button"
                         onClick={handleAddBusiness}
                     >

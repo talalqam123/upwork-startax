@@ -3,6 +3,10 @@ import BusinessTabs from './BusinessTabs';
 import BuisinessBase from './business_base';
 import Income44ADA from './Income44ADA';
 import Income44AE from './Income44AE';
+import AddClientModal from './AddclientModal';
+import Income44ADAModal from './Income44ADAModal';
+import Income44AEModal from './Income44AEModal';
+
 // Add business options array
 const BUSINESS_OPTIONS = [
     { value: 'RETAIL', label: 'Retail Trading' },
@@ -183,6 +187,9 @@ const Income44AD = () => {
 
     // Add new state for active tab
     const [activeTab, setActiveTab] = useState('44AD');
+    const [show44ADModal, setShow44ADModal] = useState(false);
+    const [show44ADAModal, setShow44ADAModal] = useState(false);
+    const [show44AEModal, setShow44AEModal] = useState(false);
 
     // Tab content components
     const render44ADContent = () => (
@@ -467,7 +474,7 @@ const Income44AD = () => {
                 return render44ADContent();
         }
     };
-
+  const [showModal, setShowModal] = useState(false);
     return (
         <div className="col-12">
             <div className="card card-primary card-outline card-tabs">
@@ -475,9 +482,9 @@ const Income44AD = () => {
                 <div className="card-header p-0 pt-1 border-bottom-0">
                     <ul className="nav nav-tabs">
                         {[
-                            { id: '44AD', label: 'Income Under 44AD' },
-                            { id: '44ADA', label: 'Income Under 44ADA' },
-                            { id: '44AE', label: 'Income Under 44AE' }
+                            { id: '44AD', label: 'Income Under 44AD', setModal: setShow44ADModal },
+                            { id: '44ADA', label: 'Income Under 44ADA', setModal: setShow44ADAModal },
+                            { id: '44AE', label: 'Income Under 44AE', setModal: setShow44AEModal }
                         ].map(tab => (
                             <li key={tab.id} className="nav-item d-flex flex-row">
                                 <a
@@ -486,7 +493,14 @@ const Income44AD = () => {
                                     style={{ cursor: 'pointer' }}
                                 >
                                     {tab.label}
-                                    <button type="button" className="align-self-center tooltips income-info-button ml-2">
+                                    <button 
+                                        type="button" 
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            tab.setModal(true);
+                                        }}
+                                        className="align-self-center tooltips income-info-button ml-2"
+                                    >
                                         <i className="fas fa-info-circle" />
                                     </button>
                                 </a>
@@ -500,7 +514,6 @@ const Income44AD = () => {
                     <div className="card-body">
                         {renderActiveTabContent()}
                     </div>
-                    <BuisinessBase />
                     <div className="card-footer">
                         <div className="col-md-12 d-flex justify-content-end">
                             <input
@@ -514,9 +527,23 @@ const Income44AD = () => {
                         </div>
 
                     </div>
+                    <BuisinessBase />
+                   
                 </form>
 
             </div >
+            <AddClientModal
+        showModal={show44ADModal}
+        onClose={() => setShow44ADModal(false)}
+      />
+      <Income44ADAModal
+        showModal={show44ADAModal}
+        onClose={() => setShow44ADAModal(false)}
+      />
+      <Income44AEModal
+        showModal={show44AEModal}
+        onClose={() => setShow44AEModal(false)}
+      />
         </div >
     );
 };

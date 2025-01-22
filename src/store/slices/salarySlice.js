@@ -29,6 +29,10 @@ const initialState = {
   activeTabIndex: 0,
   loading: false,
   error: null,
+  underlinePosition: {
+    width: 0,
+    left: 0
+  }
 };
 
 const salarySlice = createSlice({
@@ -63,6 +67,12 @@ const salarySlice = createSlice({
     setActiveTab: (state, action) => {
       state.activeTabIndex = action.payload;
     },
+    updateUnderlinePosition: (state, action) => {
+      state.underlinePosition = {
+        width: action.payload.width,
+        left: action.payload.left
+      };
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -84,7 +94,8 @@ export const {
   addSalaryTab, 
   removeSalaryTab, 
   updateSalaryTab, 
-  setActiveTab 
+  setActiveTab,
+  updateUnderlinePosition 
 } = salarySlice.actions;
 
 export default salarySlice.reducer;

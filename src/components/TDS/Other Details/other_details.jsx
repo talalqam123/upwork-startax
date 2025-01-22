@@ -96,7 +96,7 @@ const TdsOtherDetails = () => {
           </div>
         ))}
         <button
-          className="btn btn-info add-more-loss"
+          className="btn btn-info add-more-non-salary-tds"
           type="button"
           style={{ width: 'fit-content' }}
           onClick={handleAddLoss}
@@ -151,7 +151,7 @@ const TdsOtherDetails = () => {
           </div>
         ))}
         <button
-          className="btn btn-info add-more-depreciation"
+          className="btn btn-info add-more"
           type="button"
           style={{ width: 'fit-content' }}
           onClick={handleAddDepreciation}

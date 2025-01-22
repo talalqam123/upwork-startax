@@ -1,12 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useOutletContext } from 'react-router-dom'; // Add this import
+import { useOutletContext } from 'react-router-dom';
+import Papa from 'papaparse';
 import {
     addSalaryTab,
     removeSalaryTab,
     updateSalaryTab,
     setActiveTab,
-    saveSalaryData
+    saveSalaryData,
+    updateUnderlinePosition
 } from '../../../store/slices/salarySlice';
 import GrossSalaryForm from './GrossSalary';
 import SalarySection from './DeductionExemption';
@@ -17,17 +19,42 @@ const SalaryForm = () => {
     const underlineRef = useRef(null);
     const tabsRef = useRef([]);
     const { salaryTabs, activeTabIndex, loading } = useSelector((state) => state.salary);
+    const [pincodeData, setPincodeData] = useState([]);
+    const [stateOptions, setStateOptions] = useState([]);
 
     useEffect(() => {
-        updateUnderline(activeTabIndex);
+        updateTabUnderline(activeTabIndex);
     }, [activeTabIndex, salaryTabs]);
 
-    const updateUnderline = (index) => {
+    useEffect(() => {
+        // Load the CSV data
+        const fetchPincodeData = async () => {
+            const response = await fetch("/pin_codes.csv");
+            const text = await response.text();
+            Papa.parse(text, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    setPincodeData(results.data);
+                    const uniqueStates = [...new Set(results.data.map(item => item.state))];
+                    setStateOptions(uniqueStates);
+                },
+            });
+        };
+        fetchPincodeData();
+    }, []);
+
+    const updateTabUnderline = (index) => {
         if (!underlineRef.current || !tabsRef.current[index]) return;
         
         const activeTab = tabsRef.current[index];
         const { offsetLeft, offsetWidth } = activeTab;
         
+        dispatch(updateUnderlinePosition({
+            width: offsetWidth,
+            left: offsetLeft
+        }));
+
         underlineRef.current.style.width = `${offsetWidth}px`;
         underlineRef.current.style.left = `${offsetLeft}px`;
     };
@@ -36,17 +63,34 @@ const SalaryForm = () => {
         dispatch(addSalaryTab());
     };
 
-    const handleRemoveSalaryTab = (index) => {
+    const handleRemoveSalaryTab = (index, event) => {
+        event.stopPropagation(); // Prevent tab activation when removing
         dispatch(removeSalaryTab(index));
     };
 
     const handleInputChange = (index, field, value) => {
+        if (field === 'pincode') {
+            const matchedData = pincodeData.find(
+                (entry) => entry.pincode === value
+            );
+            if (matchedData) {
+                dispatch(updateSalaryTab({ 
+                    index, 
+                    field: 'stateCode', 
+                    value: matchedData.state 
+                }));
+                dispatch(updateSalaryTab({ 
+                    index, 
+                    field: 'city', 
+                    value: matchedData.district 
+                }));
+            }
+        }
         dispatch(updateSalaryTab({ index, field, value }));
     };
 
     const toggleActiveTab = (index) => {
         dispatch(setActiveTab(index));
-        updateUnderline(index);
     };
 
     const handleSubmit = (e) => {
@@ -69,12 +113,14 @@ const SalaryForm = () => {
                                 <button className={`salary-tab-button ${darkMode ? 'dark-mode' : ''}`} type="button">
                                     {tab.employerName}
                                 </button>
-                                <span
-                                    className="text-danger remove-salary"
-                                    onClick={() => handleRemoveSalaryTab(index)}
-                                >
-                                    <i className="fas fa-trash"></i>
-                                </span>
+                                {salaryTabs.length > 1 && (
+                                    <span
+                                        className="text-danger remove-salary"
+                                        onClick={(e) => handleRemoveSalaryTab(index, e)}
+                                    >
+                                        <i className="fas fa-trash"></i>
+                                    </span>
+                                )}
                             </div>
                         ))}
                         <div
@@ -209,8 +255,12 @@ const SalaryForm = () => {
                                                     value={tab.stateCode}
                                                     onChange={(e) => handleInputChange(index, 'stateCode', e.target.value)}
                                                 >
-                                                    <option value="">Select Option</option>
-                                                    {/* Add state options dynamically */}
+                                                    <option value="">Select State</option>
+                                                    {stateOptions.map((state, idx) => (
+                                                        <option key={idx} value={state}>
+                                                            {state}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                         </div>
@@ -221,7 +271,7 @@ const SalaryForm = () => {
                                                     type="text"
                                                     className="form-control rounded-0 city"
                                                     value={tab.city}
-                                                    onChange={(e) => handleInputChange(index, 'city', e.target.value)}
+                                                  
                                                 />
                                             </div>
                                         </div>
@@ -248,9 +298,7 @@ const SalaryForm = () => {
       </div>
             </div>
 
-            {/* Add submit button */}
-            
-            
+            {/* Add submit button */}            
 
             {/* Add hidden input for tabs */}
             <input

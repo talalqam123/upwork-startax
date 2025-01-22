@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  } from "react";
+import { useNavigate } from "react-router-dom";
 // import "./AddClient.css"; // Optional for custom styles if needed
 
 const AddClientInfo = () => {
@@ -16,6 +17,7 @@ const AddClientInfo = () => {
     date_of_commencement: "",
   });
 
+  const navigate = useNavigate();
   const [nextId, setNextId] = useState(1); // Next incremental ID
 
   // Load data from localStorage on component mount
@@ -86,7 +88,7 @@ const AddClientInfo = () => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <a href="#">Home</a>
+                  <a href="/">Home</a>
                 </li>
                 <li className="breadcrumb-item active">Add Customer</li>
               </ol>

@@ -96,7 +96,7 @@ const PANDL2 = () => {
 
     return (
         <form method="POST">
-           <div>
+            <div className="card card-body text-content">
                 {/* Insurance Section */}
                 <div className="">
                     <div>

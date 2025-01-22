@@ -4,6 +4,9 @@ import LoadingBar from '../LoadingBar';
 import faviconImg from '../../../public/static/dist/img/favicon.ico'
 //  /static/dist/img/favicon.ico'
 const Layout = ({ darkMode, toggleDarkMode, isLoading }) => {
+  // Add new state for dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   return (
     <>
       <nav className={`main-header navbar navbar-expand ${darkMode ? "navbar-dark bg-dark" : "navbar-light bg-white"}`} 
@@ -69,19 +72,59 @@ const Layout = ({ darkMode, toggleDarkMode, isLoading }) => {
               )}
             </div>
 
-            {/* Logout Button */}
-            <button
-              onClick={() => $('#logoutModal').modal('show')}
-              className="btn btn-outline-danger d-flex align-items-center gap-2"
-              style={{
-                borderRadius: "20px",
-                padding: "8px 16px",
-                transition: "all 0.3s ease"
-              }}
-            >
-              <i className="fas fa-sign-out-alt"></i>
-              <span className="d-none d-md-inline">Logout</span>
-            </button>
+            {/* Replace the existing dropdown button with this */}
+            <div className="dropdown" style={{ position: 'relative' }}>
+              <button
+                className={`btn ${darkMode ? 'btn-dark' : 'btn-light'} dropdown-toggle d-flex align-items-center`}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDropdownOpen(!dropdownOpen);
+                }}
+                style={{
+                  borderRadius: "50%",
+                  padding: "8px",
+                  transition: "all 0.3s ease"
+                }}
+              >
+                <i className="fas fa-user-circle fa-lg"></i>
+              </button>
+              
+              <div 
+                className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  left: 'auto',
+                  top: '100%',
+                  marginTop: '0.5rem',
+                  borderRadius: "10px",
+                  minWidth: '200px',
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                  backgroundColor: darkMode ? "#343a40" : "#fff",
+                  zIndex: 1000,
+                  transform: 'none !important'
+                }}
+              >
+                <a className={`dropdown-item ${darkMode ? 'text-light' : ''}`} href="/profile">
+                  <i className="fas fa-user mr-2"></i> Profile
+                </a>
+                <a className={`dropdown-item ${darkMode ? 'text-light' : ''}`} href="/subscription">
+                  <i className="fas fa-crown mr-2"></i> Subscription
+                </a>
+                <div className="dropdown-divider"></div>
+                <a 
+                  className={`dropdown-item ${darkMode ? 'text-light' : ''}`} 
+                  href="#" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    $('#logoutModal').modal('show');
+                  }}
+                >
+                  <i className="fas fa-sign-out-alt mr-2"></i> Logout
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </nav>

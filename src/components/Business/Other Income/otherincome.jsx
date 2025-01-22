@@ -13,47 +13,51 @@ const OtherIncomeForm = () => {
     amount: "",
   }]);
 
-  // useEffect(() => {
-  //   const formatAmountFields = () => {
-  //     const amountFields = document.querySelectorAll("input.inr_field");
+  const [dividendIncomes, setDividendIncomes] = useState([{
+    description: '',
+    amount: '',
+    period: 'Upto15Of6'
+  }]);
 
-  //     amountFields.forEach((field) => {
-  //       // Format on input
-  //       const handleInput = (e) => {
-  //         let value = e.target.value.replace(/,/g, "");
-  //         e.target.value = Number(value).toLocaleString("en-IN");
-  //       };
+  const [taxableDividendIncomes, setTaxableDividendIncomes] = useState([{
+    description: '',
+    amount: '',
+    period: 'Upto15Of6'
+  }]);
 
-  //       field.addEventListener("input", handleInput);
+  const handleAddDividendIncome = () => {
+    setDividendIncomes([...dividendIncomes, {
+      description: '',
+      amount: '',
+      period: 'Upto15Of6'
+    }]);
+  };
 
-  //       // Cleanup formatting on form submission
-  //       const form = field.closest("form");
-  //       if (form) {
-  //         const handleSubmit = () => {
-  //           amountFields.forEach((field) => {
-  //             field.value = field.value.replace(/,/g, "");
-  //           });
-  //         };
-  //         form.addEventListener("submit", handleSubmit);
+  const handleAddTaxableDividendIncome = () => {
+    setTaxableDividendIncomes([...taxableDividendIncomes, {
+      description: '',
+      amount: '',
+      period: 'Upto15Of6'
+    }]);
+  };
 
-  //         return () => {
-  //           form.removeEventListener("submit", handleSubmit);
-  //         };
-  //       }
-  //     });
-  //   };
+  const handleDividendChange = (index, field, value, isTaxable = false) => {
+    const setState = isTaxable ? setTaxableDividendIncomes : setDividendIncomes;
+    const state = isTaxable ? taxableDividendIncomes : dividendIncomes;
+    
+    const updatedIncomes = [...state];
+    updatedIncomes[index][field] = field === 'amount' ? formatIndianNumber(value) : value;
+    setState(updatedIncomes);
+  };
 
-  //   formatAmountFields();
+  const handleRemoveDividendIncome = (index, isTaxable = false) => {
+    if (isTaxable) {
+      setTaxableDividendIncomes(taxableDividendIncomes.filter((_, i) => i !== index));
+    } else {
+      setDividendIncomes(dividendIncomes.filter((_, i) => i !== index));
+    }
+  };
 
-  //   return () => {
-  //     // Clean up all event listeners
-  //     const amountFields = document.querySelectorAll("input.inr_field");
-  //     amountFields.forEach((field) => {
-  //       const clonedField = field.cloneNode(true);
-  //       field.parentNode.replaceChild(clonedField, field);
-  //     });
-  //   };
-  // }, []);
   const formatIndianNumber = (value) => {
     value = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     let integer = value;
@@ -75,9 +79,7 @@ const OtherIncomeForm = () => {
     setOtherSources([...otherSources, { source: "", narration: "", amount: "" }]);
   };
 
-  const handleDeleteOtherSourceIncome = (index) => {
-    setOtherSources(otherSources.filter((_, i) => i !== index));
-  };
+ 
   const [gifts, setGifts] = useState([
     {
       giftKey: "Aggrtvaluewithoutcons562x",
@@ -92,10 +94,14 @@ const OtherIncomeForm = () => {
       { giftKey: "Aggrtvaluewithoutcons562x", narration: "", amount: "" },
     ]);
   };
-
+  const handleDeleteOtherSourceIncome = (index) => {
+    setOtherSources(otherSources.filter((_, i) => i !== index));
+  };
   const handleRemoveGift = (index) => {
-    const updatedGifts = gifts.filter((_, i) => i !== index);
-    setGifts(updatedGifts);
+    // const updatedGifts = gifts.filter((_, i) => i !== index);
+    // setGifts(updatedGifts);
+    setGifts(gifts.filter((_, i) => i !== index));
+
   };
 
   const handleInput = (event, setState, index, field) => {
@@ -418,7 +424,7 @@ const OtherIncomeForm = () => {
                         >
                           <label>Cancel</label>
                           <div
-                            className="btn btn-danger gift_remove rounded-0"
+                            className="btn btn-danger rounded-0"
                             onClick={() => handleRemoveGift(index)}
                           >
                             <i className="fas fa-trash"></i>
@@ -521,7 +527,7 @@ const OtherIncomeForm = () => {
                         >
                           <label>Cancel</label>
                           <div
-                            className="btn btn-danger special_inc_remove rounded-0"
+                            className="btn btn-danger rounded-0"
                             onClick={() => removeRow(index)}
                           >
                             <i className="fas fa-trash"></i>
@@ -549,7 +555,171 @@ const OtherIncomeForm = () => {
           </div>
         </div>
       </div>
-      <div className="row mt-4">
+      
+    </div>
+    <div className="card card-primary">
+        <div className="card-header">
+          <h3 className="card-title">
+            <strong>Dividend Income</strong>
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-responsive div_inc_table">
+                <tbody>
+                  {dividendIncomes.map((income, index) => (
+                    <tr key={index}>
+                      <td className="col-md-5">
+                        <div className="form-group">
+                          <label>Description</label>
+                          <input
+                            type="text"
+                            name="div_inc_desc[]"
+                            className="form-control rounded-0"
+                            value={income.description}
+                            onChange={(e) => handleDividendChange(index, 'description', e.target.value)}
+                          />
+                        </div>
+                      </td>
+                      <td className="col-md-3">
+                        <div className="form-group">
+                          <label>Amount</label>
+                          <input
+                            type="text"
+                            name="div_inc_amount[]"
+                            className="form-control rounded-0 inr_field"
+                            value={income.amount}
+                            onChange={(e) => handleDividendChange(index, 'amount', e.target.value)}
+                          />
+                        </div>
+                      </td>
+                      <td className="col-md-3">
+                        <div className="form-group">
+                          <label>Period</label>
+                          <select
+                            name="div_inc_source[]"
+                            className="form-control rounded-0"
+                            value={income.period}
+                            onChange={(e) => handleDividendChange(index, 'period', e.target.value)}
+                          >
+                            <option value="Upto15Of6">Upto 15 June</option>
+                            <option value="Upto15Of9">From 15 June To 15 Sep</option>
+                            <option value="Up16Of9To15Of12">From 16 Sep To 15 Dec</option>
+                            <option value="Up16Of12To15Of3">From 16 Dec To 15 Mar</option>
+                            <option value="Up16Of3To31Of3">From 16 Mar To 31 Mar</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td className="col-md-1">
+                        <div className="form-group d-flex" style={{ flexDirection: "column" }}>
+                          <label>Cancel</label>
+                          <button
+                            type="button"
+                            className="btn btn-danger rounded-0"
+                            onClick={() => handleRemoveDividendIncome(index)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button className="btn btn-info add_div_inc_btn rounded-0" type="button" onClick={handleAddDividendIncome}>
+                Add More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card card-primary">
+        <div className="card-header">
+          <h3 className="card-title">
+            <strong>Dividend Income u/s 56(2)(i) (Taxable)</strong>
+            <span className="tooltips">
+              <i className="fas fa-info-circle"></i>
+              <span className="tooltips-content">
+                Under section 56(2)(i) of the Income Tax Act, dividend income is taxable if it exceeds ₹10 lakh in a financial year.<br />
+                It is considered 'Income from Other Sources' and taxed accordingly.
+              </span>
+            </span>
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-responsive div_tax_inc_table">
+                <tbody>
+                  {taxableDividendIncomes.map((income, index) => (
+                    <tr key={index}>
+                      <td className="col-md-5">
+                        <div className="form-group">
+                          <label>Description</label>
+                          <input
+                            type="text"
+                            name="div_tax_inc_desc[]"
+                            className="form-control rounded-0"
+                            value={income.description}
+                            onChange={(e) => handleDividendChange(index, 'description', e.target.value, true)}
+                          />
+                        </div>
+                      </td>
+                      <td className="col-md-3">
+                        <div className="form-group">
+                          <label>Amount</label>
+                          <input
+                            type="text"
+                            name="div_tax_inc_amount[]"
+                            className="form-control rounded-0 inr_field"
+                            value={income.amount}
+                            onChange={(e) => handleDividendChange(index, 'amount', e.target.value, true)}
+                          />
+                        </div>
+                      </td>
+                      <td className="col-md-3">
+                        <div className="form-group">
+                          <label>Period</label>
+                          <select
+                            name="div_tax_inc_period[]"
+                            className="form-control rounded-0"
+                            value={income.period}
+                            onChange={(e) => handleDividendChange(index, 'period', e.target.value, true)}
+                          >
+                            <option value="Upto15Of6">Upto 15 June</option>
+                            <option value="Upto15Of9">From 15 June To 15 Sep</option>
+                            <option value="Up16Of9To15Of12">From 16 Sep To 15 Dec</option>
+                            <option value="Up16Of12To15Of3">From 16 Dec To 15 Mar</option>
+                            <option value="Up16Of3To31Of3">From 16 Mar To 31 Mar</option>
+                          </select>
+                        </div>
+                      </td>
+                      <td className="col-md-1">
+                        <div className="form-group d-flex" style={{ flexDirection: "column" }}>
+                          <label>Cancel</label>
+                          <button
+                            type="button"
+                            className="btn btn-danger rounded-0"
+                            onClick={() => handleRemoveDividendIncome(index, true)}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button className="btn btn-info add_div_tax_inc_btn rounded-0" type="button" onClick={handleAddTaxableDividendIncome}>
+                Add More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div className="row mt-4">
         <div className="col-md-12 d-flex">
           <input
             type="submit"
@@ -560,7 +730,6 @@ const OtherIncomeForm = () => {
           />
         </div>
       </div>
-    </div>
     </form>
   )
 };

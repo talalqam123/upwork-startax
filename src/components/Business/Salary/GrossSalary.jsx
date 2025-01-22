@@ -173,7 +173,7 @@ const GrossSalaryForm = () => {
               <div key={index} className="form-group row ml-3 justify-content-between">
                 <div className="col-md-6 d-flex">
                   
-                  <span>{item.title}</span>
+                  <span className="col-md-6 text-content">{item.title}</span>
                   
                   {item.type === 'OTH' && (
                     
@@ -225,14 +225,12 @@ const GrossSalaryForm = () => {
                 }}
               >
                 <option value="">Select Additional Details</option>
-                {options.map(option => (
-                  <option 
-                    key={option.value} 
-                    value={option.value}
-                    disabled={formData[section].items.some(item => item.type === option.value)}
-                  >
-                    {option.label}
-                  </option>
+                {options
+                  .filter(option => !formData[section].items.some(item => item.type === option.value))
+                  .map(option => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
                 ))}
               </select>
             </div>

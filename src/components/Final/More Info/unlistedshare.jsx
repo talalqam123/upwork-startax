@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import BackButton from "../../Client Details/Backbutton";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "./unlistedShares.css";
+import { useOutletContext } from 'react-router-dom'; // Add this import
 
 const UnlistedShares = () => {
+    const darkMode = useOutletContext(); // Get darkMode from context
     const [tabs, setTabs] = useState([
         {
             company_name: "",
@@ -92,26 +91,26 @@ const UnlistedShares = () => {
     };
 
     return (
-        <div className="container">
-            <div className="d-flex justify-content-between align-items-center">
-                <div className="p-tab-c1">
+        <div className={` ${darkMode ? 'dark-mode' : ''}`}>
+            <div className="d-flex justify-content-between align-items-center pb-2">
+                <div className={`p-tab-c1 ${darkMode ? 'dark-mode' : ''}`}>
                     <span>Edit Unlisted Share</span>
                 </div>
             </div>
 
-            <form action="/store_unlisted_shares" className="card" method="POST">
+            <form action="/store_unlisted_shares" className={`card ${darkMode ? 'dark-mode' : ''}`} method="POST">
                 <input type="hidden" name="client_id" value="" />
                 <input type="hidden" name="year" value="" />
                 <input type="hidden" name="tab" value="[]" />
                 <input type="hidden" name="redirect" value="true" />
 
-                <div className="TDS-Taxes-form-active unlisted_shares_form">
-                    <div className="tab-wrapper unlisted-shares-data">
-                        <div className="tab-header">
+                <div className={`TDS-Taxes-form-active unlisted_shares_form ${darkMode ? 'dark-mode' : ''}`}>
+                    <div className={`tab-wrapper unlisted-shares-data ${darkMode ? 'dark-mode' : ''}`}>
+                        <div className={`tab-header ${darkMode ? 'dark-mode' : ''}`}>
                             <div className="shares_tabs d-flex">
                                 {tabs.map((tab, index) => (
                                     <div
-                                        className={`tab-btn d-flex flex-row align-items-center ${activeTab === index ? "active" : ""}`}
+                                        className={`tab-btn d-flex flex-row align-items-center ${activeTab === index ? "active" : ""} ${darkMode ? 'dark-mode' : ''}`}
                                         key={index}
                                         onClick={() => setActiveTab(index)}
                                     >
@@ -139,14 +138,14 @@ const UnlistedShares = () => {
                             </button>
                         </div>
 
-                        <div className="tab-body unlisted_share_tabs_body">
+                        <div className={`tab-body unlisted_share_tabs_body ${darkMode ? 'dark-mode' : ''}`}>
                             {tabs.map((tab, index) => (
                                 <div
-                                    className={`tab-content ${activeTab === index ? "" : "d-none"}`}
+                                    className={`tab-content ${activeTab === index ? "" : "d-none"} ${darkMode ? 'dark-mode' : ''}`}
                                     key={index}
                                     data-tab={index}
                                 >
-                                    <div className="card card-body tab-wrapper m-4">
+                                    <div className={`card card-body tab-wrapper m-4 ${darkMode ? 'dark-mode' : ''}`}>
                                         <div className="mb-4">
                                             <strong>Company Details</strong>
                                         </div>
@@ -198,7 +197,7 @@ const UnlistedShares = () => {
                                     </div>
                                     {/* Additional sections (Opening Balance, Shares Acquired, etc.) here */}
 
-                                    <div className="card card-body m-4">
+                                    <div className={`card card-body m-4 ${darkMode ? 'dark-mode' : ''}`}>
                                         <div className="mb-4">
                                             <strong>Opening Balance</strong>
                                         </div>
@@ -233,7 +232,7 @@ const UnlistedShares = () => {
                                         </div>
                                     </div>
 
-                                    <div className="card card-body  m-4">
+                                    <div className={`card card-body m-4 ${darkMode ? 'dark-mode' : ''}`}>
                                         <div className="mb-4">
                                             <strong>Shares acquired during the year</strong>
                                         </div>
@@ -298,7 +297,7 @@ const UnlistedShares = () => {
                                         </div>
                                     </div>
 
-                                    <div className="card card-body m-4">
+                                    <div className={`card card-body m-4 ${darkMode ? 'dark-mode' : ''}`}>
                                         <div className="mb-4">
                                             <strong>Shares transferred during the year</strong>
                                         </div>
@@ -330,7 +329,7 @@ const UnlistedShares = () => {
                                         </div>
                                     </div>
 
-                                    <div className="card card-body ml-4 mr-4">
+                                    <div className={`card card-body ml-4 mr-4 ${darkMode ? 'dark-mode' : ''}`}>
                                         <div className="mb-4">
                                             <strong>Closing Balance</strong>
                                         </div>
@@ -384,14 +383,14 @@ const UnlistedShares = () => {
 
             {/* Tab delete confirmation modal */}
             <div
-                className="modal fade"
+                className={`modal fade ${darkMode ? 'dark-mode' : ''}`}
                 id="deleteModal"
                 tabIndex="-1"
                 aria-labelledby="deleteModalLabel"
                 aria-hidden="true"
             >
                 <div className="modal-dialog">
-                    <div className="modal-content">
+                    <div className={`modal-content ${darkMode ? 'dark-mode' : ''}`}>
                         <div className="modal-header">
                             <h5 className="modal-title" id="deleteModalLabel">
                                 Confirmation

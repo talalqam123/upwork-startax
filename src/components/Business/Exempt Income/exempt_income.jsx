@@ -472,12 +472,13 @@ const ExemptIncome = () => {
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex' }}>
+      
+    </div>
+    <div style={{ display: 'flex' }}>
         <button id="submit_exempt_income" className="btn btn-primary" type="submit">
           Save
         </button>
       </div>
-    </div>
         </form>
     );
 };

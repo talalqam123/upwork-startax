@@ -7,6 +7,11 @@ import { toast } from 'react-toastify';
 import LoadingBar from '../LoadingBar';
 
 const Home = () => {
+  // Add useEffect for title
+  useEffect(() => {
+    document.title = "Startax: Dashboard";
+  }, []);
+
   const darkMode = useOutletContext(); // Get darkMode from context
   const navigate = useNavigate();
 
@@ -154,6 +159,22 @@ const Home = () => {
     </div>
   );
 
+  // Update the DataGrid onRowClick to properly pass state and navigate
+  const handleRowClick = (params) => {
+    console.log('Row data:', params.row); // Debug log
+    const clientData = {
+      client: {
+        ...params.row,
+        fullName: params.row.first_name
+      }
+    };
+    console.log('Navigating with state:', clientData); // Debug log
+    navigate("/client/permanent/basic", { 
+      state: clientData,
+      replace: true 
+    });
+  };
+
   return (
     <>
       <LoadingBar isLoading={isLoading} duration={1000} />
@@ -190,17 +211,20 @@ const Home = () => {
                 </div>
                 {searchBox}
               </div>
-              <div className="card-body">
-                <div style={{ height: 400, width: "100%" }}>
+              <div className="card-body" style={{ overflow: 'hidden' }}>
+                <div style={{ 
+                  height: 400, 
+                  width: "100%",
+                  overflow: "hidden", // Prevent scrollbar from affecting layout
+                  paddingRight: 0, // Remove right padding
+                }}>
                   <DataGrid
                     rows={filteredRows}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5, 10, 15]}
                     getRowId={(row) => row._id} // Important: tell DataGrid to use _id
-                    onRowClick={(params) =>
-                      navigate("/client", { state: { client: params.row } })
-                    }
+                    onRowClick={handleRowClick}
                     loading={loading}
                     error={error}
                     components={{
@@ -224,9 +248,18 @@ const Home = () => {
                         backgroundColor: darkMode ? "#2c3e50" : "#f5f5f5",
                       },
                       "& .MuiDataGrid-main": {
-                        overflow: "auto",
+                        overflow: "hidden !important",
+                        paddingRight: "0 !important",
                         backgroundColor: darkMode ? "#1a1a1a" : "#F2F2F2",
                         color: darkMode ? "#fff" : "inherit",
+                      },
+                      "& .MuiDataGrid-root": {
+                        overflow: "hidden !important",
+                        paddingRight: "0 !important",
+                      },
+                      "& .MuiDataGrid-virtualScroller": {
+                        overflow: "auto !important",
+                        paddingRight: "0 !important",
                       },
                       "& .MuiDataGrid-cell": {
                         border: darkMode ? "1px solid #444" : "1px solidrgb(27, 98, 170)",

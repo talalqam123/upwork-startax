@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import Papa from "papaparse";
+import { useOutletContext } from 'react-router-dom'; // Add this import
 
 const HousePropertyForm = ({ clientId, year }) => {
+  const darkMode = useOutletContext(); // Get darkMode from context
   const [houseProperties, setHouseProperties] = useState([
     {
       PropertyType: "",
@@ -40,6 +43,28 @@ const HousePropertyForm = ({ clientId, year }) => {
   const [activeTab, setActiveTab] = useState(0);
   const underlineRef = useRef(null);
   const tabsRef = useRef([]);
+
+  const [pincodeData, setPincodeData] = useState([]);
+  const [stateOptions, setStateOptions] = useState([]);
+
+  useEffect(() => {
+    // Load the CSV data
+    const fetchPincodeData = async () => {
+      const response = await fetch("/pin_codes.csv"); // Adjust the path
+      const text = await response.text();
+      Papa.parse(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          setPincodeData(results.data);
+          // Extract unique states from the CSV data
+          const uniqueStates = [...new Set(results.data.map(item => item.state))];
+          setStateOptions(uniqueStates);
+        },
+      });
+    };
+    fetchPincodeData();
+  }, []);
 
   const handlePropertyChange = (index, field, value) => {
     const updatedProperties = [...houseProperties];
@@ -175,6 +200,34 @@ const HousePropertyForm = ({ clientId, year }) => {
     setHouseProperties(updatedProperties);
   };
 
+  const handleAddressChange = (index, field, value) => {
+    const updatedProperties = [...houseProperties];
+    if (field === "PinCode") {
+      const matchedData = pincodeData.find(
+        (entry) => entry.pincode === value
+      );
+      if (matchedData) {
+        updatedProperties[index].item.AddressDetailWithZipCode = {
+          ...updatedProperties[index].item.AddressDetailWithZipCode,
+          StateCode: matchedData.state,
+          CityOrTownOrDistrict: matchedData.district,
+          PinCode: value
+        };
+      } else {
+        updatedProperties[index].item.AddressDetailWithZipCode = {
+          ...updatedProperties[index].item.AddressDetailWithZipCode,
+          [field]: value
+        };
+      }
+    } else {
+      updatedProperties[index].item.AddressDetailWithZipCode = {
+        ...updatedProperties[index].item.AddressDetailWithZipCode,
+        [field]: value
+      };
+    }
+    setHouseProperties(updatedProperties);
+  };
+
   const formatCurrency = (amount) => {
     return Number(amount).toLocaleString('en-in');
   };
@@ -189,14 +242,14 @@ const HousePropertyForm = ({ clientId, year }) => {
 
 
   return (
-    <form className="house_form" method="POST" action="/basic_details/store_house_data/">
+    <form className={`house_form ${darkMode ? 'dark-mode' : ''}`} method="POST" action="/basic_details/store_house_data/">
       <input type="hidden" name="client_id" value={clientId} />
       <input type="hidden" name="year" value={year} />
       <input type="hidden" name="tab" value="" />
       <input type="hidden" name="redirect" value="true" />
 
-      <div className="tab-wrapper">
-        <div className="tab-header">
+      <div className={`tab-wrapper ${darkMode ? 'dark-mode' : ''}`}>
+        <div className={`tab-header ${darkMode ? 'dark-mode' : ''}`}>
           <div className="house_tabs d-flex position-relative">
             {houseProperties.map((_, index) => (
               <div
@@ -235,10 +288,10 @@ const HousePropertyForm = ({ clientId, year }) => {
           </button>
         </div>
 
-        <div className="tab-body house_tabs_body">
+        <div className={`tab-body house_tabs_body ${darkMode ? 'dark-mode' : ''}`}>
           {houseProperties.map((property, index) => (
-            <div key={index} className={`tab-content ${index === activeTab ? "" : "d-none"}`}>
-              <div className="card card-primary">
+            <div key={index} className={`tab-content ${index === activeTab ? "" : "d-none"} ${darkMode ? 'dark-mode' : ''}`}>
+              <div className={`card card-primary ${darkMode ? 'dark-mode' : ''}`}>
                 <div className="card-header">
                   <h5 className="card-title">
                     <strong>House Property Details</strong>
@@ -284,7 +337,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                 </div>
               </div>
 
-              <div className="card card-primary">
+              <div className={`card card-primary ${darkMode ? 'dark-mode' : ''}`}>
                 <div className="card-header">
                   <strong>Property Ownership</strong>
                 </div>
@@ -356,7 +409,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                 </div>
 
                 {property.PropCoOwnedFlg === "YES" && (
-                  <div className="card card-primary co-owner-div">
+                  <div className={`card card-primary co-owner-div ${darkMode ? 'dark-mode' : ''}`}>
                     <div className="card-header">
                       <div>
                         <strong>Co-Owners Details</strong>
@@ -452,7 +505,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                   </div>
                 )}
               </div>
-              <div className="card card-primary d-none income-div">
+              <div className={`card card-primary d-none income-div ${darkMode ? 'dark-mode' : ''}`}>
                 <div className="card-header">
                   <div><strong>Income earned from the House Property</strong></div>
                 </div>
@@ -553,7 +606,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                   />
                 </div>
               </div>
-              <div className="card card-primary">
+              <div className={`card card-primary ${darkMode ? 'dark-mode' : ''}`}>
                 <div className="card-header">
                   <h5 className="card-title">
                     <strong>Tenant Details</strong>
@@ -621,7 +674,7 @@ const HousePropertyForm = ({ clientId, year }) => {
                   </button>
                 </div>
               </div>
-              <div className="card card-primary">
+              <div className={`card card-primary ${darkMode ? 'dark-mode' : ''}`}>
                 <div className="card-header">
                   <div>
                     <strong>House Property Address</strong>
@@ -630,7 +683,6 @@ const HousePropertyForm = ({ clientId, year }) => {
                 <div className="card-body">
                   <div className="row text-content">
                     <div className="col-md-6">
-                      {/* Flat/Door/Block Number */}
                       <div className="form-group">
                         <label>Flat/Door/Block Number *</label>
                         <input
@@ -638,10 +690,10 @@ const HousePropertyForm = ({ clientId, year }) => {
                           name="HouseNo"
                           className="form-control rounded-0"
                           value={property.item.AddressDetailWithZipCode.HouseNo}
+                          onChange={(e) => handleAddressChange(index, "HouseNo", e.target.value)}
                         />
                       </div>
 
-                      {/* Premise Name */}
                       <div className="form-group">
                         <label>Premise Name (Optional)</label>
                         <input
@@ -649,10 +701,10 @@ const HousePropertyForm = ({ clientId, year }) => {
                           name="PremiseName"
                           className="form-control rounded-0"
                           value={property.item.AddressDetailWithZipCode.PremiseName}
+                          onChange={(e) => handleAddressChange(index, "PremiseName", e.target.value)}
                         />
                       </div>
 
-                      {/* Road / Street */}
                       <div className="form-group">
                         <label>Road / Street (Optional)</label>
                         <input
@@ -660,21 +712,22 @@ const HousePropertyForm = ({ clientId, year }) => {
                           name="Road"
                           className="form-control rounded-0"
                           value={property.item.AddressDetailWithZipCode.Road}
+                          onChange={(e) => handleAddressChange(index, "Road", e.target.value)}
                         />
                       </div>
 
-                      {/* State */}
                       <div className="form-group">
                         <label>State *</label>
                         <select
                           name="StateCode"
                           className="form-control rounded-0 state_code"
                           value={property.item.AddressDetailWithZipCode.StateCode}
+                          onChange={(e) => handleAddressChange(index, "StateCode", e.target.value)}
                         >
-                          <option value="">Select Option</option>
-                          {states.map(([code, name]) => (
-                            <option value={code} key={code}>
-                              {name}
+                          <option value="">Select State</option>
+                          {stateOptions.map((state, idx) => (
+                            <option key={idx} value={state}>
+                              {state}
                             </option>
                           ))}
                         </select>
@@ -682,7 +735,6 @@ const HousePropertyForm = ({ clientId, year }) => {
                     </div>
 
                     <div className="col-md-6">
-                      {/* Pincode */}
                       <div className="form-group">
                         <label>Pincode</label>
                         <input
@@ -690,21 +742,21 @@ const HousePropertyForm = ({ clientId, year }) => {
                           className="form-control rounded-0 pincode"
                           name="PinCode"
                           value={property.item.AddressDetailWithZipCode.PinCode}
+                          onChange={(e) => handleAddressChange(index, "PinCode", e.target.value)}
                         />
                       </div>
 
-                      {/* Area / Locality */}
                       <div className="form-group">
                         <label>Area / Locality *</label>
                         <input
                           type="text"
-                          className="form-control rounded-0"
                           name="Area"
+                          className="form-control rounded-0"
                           value={property.item.AddressDetailWithZipCode.Area}
+                          onChange={(e) => handleAddressChange(index, "Area", e.target.value)}
                         />
                       </div>
 
-                      {/* Town / City */}
                       <div className="form-group">
                         <label>Town / City *</label>
                         <input
@@ -712,16 +764,17 @@ const HousePropertyForm = ({ clientId, year }) => {
                           className="form-control rounded-0 city"
                           name="CityOrTownOrDistrict"
                           value={property.item.AddressDetailWithZipCode.CityOrTownOrDistrict}
+                        
                         />
                       </div>
 
-                      {/* Country */}
                       <div className="form-group">
                         <label>Country *</label>
                         <select
                           name="CountryCode"
                           className="form-control rounded-0"
                           value={property.item.AddressDetailWithZipCode.CountryCode}
+                          onChange={(e) => handleAddressChange(index, "CountryCode", e.target.value)}
                         >
                           <option value="">Select Option</option>
                           {countries.map(({ code, name }) => (

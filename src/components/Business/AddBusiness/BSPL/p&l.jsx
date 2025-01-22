@@ -265,6 +265,7 @@ const PANDL = () => {
                                     value={values.totalOtherIncome}
                                     onChange={(e) => handleInputChange('totalOtherIncome', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
+                                    readOnly
                                 />
                             </div>
                         </div>
@@ -280,6 +281,7 @@ const PANDL = () => {
                             onChange={(e) => handleInputChange('totalCreditsToPLAccount', e.target.value)}
                             className="form-control rounded-0 flex-grow-1"
                             style={{ maxWidth: 'calc(100% - 230px)' }}
+                            readOnly
                         />
                     </div>
                     <div className="form-group d-flex align-items-center">
@@ -399,7 +401,7 @@ const PANDL = () => {
                                     value={values.leaveEncashment}
                                     onChange={(e) => handleInputChange('leaveEncashment', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                                  
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -410,7 +412,7 @@ const PANDL = () => {
                                     value={values.leaveTravelBenefits}
                                     onChange={(e) => handleInputChange('leaveTravelBenefits', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                                    
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -421,7 +423,7 @@ const PANDL = () => {
                                     value={values.contributionToSuperannuationFund}
                                     onChange={(e) => handleInputChange('contributionToSuperannuationFund', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                                
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -432,7 +434,7 @@ const PANDL = () => {
                                     value={values.contributionToProvidentFund}
                                     onChange={(e) => handleInputChange('contributionToProvidentFund', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                                 
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -443,7 +445,7 @@ const PANDL = () => {
                                     value={values.contributionToGratuityFund}
                                     onChange={(e) => handleInputChange('contributionToGratuityFund', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                                   
                                 />
                             </div>
                         </div>
@@ -456,7 +458,7 @@ const PANDL = () => {
                                     value={values.contributionToOtherFund}
                                     onChange={(e) => handleInputChange('contributionToOtherFund', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                            
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -467,20 +469,10 @@ const PANDL = () => {
                                     value={values.otherBenefitToEmployees}
                                     onChange={(e) => handleInputChange('otherBenefitToEmployees', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                            
                                 />
                             </div>
-                            <div className="form-group d-flex align-items-center">
-                                <span style={{ marginLeft: '30px', minWidth: '200px' }}>22xi: Total compensation to <br />employees (22i + 22ii + 22iii +<br /> 22iv + 22v + 22vi + 22vii + 22viii +22ix + 22x)</span>
-                                <input
-                                    type="number"
-                                    name="totalCompensationToEmployees"
-                                    value={values.totalCompensationToEmployees}
-                                    onChange={(e) => handleInputChange('totalCompensationToEmployees', e.target.value)}
-                                    className="form-control rounded-0 flex-grow-1"
-                                    readOnly
-                                />
-                            </div>
+                            
                             <div className="form-group d-flex align-items-center">
                                 <span style={{ marginLeft: '30px', minWidth: '200px' }}>22xii: Whether any compensation<br />, included in 22xi, paid to non-residents</span>
                                 <input
@@ -489,7 +481,7 @@ const PANDL = () => {
                                     value={values.compensationToNonResidents}
                                     onChange={(e) => handleInputChange('compensationToNonResidents', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                              
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -500,7 +492,7 @@ const PANDL = () => {
                                     value={values.amountPaidToNonResidents}
                                     onChange={(e) => handleInputChange('amountPaidToNonResidents', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+                          
                                 />
                             </div>
                             <div className="form-group d-flex align-items-center">
@@ -511,7 +503,7 @@ const PANDL = () => {
                                     value={values.totalCompensationToEmployees}
                                     onChange={(e) => handleInputChange('totalCompensationToEmployees', e.target.value)}
                                     className="form-control rounded-0 flex-grow-1"
-                                    readOnly
+
                                 />
                             </div>
                         </div>
