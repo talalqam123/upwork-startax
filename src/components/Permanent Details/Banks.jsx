@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { parseBankCodes } from "../../utils/bankDataParser";
 
 const BankDetails = () => {
     const [bankDetails, setBankDetails] = useState([
         { ifscCode: "", bankName: "", accountNo: "", accountType: "SB", refund: false },
     ]);
+    const [bankData, setBankData] = useState({});
 
-    const bankData = {
-        ABPB: "ADITYA BIRLA PAYMENTS BANK",
-        AIRP: "AIRTEL PAYMENTS BANK LIMITED",
-        ALLA: "ALLAHABAD BANK",
-        // Add the remaining bank codes and names here
-    };
+    useEffect(() => {
+        const loadBankData = async () => {
+            const data = await parseBankCodes();
+            setBankData(data);
+        };
+        loadBankData();
+    }, []);
 
     const handleAddRow = () => {
         setBankDetails((prevDetails) => [
@@ -24,10 +27,14 @@ const BankDetails = () => {
             const updatedDetails = [...prevDetails];
             updatedDetails[index][field] = value;
 
-            // Automatically update the bank name if IFSC code changes
             if (field === "ifscCode") {
                 const bankCode = value.slice(0, 4).toUpperCase();
-                updatedDetails[index].bankName = bankData[bankCode] || "";
+                const matchingBank = bankData[bankCode];
+                if (matchingBank) {
+                    updatedDetails[index].bankName = matchingBank;
+                } else {
+                    updatedDetails[index].bankName = "";
+                }
             }
 
             return updatedDetails;
@@ -172,7 +179,7 @@ const BankDetails = () => {
                                     name={`bank_name_${index}`}
                                     className="bankNameClass form-control rounded-0"
                                     value={bank.bankName}
-                                    readOnly
+                                    onChange={(e) => handleInputChange(index, "bankName", e.target.value)}
                                 />
                             </div>
                             <div className="form-group col-md-3">
